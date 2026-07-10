@@ -39,4 +39,4 @@
 - UI を 5 タブに刷新: ダッシュボード/センサー(全 ch+スパークライン)/チャート(重ね描き+正規化+CSV)/ドライブ(G ボール+GPS+0-100)/ツール(DTC/コマンド/ログ)
 - pbxproj に NSLocationWhenInUseUsageDescription / NSMotionUsageDescription 追加
 - ハマった点: SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY 有効のため @Published に明示的 `import Combine` が必要
-- `xcodebuild -destination 'generic/platform=iOS Simulator' build` 成功(未コミット)
+- `xcodebuild -destination 'generic/platform=iOS Simulator' build` 成功 → commit f4121c2 (push 済み)
