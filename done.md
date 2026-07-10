@@ -40,3 +40,8 @@
 - pbxproj に NSLocationWhenInUseUsageDescription / NSMotionUsageDescription 追加
 - ハマった点: SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY 有効のため @Published に明示的 `import Combine` が必要
 - `xcodebuild -destination 'generic/platform=iOS Simulator' build` 成功 → commit f4121c2 (push 済み)
+
+## 2026/07/10 21:35
+- Xcode Cloud 対応: 共有スキーム `xcshareddata/xcschemes/car_ui.xcscheme` を新規作成(自動スキームのみで共有化されていなかった)
+- `ITSAppUsesNonExemptEncryption = NO` を追加(TestFlight 配信時の輸出コンプライアンス手動回答を回避)
+- commit 8ea0e1d(push 済み)。ワークフロー作成は Xcode GUI での操作が必要(下記手順をユーザーに案内)
