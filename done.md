@@ -45,3 +45,11 @@
 - Xcode Cloud 対応: 共有スキーム `xcshareddata/xcschemes/car_ui.xcscheme` を新規作成(自動スキームのみで共有化されていなかった)
 - `ITSAppUsesNonExemptEncryption = NO` を追加(TestFlight 配信時の輸出コンプライアンス手動回答を回避)
 - commit 8ea0e1d(push 済み)。ワークフロー作成は Xcode GUI での操作が必要(下記手順をユーザーに案内)
+
+## 2026/07/11 01:27
+- Agent: Codex
+- App Store 審査必須の `PrivacyInfo.xcprivacy` を新規作成・追加
+  - NSPrivacyTracking=false、NSPrivacyTrackingDomains=[]、NSPrivacyCollectedDataTypes=[]、NSPrivacyAccessedAPITypes=[]
+  - 外部送信なし確認: rg で URLSession/HTTP/send の検索結果なし、UserDefaults 使用なし
+  - Xcode 15 自動同期により pbxproj 手動登録不要、ビルド時に自動バンドル
+- `xcodebuild -project car_ui.xcodeproj -scheme car_ui -destination 'generic/platform=iOS Simulator' build` 成功（BUILD SUCCEEDED）
