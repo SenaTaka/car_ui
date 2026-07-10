@@ -259,6 +259,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleIconName = AppIcon;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "ELM327 OBD2 アダプタに接続して車両情報を読み取るために Bluetooth を使用します。";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "GPS の速度・高度・走行距離を記録するために位置情報を使用します。";
 				INFOPLIST_KEY_NSMotionUsageDescription = "G フォースの表示・記録のためにモーションセンサーを使用します。";
@@ -295,6 +296,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleIconName = AppIcon;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "ELM327 OBD2 アダプタに接続して車両情報を読み取るために Bluetooth を使用します。";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "GPS の速度・高度・走行距離を記録するために位置情報を使用します。";
 				INFOPLIST_KEY_NSMotionUsageDescription = "G フォースの表示・記録のためにモーションセンサーを使用します。";
