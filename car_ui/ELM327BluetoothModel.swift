@@ -23,20 +23,6 @@ struct OBDPeripheral: Identifiable, Equatable {
     }
 }
 
-struct VehicleTelemetry: Equatable {
-    var rpm: Int?
-    var speedKPH: Int?
-    var coolantTempC: Int?
-    var intakeTempC: Int?
-    var throttlePercent: Double?
-    var engineLoadPercent: Double?
-    var moduleVoltage: Double?
-    var mafGramsPerSecond: Double?
-    var lastUpdated: Date?
-
-    static let empty = VehicleTelemetry()
-}
-
 enum OBDConnectionPhase: Equatable {
     case waitingForBluetooth
     case idle
@@ -86,7 +72,10 @@ enum OBDConnectionPhase: Equatable {
 final class ELM327BluetoothModel: NSObject, ObservableObject {
     @Published private(set) var phase: OBDConnectionPhase = .waitingForBluetooth
     @Published private(set) var discoveredPeripherals: [OBDPeripheral] = []
-    @Published private(set) var telemetry: VehicleTelemetry = .empty
+    @Published private(set) var liveValues: [UInt8: Double] = [:]
+    @Published private(set) var adapterVoltage: Double?
+    @Published private(set) var lastUpdated: Date?
+    @Published private(set) var isDemo = false
     @Published private(set) var adapterInfo = "未取得"
     @Published private(set) var protocolDescription = "未取得"
     @Published private(set) var supportedMode01PIDCount = 0
@@ -113,8 +102,10 @@ final class ELM327BluetoothModel: NSObject, ObservableObject {
     private var transportDiscoveryTask: Task<Void, Never>?
     private var startupTask: Task<Void, Never>?
     private var pollingTask: Task<Void, Never>?
+    private var demoTask: Task<Void, Never>?
     private var didStartInitialization = false
     private var pollCycle = 0
+    private var slowPIDRotationIndex = 0
     private var supportedMode01PIDs: Set<UInt8> = []
 
     private let likelyNameMarkers = [
@@ -204,6 +195,13 @@ final class ELM327BluetoothModel: NSObject, ObservableObject {
     }
 
     func disconnect() {
+        if isDemo {
+            resetConnectionState(keepLog: true)
+            phase = .idle
+            appendLog("デモモード終了")
+            return
+        }
+
         stopPolling()
         startupTask?.cancel()
         startupTask = nil
@@ -218,13 +216,13 @@ final class ELM327BluetoothModel: NSObject, ObservableObject {
     }
 
     func startPolling() {
-        guard phase.isConnected, pollingTask == nil else { return }
+        guard phase.isConnected, !isDemo, pollingTask == nil else { return }
 
         isPolling = true
         pollingTask = Task { [weak self] in
             while !Task.isCancelled {
                 await self?.pollLiveData()
-                try? await Task.sleep(nanoseconds: 800_000_000)
+                try? await Task.sleep(nanoseconds: 200_000_000)
             }
         }
     }
@@ -233,6 +231,79 @@ final class ELM327BluetoothModel: NSObject, ObservableObject {
         pollingTask?.cancel()
         pollingTask = nil
         isPolling = false
+    }
+
+    // MARK: - デモモード(アダプタなしで全機能を試せる擬似データ)
+
+    func startDemoMode() {
+        disconnectHardwareIfNeeded()
+        resetConnectionState(keepLog: true)
+
+        isDemo = true
+        phase = .connected("デモモード")
+        adapterInfo = "DEMO"
+        protocolDescription = "シミュレーション"
+        let demoPIDs: Set<UInt8> = [
+            0x04, 0x05, 0x06, 0x07, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F, 0x10,
+            0x11, 0x1F, 0x2F, 0x33, 0x42, 0x46, 0x5C, 0x5E, 0x62
+        ]
+        supportedMode01PIDs = demoPIDs
+        supportedMode01PIDCount = demoPIDs.count
+        isPolling = true
+        appendLog("デモモード開始(擬似データを生成)")
+
+        demoTask = Task { [weak self] in
+            var t = 0.0
+            while !Task.isCancelled {
+                self?.generateDemoData(t)
+                t += 0.25
+                try? await Task.sleep(nanoseconds: 250_000_000)
+            }
+        }
+    }
+
+    private func generateDemoData(_ t: Double) {
+        guard isDemo else { return }
+
+        let throttle = max(0, min(100, 25 + 35 * sin(t / 5) + 10 * sin(t / 1.3)))
+        let rpm = 900 + throttle * 52 + 180 * sin(t / 2)
+        let speed = max(0, 55 + 50 * sin(t / 9))
+
+        applyDemoValue(0x0C, rpm)
+        applyDemoValue(0x0D, speed)
+        applyDemoValue(0x11, throttle)
+        applyDemoValue(0x04, max(5, min(95, throttle * 0.9 + 8 * sin(t / 4))))
+        applyDemoValue(0x05, min(96, 62 + t * 0.4))
+        applyDemoValue(0x06, 3.5 * sin(t / 6))
+        applyDemoValue(0x07, 1.8 + 0.7 * sin(t / 30))
+        applyDemoValue(0x0B, 28 + throttle * 0.7)
+        applyDemoValue(0x0E, 12 + 8 * sin(t / 7))
+        applyDemoValue(0x0F, 28 + 4 * sin(t / 40))
+        applyDemoValue(0x10, 2 + throttle * 0.5)
+        applyDemoValue(0x1F, t)
+        applyDemoValue(0x2F, max(3, 68 - t * 0.01))
+        applyDemoValue(0x33, 101)
+        applyDemoValue(0x42, 13.8 + 0.3 * sin(t / 3))
+        applyDemoValue(0x46, 31)
+        applyDemoValue(0x5C, min(104, 55 + t * 0.35))
+        applyDemoValue(0x5E, 0.7 + throttle * 0.11)
+        applyDemoValue(0x62, max(0, min(100, throttle * 0.92)))
+
+        adapterVoltage = 13.8 + 0.3 * sin(t / 3)
+        lastUpdated = Date()
+    }
+
+    private func applyDemoValue(_ pid: UInt8, _ value: Double) {
+        liveValues[pid] = value
+        if let definition = PIDCatalog.byPID[pid] {
+            TelemetryRecorder.shared.record(definition.channelID, value: value)
+        }
+    }
+
+    private func disconnectHardwareIfNeeded() {
+        if let connectedPeripheral {
+            centralManager.cancelPeripheralConnection(connectedPeripheral)
+        }
     }
 
     func readDiagnosticTroubleCodes() {
@@ -311,7 +382,7 @@ final class ELM327BluetoothModel: NSObject, ObservableObject {
         await refreshSupportedMode01PIDs()
 
         if let voltageResponse = await request("ATRV", timeout: 3) {
-            telemetry.moduleVoltage = parseVoltage(voltageResponse)
+            adapterVoltage = parseVoltage(voltageResponse)
         }
 
         phase = .connected(displayName(for: connectedPeripheral))
@@ -322,57 +393,52 @@ final class ELM327BluetoothModel: NSObject, ObservableObject {
     private func pollLiveData() async {
         guard phase.isConnected else { return }
 
-        await pollMode01("010C", pid: 0x0C)
-        await pollMode01("010D", pid: 0x0D)
-        await pollMode01("0105", pid: 0x05)
-        await pollMode01("0111", pid: 0x11)
-        await pollMode01("0104", pid: 0x04)
-        await pollMode01("010F", pid: 0x0F)
-        await pollMode01("0110", pid: 0x10)
+        // 高速系 PID は毎サイクル、それ以外の対応 PID はラウンドロビンで巡回
+        for pid in PIDCatalog.fastPIDs {
+            await pollMode01(pid)
+        }
+
+        let slowPIDs = slowPollTargets()
+        if !slowPIDs.isEmpty {
+            for _ in 0..<min(3, slowPIDs.count) {
+                let pid = slowPIDs[slowPIDRotationIndex % slowPIDs.count]
+                slowPIDRotationIndex += 1
+                await pollMode01(pid)
+            }
+        }
 
         pollCycle += 1
-        if pollCycle.isMultiple(of: 4), let voltageResponse = await request("ATRV", timeout: 2) {
-            telemetry.moduleVoltage = parseVoltage(voltageResponse)
-            telemetry.lastUpdated = Date()
+        if pollCycle.isMultiple(of: 8), let voltageResponse = await request("ATRV", timeout: 2) {
+            if let voltage = parseVoltage(voltageResponse) {
+                adapterVoltage = voltage
+                lastUpdated = Date()
+                TelemetryRecorder.shared.record("meta.voltage", value: voltage)
+            }
         }
     }
 
-    private func pollMode01(_ command: String, pid: UInt8) async {
-        guard isMode01PIDSupported(pid) else { return }
-        guard let response = await request(command, timeout: 2) else { return }
-        applyMode01(response: response, pid: pid)
+    private func slowPollTargets() -> [UInt8] {
+        let fastSet = Set(PIDCatalog.fastPIDs)
+        let base: Set<UInt8> = supportedMode01PIDs.isEmpty
+            ? [0x05, 0x06, 0x07, 0x0B, 0x0E, 0x0F, 0x10, 0x2F, 0x33, 0x42, 0x46, 0x5C]
+            : supportedMode01PIDs
+        return base
+            .filter { PIDCatalog.byPID[$0] != nil && !fastSet.contains($0) }
+            .sorted()
     }
 
-    private func applyMode01(response: String, pid: UInt8) {
-        guard let bytes = mode01Payload(from: response, pid: pid), !bytes.isEmpty else {
+    private func pollMode01(_ pid: UInt8) async {
+        guard let definition = PIDCatalog.byPID[pid] else { return }
+        guard isMode01PIDSupported(pid) else { return }
+        guard let response = await request(definition.command, timeout: 2) else { return }
+        guard let bytes = mode01Payload(from: response, pid: pid), !bytes.isEmpty,
+              let value = definition.decode(bytes) else {
             return
         }
 
-        switch pid {
-        case 0x04:
-            telemetry.engineLoadPercent = percent(from: bytes[0])
-        case 0x05:
-            telemetry.coolantTempC = Int(bytes[0]) - 40
-        case 0x0C where bytes.count >= 2:
-            telemetry.rpm = Int((UInt16(bytes[0]) << 8 | UInt16(bytes[1])) / 4)
-        case 0x0D:
-            telemetry.speedKPH = Int(bytes[0])
-        case 0x0F:
-            telemetry.intakeTempC = Int(bytes[0]) - 40
-        case 0x10 where bytes.count >= 2:
-            let rawValue = UInt16(bytes[0]) << 8 | UInt16(bytes[1])
-            telemetry.mafGramsPerSecond = Double(rawValue) / 100
-        case 0x11:
-            telemetry.throttlePercent = percent(from: bytes[0])
-        default:
-            break
-        }
-
-        telemetry.lastUpdated = Date()
-    }
-
-    private func percent(from byte: UInt8) -> Double {
-        (Double(byte) * 100 / 255).rounded(toPlaces: 1)
+        liveValues[pid] = value
+        lastUpdated = Date()
+        TelemetryRecorder.shared.record(definition.channelID, value: value)
     }
 
     private func request(_ command: String, timeout: TimeInterval = 2) async -> String? {
@@ -483,6 +549,9 @@ final class ELM327BluetoothModel: NSObject, ObservableObject {
 
     private func resetConnectionState(keepLog: Bool = false) {
         stopPolling()
+        demoTask?.cancel()
+        demoTask = nil
+        isDemo = false
         transportDiscoveryTask?.cancel()
         transportDiscoveryTask = nil
         startupTask?.cancel()
@@ -499,10 +568,13 @@ final class ELM327BluetoothModel: NSObject, ObservableObject {
         didStartInitialization = false
         adapterInfo = "未取得"
         protocolDescription = "未取得"
-        telemetry = .empty
+        liveValues = [:]
+        adapterVoltage = nil
+        lastUpdated = nil
         diagnosticCodes = []
         diagnosticStatus = "未読取"
         pollCycle = 0
+        slowPIDRotationIndex = 0
         supportedMode01PIDs = []
         supportedMode01PIDCount = 0
         manualCommandResponse = "未送信"
@@ -980,13 +1052,6 @@ private struct PendingCommand {
     let command: String
     let timeout: TimeInterval
     let completion: (String?) -> Void
-}
-
-private extension Double {
-    func rounded(toPlaces places: Int) -> Double {
-        let divisor = pow(10, Double(places))
-        return (self * divisor).rounded() / divisor
-    }
 }
 
 private extension String {
