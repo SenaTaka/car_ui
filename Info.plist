@@ -2,10 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<!-- TODO: car_ui 用の本番 AdMob アプリ ID に差し替える(現在は Google 公式テスト ID)。
-	     残りの Info.plist は Xcode が自動生成(GENERATE_INFOPLIST_FILE)してマージする。 -->
+	<!-- Google Mobile Ads 本番アプリ ID。残りの Info.plist は Xcode が
+	     自動生成(GENERATE_INFOPLIST_FILE)してマージする。 -->
 	<key>GADApplicationIdentifier</key>
-	<string>ca-app-pub-3940256099942544~1458002511</string>
+	<string>ca-app-pub-3848493291218445~8945778220</string>
 	<key>SKAdNetworkItems</key>
 	<array>
 		<dict>

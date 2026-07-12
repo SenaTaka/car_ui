@@ -4,17 +4,15 @@ import UIKit
 
 /// AdMob configuration for the free, ad-supported model.
 ///
-/// Simulators always receive test ads; register any physical development
-/// device as a test device in AdMob before tapping ads.
+/// PRODUCTION identifiers (paired with GADApplicationIdentifier in the
+/// root Info.plist). Simulators always receive test ads; register any
+/// physical development device as a test device in AdMob before tapping ads.
 enum AdConfig {
-    // TODO: car_ui 用の本番ユニット ID に差し替える(現在は Google 公式テスト ID)。
-    // Info.plist の GADApplicationIdentifier も併せて差し替えること。
+    /// Production banner unit (bottom, shared across all tabs).
+    static let bannerUnitID = "ca-app-pub-3848493291218445/1160611372"
 
-    /// Banner unit (bottom, shared across all tabs).
-    static let bannerUnitID = "ca-app-pub-3940256099942544/2934735716"
-
-    /// Rewarded unit — 24 h unlock (F1 V10 Legend).
-    static let rewardedUnitID = "ca-app-pub-3940256099942544/1712485313"
+    /// Production rewarded unit — 24 h unlock (F1 V10 Legend).
+    static let rewardedUnitID = "ca-app-pub-3848493291218445/3455602221"
 }
 
 /// Bottom banner slot: a standard 320x50 AdMob banner with a fixed frame so
