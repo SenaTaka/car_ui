@@ -64,5 +64,5 @@
 - 検証: `generic/platform=iOS Simulator` ビルド成功 + iPhone Air(iOS 26.3.1)シミュレータで起動確認(5タブ表示・クラッシュなし)。音・デモモード連動・リワード解錠の実操作確認は未実施(要手動テスト)
 - commit a726140
 - ハマった点: SWIFT_DEFAULT_ACTOR_ISOLATION=MainActor により DSP 型に `nonisolated` 必須 / iPhone 15 系シミュレータは iOS 26 未満で使えず iPhone Air を使用 / pbxproj への SPM 追記時、Frameworks 配線(PBXBuildFile)は Xcode が自動補完
-- **残 TODO**: ①AdMob 本番 ID 差し替え(Info.plist の GADApplicationIdentifier + AdConfig の bannerUnitID/rewardedUnitID — 現在は Google テスト ID) ②PrivacyInfo.xcprivacy が広告導入前の「収集なし」宣言のままなので提出前に要更新
+- **残 TODO**: ①〜済(2026/07/12 本番 ID 反映)。②PrivacyInfo.xcprivacy が広告導入前の「収集なし」宣言のままなので提出前に要更新
 - 残置ファイル(他レーン由来・未タッチ): `car_ui_2026-07-09_15-30-52.702.xcdistributionlogs/`

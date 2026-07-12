@@ -18,4 +18,4 @@ xcodebuild -project car_ui.xcodeproj -scheme car_ui \
 ## 知見メモ
 <!-- `- YYYY-MM-DD: 事実 → 対処` で追記。2〜3 回使った知見は上のセクションへ昇格 -->
 - 2026-07-12: SWIFT_DEFAULT_ACTOR_ISOLATION=MainActor のため、オーディオスレッド等 main 外から呼ぶ型は `nonisolated` 宣言が必須(HarmonicGenerator/EngineSoundState/EngineParameters で対応済み)。
-- 2026-07-12: AdMob は暫定テスト ID(ルート `Info.plist` の GADApplicationIdentifier と `AdBannerView.swift` の AdConfig)→ 本番 ID 受領後に差し替え。`PrivacyInfo.xcprivacy` は広告導入前の「収集なし」宣言のまま → 提出前に要更新。
+- 2026-07-12: AdMob ID はルート `Info.plist`(アプリ ID)と `AdBannerView.swift` の AdConfig(ユニット ID)の 2 箇所。`PrivacyInfo.xcprivacy` は広告導入前の「収集なし」宣言のまま → 提出前に要更新。
