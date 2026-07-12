@@ -39,16 +39,31 @@ struct DashboardView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
-                        showsConnectionSheet = true
+                        openConnection()
                     } label: {
-                        Label("接続", systemImage: obd.phase.isConnected ? "antenna.radiowaves.left.and.right" : "antenna.radiowaves.left.and.right.slash")
+                        Label(obd.phase.isConnected ? "接続済み" : "接続",
+                              systemImage: obd.phase.isConnected ? "antenna.radiowaves.left.and.right" : "antenna.radiowaves.left.and.right.slash")
+                            .font(.callout.weight(.bold))
                     }
+                    .buttonStyle(.borderedProminent)
+                    .controlSize(.large)
+                    .tint(obd.phase.isConnected ? .green : .blue)
                 }
             }
             .sheet(isPresented: $showsConnectionSheet) {
                 ConnectionSheet()
             }
         }
+    }
+
+    /// 接続ボタンを押したら接続シートを開き、未接続なら即スキャンを開始する。
+    private func openConnection() {
+        if !obd.phase.isConnected, obd.canScan {
+            if case .scanning = obd.phase {} else {
+                obd.startScan()
+            }
+        }
+        showsConnectionSheet = true
     }
 
     private var statusHeader: some View {
@@ -206,20 +221,27 @@ struct DashboardView: View {
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
 
-            HStack(spacing: 12) {
+            VStack(spacing: 12) {
                 Button {
-                    showsConnectionSheet = true
+                    openConnection()
                 } label: {
-                    Label("接続", systemImage: "antenna.radiowaves.left.and.right")
+                    Label("接続してデバイスを検索", systemImage: "antenna.radiowaves.left.and.right")
+                        .font(.headline)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 4)
                 }
                 .buttonStyle(.borderedProminent)
+                .controlSize(.large)
 
                 Button {
                     obd.startDemoMode()
                 } label: {
                     Label("デモモード", systemImage: "play.rectangle")
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 2)
                 }
                 .buttonStyle(.bordered)
+                .controlSize(.large)
             }
         }
         .frame(maxWidth: .infinity)
