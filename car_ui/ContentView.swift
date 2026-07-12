@@ -12,38 +12,56 @@ struct ContentView: View {
     @StateObject private var location = LocationModel()
     @StateObject private var motion = MotionModel()
     @StateObject private var recorder = TelemetryRecorder.shared
+    @StateObject private var engineSound = EngineSoundController()
+    @Environment(\.scenePhase) private var scenePhase
 
     var body: some View {
-        TabView {
-            DashboardView()
-                .tabItem {
-                    Label("ダッシュボード", systemImage: "gauge.with.dots.needle.67percent")
-                }
+        VStack(spacing: 0) {
+            TabView {
+                DashboardView()
+                    .tabItem {
+                        Label("ダッシュボード", systemImage: "gauge.with.dots.needle.67percent")
+                    }
 
-            SensorsView()
-                .tabItem {
-                    Label("センサー", systemImage: "square.grid.3x3")
-                }
+                DataView()
+                    .tabItem {
+                        Label("データ", systemImage: "chart.bar.xaxis")
+                    }
 
-            ChartsView()
-                .tabItem {
-                    Label("チャート", systemImage: "chart.xyaxis.line")
-                }
+                DriveView()
+                    .tabItem {
+                        Label("ドライブ", systemImage: "steeringwheel")
+                    }
 
-            DriveView()
-                .tabItem {
-                    Label("ドライブ", systemImage: "steeringwheel")
-                }
+                EngineSoundView()
+                    .tabItem {
+                        Label("エンジン音", systemImage: "engine.combustion.fill")
+                    }
 
-            ToolsView()
-                .tabItem {
-                    Label("ツール", systemImage: "wrench.and.screwdriver")
-                }
+                ToolsView()
+                    .tabItem {
+                        Label("ツール", systemImage: "wrench.and.screwdriver")
+                    }
+            }
+
+            // 全タブ共通の最下部バナー(タブバーの下)
+            AdBannerView()
         }
         .environmentObject(obd)
         .environmentObject(location)
         .environmentObject(motion)
         .environmentObject(recorder)
+        .environmentObject(engineSound)
+        // ルートで購読することで、エンジン音タブを離れても再生が続く
+        .onReceive(obd.$liveValues) { values in
+            engineSound.ingest(values)
+        }
+        .onChange(of: scenePhase) { _, newPhase in
+            // バックグラウンド再生は v1 スコープ外(BLE も止まり RPM が届かないため)
+            if newPhase == .background {
+                engineSound.stop()
+            }
+        }
         .onAppear {
             motion.start()
         }
