@@ -8,10 +8,6 @@ struct EngineSoundView: View {
     @EnvironmentObject private var obd: ELM327BluetoothModel
     @EnvironmentObject private var sound: EngineSoundController
 
-    @State private var rewardedAds = RewardedAdManager()
-    @State private var rewardStore = RewardStore()
-    @State private var rewardPrompt: RewardStore.Item?
-    @State private var showingAdLoadingToast = false
     @State private var showingPresets = false
 
     @AppStorage("engineSoundPresetName") private var savedPresetName = ""
@@ -53,38 +49,9 @@ struct EngineSoundView: View {
         }
         .onAppear {
             restorePresetAndSync()
-            rewardedAds.preload()
         }
         .onChange(of: popsEnabled) { _, newValue in
             sound.popsEnabled = newValue
-        }
-        // alert はこの View に 1 つだけ(同一 View に 2 つ重ねるとフリーズする既知の罠)
-        .alert(
-            Text("\(rewardPrompt?.title ?? "") を24時間アンロック"),
-            isPresented: Binding(
-                get: { rewardPrompt != nil },
-                set: { if !$0 { rewardPrompt = nil } }
-            ),
-            presenting: rewardPrompt
-        ) { item in
-            Button("広告を見る") { presentRewardedAd(for: item) }
-            Button("キャンセル", role: .cancel) {}
-        } message: { item in
-            Text("短い動画広告を見ると、\(item.title) を24時間自由に使えます。")
-        }
-        .overlay(alignment: .bottom) {
-            if showingAdLoadingToast {
-                Text("広告の在庫がありません — そのままアンロックしました!")
-                    .font(.system(size: 13, weight: .semibold))
-                    .foregroundColor(.white.opacity(0.9))
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 10)
-                    .background(Color.black.opacity(0.8))
-                    .clipShape(Capsule())
-                    .padding(.bottom, 70)
-                    .transition(.move(edge: .bottom).combined(with: .opacity))
-                    .allowsHitTesting(false)
-            }
         }
         .sheet(isPresented: $showingPresets) {
             presetSelectionView
@@ -255,8 +222,6 @@ struct EngineSoundView: View {
     private var presetSelectionView: some View {
         NavigationView {
             List(EnginePreset.presets) { preset in
-                let rewardLocked = preset.isRewardLocked && !rewardStore.isUnlocked(.f1Engine)
-
                 Button {
                     loadPreset(preset)
                 } label: {
@@ -285,21 +250,6 @@ struct EngineSoundView: View {
                             Image(systemName: "checkmark.circle.fill")
                                 .foregroundColor(.green)
                         }
-
-                        if rewardLocked {
-                            VStack(spacing: 3) {
-                                Image(systemName: "play.rectangle.fill")
-                                    .foregroundColor(.orange)
-                                Text("Ad · 24h")
-                                    .font(.system(size: 10, weight: .semibold))
-                                    .foregroundColor(.secondary)
-                            }
-                            .accessibilityLabel("広告を見て24時間アンロック")
-                        } else if preset.isRewardLocked, let hours = rewardStore.remainingHours(.f1Engine) {
-                            Text("残り\(hours)h")
-                                .font(.system(size: 11, weight: .semibold))
-                                .foregroundColor(.orange)
-                        }
                     }
                     .padding(.vertical, 8)
                 }
@@ -314,7 +264,6 @@ struct EngineSoundView: View {
                 }
             }
         }
-        // リワードの alert はルート View 側のみ(シート側にも付けると二重提示でフリーズ)
     }
 
     // MARK: - 操作
@@ -331,31 +280,18 @@ struct EngineSoundView: View {
         }
     }
 
-    /// 起動時: 保存済みプリセットを復元(期限切れのロック対象は先頭へフォールバック)
+    /// 起動時: 保存済みプリセットを復元
     private func restorePresetAndSync() {
         sound.popsEnabled = popsEnabled
 
-        var preset = EnginePreset.presets.first { $0.name == savedPresetName }
+        let preset = EnginePreset.presets.first { $0.name == savedPresetName }
             ?? EnginePreset.presets[0]
-        if preset.isRewardLocked && !rewardStore.isUnlocked(.f1Engine) {
-            preset = EnginePreset.presets[0]
-        }
         if sound.preset.name != preset.name {
             sound.setPreset(preset)
         }
     }
 
     private func loadPreset(_ preset: EnginePreset) {
-        // ロック中プリセットは読み込まずリワード広告を提案。alert はルートに
-        // あるため、シートを閉じてから遅延して出す。
-        if preset.isRewardLocked && !rewardStore.isUnlocked(.f1Engine) {
-            showingPresets = false
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
-                rewardPrompt = .f1Engine
-            }
-            return
-        }
-
         sound.setPreset(preset)
         savedPresetName = preset.name
         showingPresets = false
@@ -363,37 +299,11 @@ struct EngineSoundView: View {
         let notification = UINotificationFeedbackGenerator()
         notification.notificationOccurred(.success)
     }
-
-    private func presentRewardedAd(for item: RewardStore.Item) {
-        let grant = {
-            rewardStore.unlock(item)
-            if item == .f1Engine,
-               let f1 = EnginePreset.presets.first(where: { $0.isRewardLocked }) {
-                sound.setPreset(f1)
-                savedPresetName = f1.name
-                showingPresets = false
-            }
-        }
-
-        // 実車 RPM 駆動なので広告表示中も音は止めない(サスペンド配線なし)
-        let presented = rewardedAds.show(onReward: grant)
-        if !presented {
-            // 在庫なし: ユーザーを待たせず即アンロック(審査・新規ユニットで頻発)
-            grant()
-            withAnimation(.easeOut(duration: 0.25)) {
-                showingAdLoadingToast = true
-            }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 3.5) {
-                withAnimation(.easeIn(duration: 0.25)) {
-                    showingAdLoadingToast = false
-                }
-            }
-        }
-    }
 }
 
 #Preview {
     EngineSoundView()
         .environmentObject(ELM327BluetoothModel())
         .environmentObject(EngineSoundController())
+        .environment(ProStore.shared)
 }

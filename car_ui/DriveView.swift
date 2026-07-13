@@ -11,7 +11,11 @@ struct DriveView: View {
     @EnvironmentObject private var obd: ELM327BluetoothModel
     @EnvironmentObject private var location: LocationModel
     @EnvironmentObject private var motion: MotionModel
+    @Environment(ProStore.self) private var proStore
     @StateObject private var accelTest = AccelTestModel()
+    @State private var recordStore = DriveRecordStore()
+    @State private var showingPaywall = false
+    @State private var showingSaveConfirmation = false
 
     var body: some View {
         NavigationStack {
@@ -38,6 +42,14 @@ struct DriveView: View {
                 // OBD 車速があるときは OBD を優先
                 guard obd.liveValues[0x0D] == nil, let speed else { return }
                 accelTest.update(speedKPH: speed)
+            }
+            .sheet(isPresented: $showingPaywall) {
+                PaywallView()
+            }
+            .alert("記録を保存しました", isPresented: $showingSaveConfirmation) {
+                Button("OK", role: .cancel) {}
+            } message: {
+                Text("保存済み記録: \(recordStore.records.count) 件")
             }
         }
     }
@@ -199,9 +211,40 @@ struct DriveView: View {
                         }
                     }
                 }
+
+                if case .finished = accelTest.state {
+                    HStack {
+                        Button {
+                            saveRecord()
+                        } label: {
+                            Label(
+                                proStore.isPro ? "記録を保存" : "記録を保存 (Pro)",
+                                systemImage: proStore.isPro ? "square.and.arrow.down" : "lock.fill"
+                            )
+                        }
+                        .buttonStyle(.bordered)
+
+                        Spacer()
+
+                        if !recordStore.records.isEmpty {
+                            Text("保存済み \(recordStore.records.count) 件")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+                }
             }
         }
         .panelStyle()
+    }
+
+    private func saveRecord() {
+        guard proStore.isPro else {
+            showingPaywall = true
+            return
+        }
+        recordStore.save(splits: accelTest.splits, peakG: motion.peakG)
+        showingSaveConfirmation = true
     }
 
     private var speedSourceUnavailable: Bool {

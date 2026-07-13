@@ -10,12 +10,15 @@ import SwiftUI
 struct ToolsView: View {
     @EnvironmentObject private var obd: ELM327BluetoothModel
     @EnvironmentObject private var recorder: TelemetryRecorder
+    @Environment(ProStore.self) private var proStore
     @State private var manualCommand = "010C"
+    @State private var showingPaywall = false
 
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 14) {
+                    proPanel
                     adapterPanel
                     diagnosticsPanel
                     commandPanel
@@ -25,7 +28,41 @@ struct ToolsView: View {
             }
             .background(Color(.systemGroupedBackground))
             .navigationTitle("ツール")
+            .sheet(isPresented: $showingPaywall) {
+                PaywallView()
+            }
         }
+    }
+
+    private var proPanel: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            HStack {
+                Label("car_ui Pro", systemImage: proStore.isPro ? "checkmark.seal.fill" : "star.fill")
+                    .font(.headline)
+                    .foregroundStyle(proStore.isPro ? .green : .orange)
+
+                Spacer()
+
+                if proStore.isPro {
+                    Text("Pro 有効")
+                        .font(.subheadline.weight(.semibold))
+                        .foregroundStyle(.green)
+                } else {
+                    Button("Pro にアップグレード") {
+                        showingPaywall = true
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .controlSize(.small)
+                }
+            }
+
+            if !proStore.isPro {
+                Text("広告除去・DTC 消去・CSV 無制限・記録保存")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+        }
+        .panelStyle()
     }
 
     private var adapterPanel: some View {
@@ -88,6 +125,18 @@ struct ToolsView: View {
                     Label("DTC 読取", systemImage: "list.bullet.rectangle")
                 }
                 .buttonStyle(.borderedProminent)
+                .disabled(!obd.phase.isConnected || obd.isReadingDiagnostics || obd.isDemo)
+
+                Button(role: .destructive) {
+                    if proStore.isPro {
+                        obd.clearDiagnosticTroubleCodes()
+                    } else {
+                        showingPaywall = true
+                    }
+                } label: {
+                    Label("DTC 消去", systemImage: proStore.isPro ? "trash" : "lock.fill")
+                }
+                .buttonStyle(.bordered)
                 .disabled(!obd.phase.isConnected || obd.isReadingDiagnostics || obd.isDemo)
 
                 if obd.isReadingDiagnostics {

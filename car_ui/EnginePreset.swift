@@ -6,8 +6,6 @@ struct EnginePreset: Identifiable {
     let name: String
     let description: String
     let parameters: EngineParameters
-    /// Unlocked for 24 h by watching a rewarded ad (see RewardStore).
-    var isRewardLocked: Bool = false
 
     static let presets: [EnginePreset] = [
         EnginePreset(
@@ -181,8 +179,7 @@ struct EnginePreset: Identifiable {
                 intakeEfficiency: 1.1,
                 exhaustEfficiency: 1.15,
                 frictionFactor: 0.06
-            ),
-            isRewardLocked: true
+            )
         )
     ]
 }

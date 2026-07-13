@@ -1,0 +1,32 @@
+See — and hear — your car in real time.
+
+Connect an ELM327 Bluetooth (BLE) adapter and car_ui turns live OBD2 data into a fast, modern dashboard: RPM, speed, coolant, throttle, fuel, and every sensor your vehicle supports, auto-detected. No subscription. Ever.
+
+WHAT MAKES IT DIFFERENT
+• A genuinely modern interface — not the dated look of most OBD apps
+• A one-of-a-kind engine-sound simulation driven by your real RPM, so your phone sounds like your engine
+• Buy once for Pro — no monthly fees, unlike many scanners
+
+FIVE FOCUSED TABS
+• Dashboard — the gauges you actually watch, at a glance
+• Data — every live sensor plus overlaid charts you can normalize and export
+• Drive — a G-force ball, GPS, and 0–100 timing
+• Engine Sound — procedural sound that follows your real RPM (multiple presets)
+• Tools — read and clear trouble codes (DTC), send raw commands, view logs
+
+FREE INCLUDES
+Live data, the full dashboard, sensor charts, and the engine-sound simulation — free, with a small banner ad.
+
+PRO (ONE-TIME PURCHASE, OPTIONAL)
+• Clear diagnostic trouble codes (DTC)
+• Unlimited CSV logging
+• Save your 0–100 and G-force runs
+• Remove ads
+
+NO ACCOUNT, NO TRACKING
+car_ui talks only to your ELM327 adapter over Bluetooth. There is no developer server for your car data. Try it with no hardware using the built-in demo mode.
+
+REQUIRES an ELM327-compatible Bluetooth LE (BLE) OBD2 adapter and a vehicle with an OBD2 port (most cars sold since 2008).
+
+SUPPORT
+Questions or ideas? Contact: st0327t@gmail.com

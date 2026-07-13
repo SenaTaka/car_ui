@@ -10,9 +10,6 @@ import UIKit
 enum AdConfig {
     /// Production banner unit (bottom, shared across all tabs).
     static let bannerUnitID = "ca-app-pub-3848493291218445/1160611372"
-
-    /// Production rewarded unit — 24 h unlock (F1 V10 Legend).
-    static let rewardedUnitID = "ca-app-pub-3848493291218445/3455602221"
 }
 
 /// Bottom banner slot: a standard 320x50 AdMob banner with a fixed frame so

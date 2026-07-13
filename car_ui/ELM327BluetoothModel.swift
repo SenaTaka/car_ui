@@ -108,6 +108,19 @@ final class ELM327BluetoothModel: NSObject, ObservableObject {
     private var slowPIDRotationIndex = 0
     private var supportedMode01PIDs: Set<UInt8> = []
 
+    // 背面での駐車検知オートオフ(12V バッテリー保護)
+    private var isBackgrounded = false
+    private var engineOffSince: Date?
+    private var lastRpmUpdate: Date?
+    /// この電圧を下回ると「オルタネータ非発電」の候補とみなす
+    private static let engineOffVoltage = 13.0
+    /// この RPM 以上の新鮮な値があればエンジン稼働中と判断(誤オートオフを防ぐ)
+    private static let engineRunningRpm: Double = 300
+    /// RPM をこの秒数以内に取得できていなければ「稼働の確証なし」とする
+    private static let rpmFreshWindow: TimeInterval = 5
+    /// 停止検知がこの秒数続いたら背面接続を自動切断
+    private static let parkedGracePeriod: TimeInterval = 120
+
     private let likelyNameMarkers = [
         "OBD", "ELM", "V-LINK", "VLINK", "LELINK", "VEEPEAK", "VIECAR",
         "CARISTA", "KONNWEI", "KONNWEY", "VGATE", "IOS-VLINK", "OBDII", "OBD-II"
@@ -222,8 +235,49 @@ final class ELM327BluetoothModel: NSObject, ObservableObject {
         pollingTask = Task { [weak self] in
             while !Task.isCancelled {
                 await self?.pollLiveData()
+                self?.evaluateParkedAutoDisconnect()
                 try? await Task.sleep(nanoseconds: 200_000_000)
             }
+        }
+    }
+
+    /// アプリの前面/背面状態を通知する(背面時のみ駐車オートオフを働かせる)。
+    func setBackgrounded(_ backgrounded: Bool) {
+        isBackgrounded = backgrounded
+        if !backgrounded { engineOffSince = nil }
+    }
+
+    /// 背面でエンジン停止が一定時間続いたら、12V バッテリー保護のため自動切断する。
+    /// 停止判定は「電圧低下」かつ「RPM 非稼働」の両方(条件B)。
+    /// 新鮮な RPM がアイドル相当以上なら走行中とみなし発動しない
+    /// ため、スマート充電で走行中に電圧が 13V を割る車でも誤切断しない。
+    /// 前面では判定しない(ユーザーが見ている)。
+    private func evaluateParkedAutoDisconnect() {
+        guard isBackgrounded, phase.isConnected, !isDemo else {
+            engineOffSince = nil
+            return
+        }
+        // 電圧が取れないアダプタでは誤切断を避けるため判定を見送る
+        guard let voltage = adapterVoltage else { return }
+
+        let now = Date()
+        // 直近に取得した RPM がアイドル相当以上なら「稼働の確証あり」。
+        // 停止後は 01 0C が NO DATA になり値が更新されないため、鮮度でも判断する。
+        let hasFreshRpm = lastRpmUpdate.map { now.timeIntervalSince($0) < Self.rpmFreshWindow } ?? false
+        let engineRunning = hasFreshRpm && (liveValues[0x0C] ?? 0) >= Self.engineRunningRpm
+        let engineOff = voltage < Self.engineOffVoltage && !engineRunning
+
+        if engineOff {
+            if let since = engineOffSince {
+                if now.timeIntervalSince(since) >= Self.parkedGracePeriod {
+                    appendLog("エンジン停止を検知(背面)。バッテリー保護のため自動切断します")
+                    disconnect()
+                }
+            } else {
+                engineOffSince = now
+            }
+        } else {
+            engineOffSince = nil
         }
     }
 
@@ -318,6 +372,22 @@ final class ELM327BluetoothModel: NSObject, ObservableObject {
             let codes = self.parseDiagnosticTroubleCodes(response)
             self.diagnosticCodes = codes
             self.diagnosticStatus = codes.isEmpty ? "故障コードなし" : "\(codes.count) 件"
+            self.isReadingDiagnostics = false
+        }
+    }
+
+    /// Mode 04: DTC 消去。Pro 限定機能で、呼び出し可否の判定は UI 側(ToolsView)で行う。
+    func clearDiagnosticTroubleCodes() {
+        guard phase.isConnected else { return }
+
+        isReadingDiagnostics = true
+        diagnosticStatus = "消去中"
+
+        Task { [weak self] in
+            guard let self else { return }
+            _ = await self.request("04", timeout: 5)
+            self.diagnosticCodes = []
+            self.diagnosticStatus = "消去完了"
             self.isReadingDiagnostics = false
         }
     }
@@ -438,6 +508,7 @@ final class ELM327BluetoothModel: NSObject, ObservableObject {
 
         liveValues[pid] = value
         lastUpdated = Date()
+        if pid == 0x0C { lastRpmUpdate = Date() }
         TelemetryRecorder.shared.record(definition.channelID, value: value)
     }
 
@@ -571,6 +642,8 @@ final class ELM327BluetoothModel: NSObject, ObservableObject {
         liveValues = [:]
         adapterVoltage = nil
         lastUpdated = nil
+        lastRpmUpdate = nil
+        engineOffSince = nil
         diagnosticCodes = []
         diagnosticStatus = "未読取"
         pollCycle = 0
@@ -932,6 +1005,9 @@ final class ELM327BluetoothModel: NSObject, ObservableObject {
 
 extension ELM327BluetoothModel: @preconcurrency CBCentralManagerDelegate {
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
+        // デモモード中は実機 BLE 状態変化(シミュレータの .unsupported 等)で
+        // phase を上書きしない(遅延コールバックがデモ表示を消してしまうため)。
+        guard !isDemo else { return }
         switch central.state {
         case .unknown, .resetting:
             phase = .waitingForBluetooth

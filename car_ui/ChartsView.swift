@@ -10,6 +10,7 @@ import SwiftUI
 
 struct ChartsView: View {
     @EnvironmentObject private var recorder: TelemetryRecorder
+    @Environment(ProStore.self) private var proStore
 
     @State private var selectedChannels: Set<String> = []
     @State private var windowMinutes = 5
@@ -157,7 +158,7 @@ struct ChartsView: View {
 
             HStack {
                 ShareLink(
-                    item: TelemetryCSV(channelIDs: exportChannels),
+                    item: TelemetryCSV(channelIDs: exportChannels, isPro: proStore.isPro),
                     preview: SharePreview("テレメトリ CSV", image: Image(systemName: "tablecells"))
                 ) {
                     Label("CSV 書き出し", systemImage: "square.and.arrow.up")
@@ -174,6 +175,12 @@ struct ChartsView: View {
                     Label("記録を消去", systemImage: "trash")
                 }
                 .buttonStyle(.bordered)
+            }
+
+            if !proStore.isPro {
+                Text("無料版は各チャンネル直近\(TelemetryRecorder.freeExportRowLimit)件までエクスポート。Pro で無制限。")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
             }
         }
         .panelStyle()

@@ -61,6 +61,10 @@ struct ChannelInfo: Identifiable {
 final class TelemetryRecorder: ObservableObject {
     static let shared = TelemetryRecorder()
 
+    /// 無料版の CSV エクスポート上限(チャンネルごとの直近サンプル数)。Pro は無制限
+    /// (実質は maxSamplesPerChannel のリングバッファ全量)。
+    static let freeExportRowLimit = 500
+
     // チャート・スパークラインの再描画トリガ(0.5 秒間隔に間引き)
     @Published private(set) var revision = 0
 
@@ -121,14 +125,17 @@ final class TelemetryRecorder: ObservableObject {
 
     // MARK: - CSV エクスポート(long 形式: channel,name,unit,time,value)
 
-    func csvData(for channelIDs: [String]) -> Data {
+    /// `rowLimit` が nil なら全量(Pro)、指定時はチャンネルごとに直近 N 件のみ(無料版)。
+    func csvData(for channelIDs: [String], rowLimit: Int? = nil) -> Data {
         var lines = ["channel,name,unit,time,value"]
         let formatter = ISO8601DateFormatter()
         formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
 
         for channelID in channelIDs {
             let info = ChannelInfo.info(for: channelID)
-            for sample in storage[channelID] ?? [] {
+            let allSamples = storage[channelID] ?? []
+            let samples = rowLimit.map { Array(allSamples.suffix($0)) } ?? allSamples
+            for sample in samples {
                 let value = String(format: "%.\(info.fractionDigits)f", sample.value)
                 lines.append("\(channelID),\(info.name),\(info.unit),\(formatter.string(from: sample.time)),\(value)")
             }
@@ -140,10 +147,13 @@ final class TelemetryRecorder: ObservableObject {
 
 struct TelemetryCSV: Transferable {
     let channelIDs: [String]
+    /// Pro なら無制限、無料版は `TelemetryRecorder.freeExportRowLimit` 件/ch に切り詰める。
+    let isPro: Bool
 
     static var transferRepresentation: some TransferRepresentation {
         DataRepresentation(exportedContentType: .commaSeparatedText) { export in
-            TelemetryRecorder.shared.csvData(for: export.channelIDs)
+            let limit = export.isPro ? nil : TelemetryRecorder.freeExportRowLimit
+            return TelemetryRecorder.shared.csvData(for: export.channelIDs, rowLimit: limit)
         }
         .suggestedFileName("telemetry.csv")
     }

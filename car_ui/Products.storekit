@@ -1,0 +1,37 @@
+{
+  "identifier" : "C81233BA-9798-4ADC-A169-AECD044FA9D9",
+  "nonRenewingSubscriptions" : [],
+  "products" : [
+    {
+      "displayPrice" : "730",
+      "familyShareable" : false,
+      "internalID" : "410827E9-D6F2-4C1F-938D-C15AD900F0DB",
+      "localizations" : [
+        {
+          "description" : "広告除去・DTC 消去・CSV ログ無制限・記録の保存・F1 V10 恒久解錠",
+          "displayName" : "car_ui Pro",
+          "locale" : "ja_JP"
+        }
+      ],
+      "productID" : "Sena.car-ui.pro",
+      "referenceName" : "car_ui Pro",
+      "type" : "NonConsumable"
+    }
+  ],
+  "settings" : {
+    "_applicationInternalID" : "0",
+    "_developerTeamID" : "0",
+    "_failTransactionsEnabled" : false,
+    "_lastSynchronizedDate" : 0,
+    "_locale" : "ja_JP",
+    "_storefront" : "JPN",
+    "_storeKitErrors" : [
+
+    ]
+  },
+  "subscriptionGroups" : [],
+  "version" : {
+    "major" : 3,
+    "minor" : 0
+  }
+}

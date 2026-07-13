@@ -29,5 +29,11 @@
 			<string>5a6flpkh64.skadnetwork</string>
 		</dict>
 	</array>
+	<!-- 他アプリ表示中もエンジン音の再生と OBD データ取得を継続する -->
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>audio</string>
+		<string>bluetooth-central</string>
+	</array>
 </dict>
 </plist>
