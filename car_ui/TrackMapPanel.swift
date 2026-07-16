@@ -128,11 +128,15 @@ enum TrackContour {
 private struct TrackMapContent: MapContent {
     let points: [TrackPoint]
     let colorSource: TrackColorSource
+    var lineWidth: CGFloat = 7
 
     var body: some MapContent {
         ForEach(TrackContour.segments(points, source: colorSource)) { segment in
             MapPolyline(coordinates: segment.coordinates)
-                .stroke(segment.color, lineWidth: 4)
+                .stroke(
+                    segment.color,
+                    style: StrokeStyle(lineWidth: lineWidth, lineCap: .round, lineJoin: .round)
+                )
         }
 
         if let last = points.last {
@@ -313,7 +317,7 @@ struct TrackMapExpandedView: View {
     var body: some View {
         ZStack {
             Map(position: $cameraPosition) {
-                TrackMapContent(points: track.points, colorSource: colorSource)
+                TrackMapContent(points: track.points, colorSource: colorSource, lineWidth: 10)
             }
             .mapStyle(styleOption.mapStyle)
             .ignoresSafeArea()

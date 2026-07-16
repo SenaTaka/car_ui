@@ -20,40 +20,11 @@ struct ContentView: View {
     @State private var selectedTab = 0
 
     var body: some View {
-        TabView(selection: $selectedTab) {
-            DashboardView()
-                .tabItem {
-                    Label("ダッシュボード", systemImage: "gauge.with.dots.needle.67percent")
-                }
-                .tag(0)
-
-            DataView()
-                .tabItem {
-                    Label("データ", systemImage: "chart.bar.xaxis")
-                }
-                .tag(1)
-
-            DriveView()
-                .tabItem {
-                    Label("ドライブ", systemImage: "steeringwheel")
-                }
-                .tag(2)
-
-            EngineSoundView()
-                .tabItem {
-                    Label("エンジン音", systemImage: "engine.combustion.fill")
-                }
-                .tag(3)
-
-            ToolsView()
-                .tabItem {
-                    Label("ツール", systemImage: "wrench.and.screwdriver")
-                }
-                .tag(4)
-        }
-        // 全タブ共通の最下部バナー。safeAreaInset なのでタブバーはバナーの上に
-        // 正しく持ち上がり、下端が切れない。Pro / 広告除去購入者は非表示。
-        .safeAreaInset(edge: .bottom, spacing: 0) {
+        VStack(spacing: 0) {
+            tabs
+            // 全タブ共通の最下部バナー(タブバーの下)。Pro / 広告除去購入者は非表示。
+            // safeAreaInset だと iOS 26 のフローティングタブバーにバナーが被さるため
+            // VStack で下に積む(バナーは未ロード時 高さ 0)。
             if !proStore.removesAds {
                 AdBannerView()
             }
@@ -84,6 +55,40 @@ struct ContentView: View {
             motion.start()
             UIApplication.shared.isIdleTimerDisabled = true
             applyUITestLaunchArgumentsIfPresent()
+        }
+    }
+
+    private var tabs: some View {
+        TabView(selection: $selectedTab) {
+            DashboardView()
+                .tabItem {
+                    Label("ダッシュボード", systemImage: "gauge.with.dots.needle.67percent")
+                }
+                .tag(0)
+
+            DataView()
+                .tabItem {
+                    Label("データ", systemImage: "chart.bar.xaxis")
+                }
+                .tag(1)
+
+            DriveView()
+                .tabItem {
+                    Label("ドライブ", systemImage: "steeringwheel")
+                }
+                .tag(2)
+
+            EngineSoundView()
+                .tabItem {
+                    Label("エンジン音", systemImage: "engine.combustion.fill")
+                }
+                .tag(3)
+
+            ToolsView()
+                .tabItem {
+                    Label("ツール", systemImage: "wrench.and.screwdriver")
+                }
+                .tag(4)
         }
     }
 

@@ -144,3 +144,11 @@
 - **タブバー下端切れ修正(ユーザー指摘)**: バナーを VStack 下段 → `TabView.safeAreaInset(edge: .bottom)` に変更。TabView 圧縮でセーフエリアが失われタブバーが切れる問題を解消。広告ロード時はタブバーがバナーの上に正しく持ち上がる
 - 検証: xcodebuild BUILD SUCCEEDED。simctl location の東京ルートで拡大マップ(航空写真+コンター+追従中/全体/凡例)をスクショ確認。ペイウォール 2 ボタン構成もスクショ確認(価格は StoreKit 構成が乗らないため未表示 = 既知の環境制約)。タブバーが下端まで表示されることを確認。一時変更(`TEMP:`)は復元済み・残存ゼロ
 - 未検証: 実機での広告ロード時のタブバー持ち上がり、adfree 購入フロー(App Store Connect 登録後)
+
+## 2026/07/16 (コンター線太く + チャート個別表示 + タブバー被り最終修正)
+- **走行マップのコンター線を太く(ユーザー要望)**: MapPolyline を lineWidth 4 → パネル 7 / 拡大表示 10(lineCap/lineJoin .round)。`TrackMapContent` に lineWidth パラメータ追加
+- **チャート複数表示(ユーザー要望)**: ChartsView に「重ね表示/個別表示」segmented を追加(@AppStorage "charts.separate")。個別表示はチャンネルごとに独立ミニチャート(高さ110、専用色・現在値付き)を縦積み — 単位が違う系列も正規化なしで見やすい
+- **タブバー被り最終修正(ユーザー指摘3回目)**: `safeAreaInset` 方式は iOS 26 のフローティングタブバーに**バナーが被さって隠す**ことを `-uiFakeBanner` 起動引数(恒久テストフック化)で再現確認 → **VStack 方式に戻して解決**(タブバーがバナーの上に完全表示されるのをダミーバナーで確認)。バナー未ロード時は高さ0のまま(隙間なし)。経緯: VStack+固定50pt=隙間 → collapse化 → safeAreaInset=被り → **VStack+collapse が正解**
+- **チャートのデフォルト選択バグ修正**: 起動直後にデータタブを開くと channelIDs が空で onAppear の既定選択が効かなかった → `.onChange(of: channelIDs.count)` でも選択。GPS が先に現れて OBD が選ばれない競合は「選択が既定候補の真部分集合なら拡張」で対処
+- 検証: xcodebuild BUILD SUCCEEDED。個別表示(3チャンネル縦積み・自動選択)・太いコンター線・ダミーバナーでのタブバー完全表示をスクショ確認
+- 学び: **iOS 26 フローティングタブバーは TabView への safeAreaInset を無視して最下部に描画される**(inset ビューと重なる)。バナー共存は VStack 一択

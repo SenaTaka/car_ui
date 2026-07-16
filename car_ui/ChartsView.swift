@@ -16,6 +16,7 @@ struct ChartsView: View {
     @State private var windowMinutes = 5
     @State private var normalized = false
     @State private var exportWideFormat = true
+    @AppStorage("charts.separate") private var separateCharts = false
 
     private let windowOptions = [1, 5, 15, 60]
 
@@ -43,6 +44,11 @@ struct ChartsView: View {
             .background(Color(.systemGroupedBackground))
             .navigationTitle("チャート")
             .onAppear(perform: selectDefaultChannels)
+            // 起動直後にこのタブを開くと記録がまだ空でデフォルト選択が効かないため、
+            // チャンネルが現れたタイミングでも選択し直す
+            .onChange(of: recorder.channelIDs.count) { _, _ in
+                selectDefaultChannels()
+            }
         }
     }
 
@@ -118,11 +124,51 @@ struct ChartsView: View {
                     .foregroundStyle(.secondary)
             }
 
+            Picker("表示", selection: $separateCharts) {
+                Text("重ね表示").tag(false)
+                Text("個別表示").tag(true)
+            }
+            .pickerStyle(.segmented)
+
             if chartSeries.allSatisfy({ $0.points.isEmpty }) {
                 Text("選択したチャンネルの直近データがありません")
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
                     .frame(maxWidth: .infinity, minHeight: 200)
+            } else if separateCharts {
+                // チャンネルごとに独立した小チャートを縦に並べる(単位が違っても見やすい)
+                VStack(alignment: .leading, spacing: 14) {
+                    ForEach(chartSeries.filter { !$0.points.isEmpty }) { series in
+                        VStack(alignment: .leading, spacing: 4) {
+                            HStack(spacing: 6) {
+                                Circle()
+                                    .fill(series.tint)
+                                    .frame(width: 8, height: 8)
+                                Text(series.name)
+                                    .font(.caption.weight(.semibold))
+                                    .foregroundStyle(.secondary)
+
+                                Spacer()
+
+                                if let lastValue = series.points.last?.value {
+                                    Text(metricText(lastValue, digits: 1))
+                                        .font(.caption.monospacedDigit().weight(.semibold))
+                                        .foregroundStyle(series.tint)
+                                }
+                            }
+
+                            Chart(series.points) { point in
+                                LineMark(
+                                    x: .value("時刻", point.time),
+                                    y: .value(series.name, point.value)
+                                )
+                                .foregroundStyle(series.tint)
+                                .interpolationMethod(.monotone)
+                            }
+                            .frame(height: 110)
+                        }
+                    }
+                }
             } else {
                 Chart {
                     ForEach(chartSeries) { series in
@@ -256,12 +302,15 @@ struct ChartsView: View {
     }
 
     private func selectDefaultChannels() {
-        guard selectedChannels.isEmpty else { return }
-        let preferred = ["obd.0C", "obd.0D", "gps.speed"].filter { recorder.channelIDs.contains($0) }
-        if !preferred.isEmpty {
-            selectedChannels = Set(preferred)
-        } else if let first = recorder.channelIDs.first {
-            selectedChannels = [first]
+        let preferred = Set(["obd.0C", "obd.0D", "gps.speed"].filter { recorder.channelIDs.contains($0) })
+        guard !preferred.isEmpty else { return }
+
+        if selectedChannels.isEmpty {
+            selectedChannels = preferred
+        } else if selectedChannels.isStrictSubset(of: preferred) {
+            // GPS が先に現れて OBD が後から登録されるケース。ユーザーが手動選択する前
+            // (= 既定候補の部分集合のまま)なら、後から現れた既定チャンネルも足す
+            selectedChannels = preferred
         }
     }
 }

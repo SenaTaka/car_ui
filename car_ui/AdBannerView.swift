@@ -19,11 +19,17 @@ struct AdBannerView: View {
     @State private var isLoaded = false
 
     var body: some View {
+        // 起動引数 -uiFakeBanner: 広告ロードに依存せずバナー込みレイアウトを検証する
+        // シミュレータ用フック(本番挙動には影響しない)
+        if ProcessInfo.processInfo.arguments.contains("-uiFakeBanner") {
+            Color.orange.frame(maxWidth: .infinity).frame(height: 50)
+        } else {
         BannerAdRepresentable(isLoaded: $isLoaded)
             .frame(maxWidth: .infinity)
             .frame(height: isLoaded ? 50 : 0)
             .clipped()
             .background(Color(.systemBackground))
+        }
     }
 }
 
