@@ -152,3 +152,12 @@
 - **チャートのデフォルト選択バグ修正**: 起動直後にデータタブを開くと channelIDs が空で onAppear の既定選択が効かなかった → `.onChange(of: channelIDs.count)` でも選択。GPS が先に現れて OBD が選ばれない競合は「選択が既定候補の真部分集合なら拡張」で対処
 - 検証: xcodebuild BUILD SUCCEEDED。個別表示(3チャンネル縦積み・自動選択)・太いコンター線・ダミーバナーでのタブバー完全表示をスクショ確認
 - 学び: **iOS 26 フローティングタブバーは TabView への safeAreaInset を無視して最下部に描画される**(inset ビューと重なる)。バナー共存は VStack 一択
+
+## 2026/07/16 (自分用ダッシュボードビルダー: ウィジェット式に全面刷新)
+- 要望: チャート複数配置・メーター/アナログ/マップ表示・自由に選んで編集できる自分用ダッシュボード
+- **ウィジェットモデル**: `DashboardLayout.swift` — `DashboardWidget { kind: tile/gauge/chart/map, pid }` + `DashboardLayoutStore`(@Observable、UserDefaults JSON "dashboardLayout.v1"、旧 "dashboardPIDs.v1"(hex CSV)からの自動移行、既定=従来12タイル)
+- **新ウィジェット**: `AnalogGaugeView.swift`(汎用アナログ針メーター、270°スイープ・進捗アーク・PIDDefinition の gaugeRange/tint/単位で駆動)/ `DashboardWidgetViews.swift`(ChartWidgetView=直近5分のミニ時系列+現在値、MapWidgetView=軌跡ミニマップ タップで拡大、GaugeWidgetView)。`TrackMapContent` を private 解除して共用
+- **描画**: DashboardView をブロック方式に — 連続する tile/gauge は 2列 LazyVGrid、chart/map は全幅。アダプタ電圧タイルは末尾維持。heroPanel(車速+RPM)は固定のまま
+- **編集UI**: `DashboardBuilderView.swift`(旧 DashboardCustomizeView は削除)— 並べ替え/削除/種類のあと変更(行の Menu で デジタル⇄アナログ⇄チャート)/追加(4種、PID 対象は PIDPickerView で選択)/デフォルトに戻す
+- 検証: BUILD SUCCEEDED。UserDefaults に混在レイアウトを直接注入して デモ+GPS ルートでスクショ確認(アナログメーター2種・航空写真ミニマップ・チャート2枚縦積み・タイル併存)。ビルダー画面は一時初期値で撮影→復元(TEMP 残存ゼロ)。注入した検証用レイアウトは defaults delete で除去済み
+- 注意: タイルは値未受信でも "--" で表示する仕様に変更(従来は自動非表示)。ウィジェットは明示追加制のため

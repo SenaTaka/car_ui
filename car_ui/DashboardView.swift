@@ -13,14 +13,10 @@ struct DashboardView: View {
     @State private var showsConnectionSheet = false
     @State private var showsCustomizeSheet = false
     @State private var showsHUD = false
-    // ダッシュボードに優先表示する PID(対応していれば自動で並ぶ)。空 = 既定の並び。
-    @AppStorage("dashboardPIDs.v1") private var storedFeaturedPIDs = ""
+    // 自分用ダッシュボードのウィジェット構成(種類+PID、永続化)
+    @State private var layout = DashboardLayoutStore()
 
     private let tileColumns = [GridItem(.adaptive(minimum: 150), spacing: 12)]
-
-    private var featuredPIDs: [UInt8] {
-        DashboardConfig.decode(storedFeaturedPIDs)
-    }
 
     var body: some View {
         NavigationStack {
@@ -30,7 +26,7 @@ struct DashboardView: View {
 
                     if obd.phase.isConnected {
                         heroPanel
-                        metricGrid
+                        widgetSections
                     } else {
                         emptyState
                     }
@@ -68,12 +64,7 @@ struct DashboardView: View {
                 HUDView()
             }
             .sheet(isPresented: $showsCustomizeSheet) {
-                DashboardCustomizeView(
-                    selectedPIDs: Binding(
-                        get: { DashboardConfig.decode(storedFeaturedPIDs) },
-                        set: { storedFeaturedPIDs = DashboardConfig.encode($0) }
-                    )
-                )
+                DashboardBuilderView(store: layout)
             }
         }
     }
@@ -205,10 +196,97 @@ struct DashboardView: View {
         obd.liveValues[0x0D] != nil ? "車速 (OBD)" : "車速 (GPS)"
     }
 
-    private var metricGrid: some View {
-        LazyVGrid(columns: tileColumns, spacing: 12) {
-            ForEach(featuredDefinitions) { definition in
-                let value = obd.liveValues[definition.pid]
+    // MARK: - ウィジェット描画(タイル/メーターはグリッド、チャート/マップは全幅)
+
+    private enum WidgetBlock: Identifiable {
+        case grid([DashboardWidget])
+        case full(DashboardWidget)
+
+        var id: UUID {
+            switch self {
+            case .grid(let widgets): return widgets[0].id
+            case .full(let widget): return widget.id
+            }
+        }
+    }
+
+    private var widgetBlocks: [WidgetBlock] {
+        var blocks: [WidgetBlock] = []
+        var gridRun: [DashboardWidget] = []
+
+        for widget in layout.widgets {
+            switch widget.kind {
+            case .tile, .gauge:
+                gridRun.append(widget)
+            case .chart, .map:
+                if !gridRun.isEmpty {
+                    blocks.append(.grid(gridRun))
+                    gridRun = []
+                }
+                blocks.append(.full(widget))
+            }
+        }
+        if !gridRun.isEmpty {
+            blocks.append(.grid(gridRun))
+        }
+        return blocks
+    }
+
+    private var widgetSections: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            ForEach(widgetBlocks) { block in
+                switch block {
+                case .grid(let widgets):
+                    LazyVGrid(columns: tileColumns, spacing: 12) {
+                        ForEach(widgets) { widget in
+                            gridCell(widget)
+                        }
+                    }
+                case .full(let widget):
+                    switch widget.kind {
+                    case .chart:
+                        if let pid = widget.pid {
+                            ChartWidgetView(pid: pid)
+                        }
+                    case .map:
+                        MapWidgetView()
+                    default:
+                        EmptyView()
+                    }
+                }
+            }
+
+            if let voltage = obd.adapterVoltage {
+                LazyVGrid(columns: tileColumns, spacing: 12) {
+                    MetricTile(
+                        title: "アダプタ電圧",
+                        value: metricText(voltage, digits: 2),
+                        unit: "V",
+                        systemImage: "bolt.fill",
+                        tint: .yellow,
+                        progress: progress(voltage, in: 8...16)
+                    )
+                }
+            }
+
+            if layout.widgets.isEmpty {
+                Text("ウィジェットがありません。左上の編集ボタンから追加できます。")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 20)
+            }
+        }
+    }
+
+    @ViewBuilder
+    private func gridCell(_ widget: DashboardWidget) -> some View {
+        if let pid = widget.pid, let definition = PIDCatalog.byPID[pid] {
+            switch widget.kind {
+            case .gauge:
+                GaugeWidgetView(pid: pid)
+            default:
+                let value = obd.liveValues[pid]
                 MetricTile(
                     title: definition.name,
                     value: metricText(value, digits: definition.fractionDigits),
@@ -218,24 +296,6 @@ struct DashboardView: View {
                     progress: value.map { progress($0, in: definition.gaugeRange) }
                 )
             }
-
-            if let voltage = obd.adapterVoltage {
-                MetricTile(
-                    title: "アダプタ電圧",
-                    value: metricText(voltage, digits: 2),
-                    unit: "V",
-                    systemImage: "bolt.fill",
-                    tint: .yellow,
-                    progress: progress(voltage, in: 8...16)
-                )
-            }
-        }
-    }
-
-    private var featuredDefinitions: [PIDDefinition] {
-        featuredPIDs.compactMap { pid in
-            guard obd.liveValues[pid] != nil else { return nil }
-            return PIDCatalog.byPID[pid]
         }
     }
 

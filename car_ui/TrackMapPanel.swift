@@ -125,7 +125,7 @@ enum TrackContour {
 
 // MARK: - 共用の地図コンテンツ + 凡例
 
-private struct TrackMapContent: MapContent {
+struct TrackMapContent: MapContent {
     let points: [TrackPoint]
     let colorSource: TrackColorSource
     var lineWidth: CGFloat = 7
