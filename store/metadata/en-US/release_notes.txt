@@ -1,1 +1,1 @@
-First release. See your car live over an ELM327 BLE adapter — build your own dashboard with analog gauges, charts and a color-coded trip map, project a HUD onto your windshield, track fuel economy, check I/M readiness, and hear a real-RPM engine sound.
+First release. See your car live over an ELM327 BLE adapter — build your own dashboard with analog gauges, charts and maps, see speed and RPM drawn on the map, project a HUD onto your windshield, track fuel economy, and hear a real-RPM engine sound.

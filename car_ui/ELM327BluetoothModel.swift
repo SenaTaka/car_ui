@@ -299,7 +299,13 @@ final class ELM327BluetoothModel: NSObject, ObservableObject {
         resetConnectionState(keepLog: true)
 
         isDemo = true
-        phase = .connected("デモモード")
+        // スクショ撮影用: 起動引数 -uiDemoName で表示名を差し替え(通常起動では無効)
+        let args = ProcessInfo.processInfo.arguments
+        if let index = args.firstIndex(of: "-uiDemoName"), index + 1 < args.count {
+            phase = .connected(args[index + 1])
+        } else {
+            phase = .connected("デモモード")
+        }
         adapterInfo = "DEMO"
         protocolDescription = "シミュレーション"
         let demoPIDs: Set<UInt8> = [

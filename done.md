@@ -176,3 +176,8 @@
 - `biz/bin/asc_upload_screenshots.py` 新設: store/screenshots/<locale>/*.png をファイル名順に appScreenshotSet(APP_IPHONE_67)へ登録。手順=①POST /v1/appScreenshots で枠予約 ②uploadOperations に従いバイナリ PUT(分割対応)③PATCH uploaded=true + MD5 checksum。セット内の既存分は削除してから入れ直す(冪等)
 - 実行結果: ja 7枚 + en-US 7枚 全て assetDeliveryState=**COMPLETE** を API で確認(version 1.0)
 - これで ASC 側の残りは ①IAP 審査提出(IAP ごとの審査用スクショ添付が必要 — ASC Web)②ビルドのアップロードと審査提出 ③Xcode Run での購入フロー確認 ④PrivacyInfo 広告SDK対応
+
+## 2026/07/16 (スクショ v2: ユーザーFB反映して5枚構成に刷新 → ASC 再反映)
+- FB対応: ①診断系(ツール/フリーズフレーム)スクショ削除=実車未検証のためプロモ除外(metadata からも車検セクション・promo の DTC 消去を削除、Pro リストの事実記載は残置)②マップ見出し「速度、回転数を地図上に表示」③計器→見たい情報 ④ルートが道路上にない問題 → **御堂筋(直線大通り)に高密度ウェイポイント**で撮り直し(直線補間でも路上に乗る)⑤「デモモード に接続済み」表記 → `-uiDemoName` 起動引数(撮影用フック、ELM327BluetoothModel.startDemoMode)で自然な接続名に
+- 再フレーム 5枚×2ロケール(01 ダッシュボード/02 マップ/03 HUD/04 エンジン音/05 データ)、store_lint PASS
+- ASC 再反映: メタデータ PATCH + スクショ入れ替え(旧7枚削除→新5枚、ja/en-US とも全 COMPLETE 確認)

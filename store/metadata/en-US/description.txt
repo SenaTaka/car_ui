@@ -5,7 +5,7 @@ Connect an ELM327 Bluetooth (BLE) adapter and car_ui turns live OBD2 data into a
 WHAT MAKES IT DIFFERENT
 • A genuinely modern interface — not the dated look of most OBD apps
 • A one-of-a-kind engine-sound simulation driven by your real RPM
-• Your route drawn on a map, color-coded by speed or RPM (satellite view included)
+• Speed and RPM drawn on the map, color-coded (satellite view included)
 • Buy once for Pro — no monthly fees, unlike many scanners
 
 BUILD YOUR OWN DASHBOARD
@@ -16,13 +16,10 @@ FIVE FOCUSED TABS
 • Data — every live sensor, overlaid or separate charts, CSV export (long or spreadsheet-friendly wide format)
 • Drive — trip computer with fuel economy, the color-coded track map, a G-force ball, and 0–100 timing
 • Engine Sound — procedural sound that follows your real RPM (all presets free)
-• Tools — read and clear trouble codes (DTC), freeze frame, I/M readiness monitors, raw commands
-
-BEFORE YOUR NEXT INSPECTION
-Check the MIL status and every emissions monitor (catalyst, EVAP, …) at a glance, and read the freeze frame the ECU stored when a fault occurred.
+• Tools — read and clear trouble codes (DTC), raw commands, communication log
 
 FREE INCLUDES
-Live data, the dashboard, track map, trip computer, HUD, engine sound, readiness, and freeze frame — free, with a small banner ad.
+Live data, the dashboard, track map, trip computer, HUD, and engine sound — free, with a small banner ad.
 
 PRO (ONE-TIME PURCHASE, OPTIONAL)
 • Clear diagnostic trouble codes (DTC)
