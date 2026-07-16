@@ -20,6 +20,11 @@ final class EngineSoundController: ObservableObject {
     /// View 側の @AppStorage と同期する
     var popsEnabled = true
 
+    /// マスター音量(0...1)。レビュー 11-4: エンジンサウンド機能では重要。
+    @Published var masterVolume: Float = 0.8 {
+        didSet { engine.mainMixerNode.outputVolume = masterVolume }
+    }
+
     /// OBD 値が届いているか(false ならアイドル試聴モード)
     var hasLiveData: Bool { CACurrentMediaTime() - lastRpmSampleAt < Tune.staleTimeout }
 
@@ -199,6 +204,7 @@ final class EngineSoundController: ObservableObject {
 
         engine.attach(node)
         engine.connect(node, to: engine.mainMixerNode, format: format)
+        engine.mainMixerNode.outputVolume = masterVolume
         engine.prepare()
     }
 

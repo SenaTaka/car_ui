@@ -245,9 +245,9 @@ struct FlowLayout<Data: RandomAccessCollection, Content: View>: View where Data.
 extension View {
     func panelStyle() -> some View {
         self
-            .padding(14)
+            .padding(DS.Space.cardPadding)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .background(Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 12))
+            .background(Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: DS.Radius.card))
     }
 }
 

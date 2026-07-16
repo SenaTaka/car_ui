@@ -47,6 +47,7 @@ struct EngineSoundView: View {
                         infoDisplay
                         statusRow
                         controlButtons
+                        volumeRow
                         popsToggleRow
                     }
                     .padding(.horizontal, 16)
@@ -192,9 +193,9 @@ struct EngineSoundView: View {
                 VStack(spacing: 3) {
                     Image(systemName: "engine.combustion.fill")
                         .font(.system(size: 16, weight: .semibold))
-                    Text("ENGINE")
-                        .font(.system(size: 8, weight: .bold))
-                        .tracking(0.6)
+                    // レビュー 11-2: 意味不明な「ENGINE」→「音源」(エンジン選択)
+                    Text("音源")
+                        .font(.system(size: 10, weight: .bold))
                 }
                 .foregroundColor(.white)
                 .frame(width: 62, height: 46)
@@ -202,6 +203,29 @@ struct EngineSoundView: View {
                 .clipShape(RoundedRectangle(cornerRadius: 14))
             }
         }
+    }
+
+    /// レビュー 11-4: マスター音量スライダー(サウンド機能の基本操作)
+    private var volumeRow: some View {
+        HStack(spacing: 10) {
+            Image(systemName: "speaker.fill")
+                .font(.system(size: 12))
+                .foregroundColor(.white.opacity(0.6))
+
+            Slider(value: Binding(get: { Double(sound.masterVolume) },
+                                  set: { sound.masterVolume = Float($0) }),
+                   in: 0...1)
+                .tint(.orange)
+                .accessibilityLabel("音量")
+
+            Image(systemName: "speaker.wave.3.fill")
+                .font(.system(size: 12))
+                .foregroundColor(.white.opacity(0.6))
+        }
+        .padding(.horizontal, 14)
+        .frame(height: 38)
+        .background(Color.white.opacity(0.04))
+        .clipShape(RoundedRectangle(cornerRadius: 12))
     }
 
     private var popsToggleRow: some View {
