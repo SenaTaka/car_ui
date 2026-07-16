@@ -21,6 +21,7 @@ struct DriveView: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 14) {
+                    TripPanel()
                     gForcePanel
                     accelTestPanel
                     gpsPanel

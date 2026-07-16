@@ -83,6 +83,11 @@ final class ELM327BluetoothModel: NSObject, ObservableObject {
     @Published private(set) var diagnosticStatus = "未読取"
     @Published private(set) var isPolling = false
     @Published private(set) var isReadingDiagnostics = false
+    @Published private(set) var readiness: ReadinessStatus?
+    @Published private(set) var isReadingReadiness = false
+    @Published private(set) var freezeFrame: FreezeFrameSnapshot?
+    @Published private(set) var isReadingFreezeFrame = false
+    @Published private(set) var freezeFrameStatus = "未取得"
     @Published private(set) var manualCommandResponse = "未送信"
     @Published private(set) var isSendingManualCommand = false
     @Published private(set) var logLines: [String] = []
@@ -304,6 +309,7 @@ final class ELM327BluetoothModel: NSObject, ObservableObject {
         supportedMode01PIDs = demoPIDs
         supportedMode01PIDCount = demoPIDs.count
         isPolling = true
+        readiness = .demo
         appendLog("デモモード開始(擬似データを生成)")
 
         demoTask = Task { [weak self] in
@@ -392,6 +398,83 @@ final class ELM327BluetoothModel: NSObject, ObservableObject {
         }
     }
 
+    /// Mode 01 PID 0x01: レディネスモニタ(MIL・DTC 数・各モニタの完了状態)を読み取る。
+    func readReadinessStatus() {
+        guard phase.isConnected else { return }
+
+        if isDemo {
+            readiness = .demo
+            return
+        }
+
+        isReadingReadiness = true
+
+        Task { [weak self] in
+            guard let self else { return }
+            if let response = await self.request("0101", timeout: 5),
+               let bytes = self.mode01Payload(from: response, pid: 0x01),
+               let status = ReadinessStatus.parse(bytes) {
+                self.readiness = status
+            } else {
+                self.readiness = nil
+                self.appendLog("レディネスモニタを取得できませんでした")
+            }
+            self.isReadingReadiness = false
+        }
+    }
+
+    /// Mode 02: フリーズフレーム(DTC 確定時のスナップショット)を読み取る。読み取り専用。
+    func readFreezeFrame() {
+        guard phase.isConnected, !isReadingFreezeFrame else { return }
+
+        if isDemo {
+            freezeFrame = .demo
+            freezeFrameStatus = "デモデータ"
+            return
+        }
+
+        isReadingFreezeFrame = true
+        freezeFrameStatus = "読取中"
+
+        Task { [weak self] in
+            guard let self else { return }
+
+            // PID 0x02 = フリーズフレームを確定させた DTC。00 00 なら未保存
+            var triggeringDTC: String?
+            if let response = await self.request("020200", timeout: 5),
+               let bytes = self.mode02Payload(from: response, pid: 0x02),
+               bytes.count >= 2, bytes[0] != 0 || bytes[1] != 0 {
+                triggeringDTC = Self.dtcString(high: bytes[0], low: bytes[1])
+            }
+
+            guard triggeringDTC != nil else {
+                self.freezeFrame = nil
+                self.freezeFrameStatus = "保存なし / 非対応"
+                self.isReadingFreezeFrame = false
+                return
+            }
+
+            var entries: [FreezeFrameSnapshot.Entry] = []
+            let targetPIDs: [UInt8] = [0x0C, 0x0D, 0x04, 0x05, 0x0B, 0x11, 0x0F, 0x06, 0x07]
+            for pid in targetPIDs where self.isMode01PIDSupported(pid) {
+                guard let definition = PIDCatalog.byPID[pid] else { continue }
+                let command = String(format: "02%02X00", pid)
+                guard let response = await self.request(command, timeout: 3),
+                      let bytes = self.mode02Payload(from: response, pid: pid),
+                      let value = definition.decode(bytes) else { continue }
+                entries.append(FreezeFrameSnapshot.Entry(pid: pid, value: value))
+            }
+
+            self.freezeFrame = FreezeFrameSnapshot(
+                triggeringDTC: triggeringDTC,
+                capturedAt: Date(),
+                entries: entries
+            )
+            self.freezeFrameStatus = "取得済み"
+            self.isReadingFreezeFrame = false
+        }
+    }
+
     func sendManualCommand(_ rawCommand: String) {
         let command = sanitizedCommand(rawCommand)
         guard !command.isEmpty else {
@@ -457,6 +540,7 @@ final class ELM327BluetoothModel: NSObject, ObservableObject {
 
         phase = .connected(displayName(for: connectedPeripheral))
         appendLog("ELM327 初期化完了")
+        readReadinessStatus()
         startPolling()
     }
 
@@ -646,6 +730,11 @@ final class ELM327BluetoothModel: NSObject, ObservableObject {
         engineOffSince = nil
         diagnosticCodes = []
         diagnosticStatus = "未読取"
+        readiness = nil
+        isReadingReadiness = false
+        freezeFrame = nil
+        isReadingFreezeFrame = false
+        freezeFrameStatus = "未取得"
         pollCycle = 0
         slowPIDRotationIndex = 0
         supportedMode01PIDs = []
@@ -822,6 +911,15 @@ final class ELM327BluetoothModel: NSObject, ObservableObject {
         return bytes
     }
 
+    /// Mode 02 応答(42 <PID> <フレーム番号> <データ...>)。PID 直後のフレーム番号 1 バイトを必ず除去する。
+    private func mode02Payload(from response: String, pid: UInt8) -> [UInt8]? {
+        guard let bytes = responseBytes(from: response, responseMode: 0x42, pid: pid),
+              bytes.count >= 2 else {
+            return nil
+        }
+        return Array(bytes.dropFirst())
+    }
+
     private func parseDiagnosticTroubleCodes(_ response: String?) -> [String] {
         guard let response,
               let bytes = responseBytes(from: response, responseMode: 0x43, pid: nil) else {
@@ -838,15 +936,20 @@ final class ELM327BluetoothModel: NSObject, ObservableObject {
 
             guard high != 0 || low != 0 else { continue }
 
-            let family = ["P", "C", "B", "U"][Int((high & 0xC0) >> 6)]
-            let firstDigit = String((high & 0x30) >> 4, radix: 16).uppercased()
-            let secondDigit = String(high & 0x0F, radix: 16).uppercased()
-            let thirdDigit = String((low & 0xF0) >> 4, radix: 16).uppercased()
-            let fourthDigit = String(low & 0x0F, radix: 16).uppercased()
-            codes.append("\(family)\(firstDigit)\(secondDigit)\(thirdDigit)\(fourthDigit)")
+            codes.append(Self.dtcString(high: high, low: low))
         }
 
         return codes
+    }
+
+    /// DTC 2 バイトを "P0301" 形式に変換する(Mode 03 / Mode 02 PID 02 共用)。
+    private static func dtcString(high: UInt8, low: UInt8) -> String {
+        let family = ["P", "C", "B", "U"][Int((high & 0xC0) >> 6)]
+        let firstDigit = String((high & 0x30) >> 4, radix: 16).uppercased()
+        let secondDigit = String(high & 0x0F, radix: 16).uppercased()
+        let thirdDigit = String((low & 0xF0) >> 4, radix: 16).uppercased()
+        let fourthDigit = String(low & 0x0F, radix: 16).uppercased()
+        return "\(family)\(firstDigit)\(secondDigit)\(thirdDigit)\(fourthDigit)"
     }
 
     private func responseBytes(from response: String, responseMode: UInt8, pid: UInt8?) -> [UInt8]? {

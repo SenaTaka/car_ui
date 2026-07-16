@@ -114,3 +114,19 @@
 - 安全確認: 車へ送るコマンドは全て読み取り専用(01XXライブ・03故障コード読出・ATxxドングル設定)。Mode 04/08 は自動送信なし(手入力 sendManualCommand 経由のみ)
 - 調整可能定数: engineOffVoltage=13.0 / engineRunningRpm=300 / rpmFreshWindow=5 / parkedGracePeriod=120
 - 検証: `xcodebuild ... generic/platform=iOS Simulator build` → BUILD SUCCEEDED。実機の電圧・BLE背面挙動は未検証(要実車確認)
+
+## 2026/07/15 22:05
+- App Store の `Car Scanner ELM OBD2`(iD `1259933623`) を調査し、`car_ui` との差分を整理
+- `car_ui` 側で未実装/不足と判断した項目: フリーズフレーム、レディネス/モニタ状態、トリップ/燃費系、メーカー別プロファイル/拡張診断、HUD/ミラー表示、複数ページの柔軟なダッシュボード
+- 既存実装で代替できる範囲: BLE 接続、PID 自動検出、DTC 読取/消去、手動コマンド、通信ログ、GPS/加速度、チャート/CSV、0-100 計測、エンジン音
+- 参照: [`car_ui/doc/README.md`](doc/README.md), [`car_ui/DashboardView.swift`](car_ui/DashboardView.swift), [`car_ui/SensorsView.swift`](car_ui/SensorsView.swift), [`car_ui/ToolsView.swift`](car_ui/ToolsView.swift)
+
+## 2026/07/16 (競合対抗5機能: フリーズフレーム/レディネス/トリップ燃費/ダッシュボード編集/HUD)
+- Car Scanner ELM OBD2 との差分調査(07/15)に基づき、5機能を実装。全機能無料(既存 Pro 境界と整合、PaywallView 変更なし)。メーカー別拡張診断は PID DB 規模過大のため見送り
+- **レディネスモニタ**: `ReadinessStatus.swift`(0101 の 4 バイトパース、バイトB bit3 でガソリン/ディーゼルのモニタ名切替)+ `ReadinessPanel.swift`。接続初期化後に自動読取、デモは EVAP のみ Not Ready の固定値
+- **フリーズフレーム**: `FreezeFrameModel.swift` + `FreezeFramePanel.swift`。`readFreezeFrame()` は 020200 で発生 DTC 確認(00 00 = 未保存)→ 主要 9 PID を `02XX00` で逐次取得。**Mode 02 応答は PID 直後にフレーム番号 1 バイトが入るため `mode02Payload` で dropFirst 必須**。DTC 文字列化は `dtcString(high:low:)` に切り出して Mode 03 と共用
+- **トリップ/燃費**: `TripComputerModel.swift`(距離/時間/平均速度/瞬間・平均燃費/消費燃料。0x5E 優先、なければ MAF から AFR14.7・密度740g/L で推定。dt>2秒はスキップ、瞬間値は EMA 平滑化)+ `TripPanel.swift`(DriveView 先頭)。ContentView の onReceive で ingest(EngineSound と同型)
+- **ダッシュボード編集**: `featuredPIDs` を `@AppStorage("dashboardPIDs.v1")`(hex CSV)化。空文字=未設定→既定配列、"-"=全非表示(空文字と区別)。`DashboardCustomizeView.swift` で並べ替え/追加/削除/デフォルト復帰
+- **HUD**: `HUDView.swift`(fullScreenCover、黒背景+緑の巨大速度+RPM バー、`hud.mirrored` でコンテンツのみ scaleEffect(x:-1)、操作ボタンは非反転)。起動はダッシュボード heroPanel の HUD バッジ
+- 検証: 各ステップで xcodebuild BUILD SUCCEEDED。iPhone 17 Pro Max (B35FB639) デモモードで全画面スクショ確認(レディネス/トリップ積算/カスタマイズシート/HUD 通常+ミラー)。タップが必要な画面は初期値を一時変更して撮影→復元済み(`rg "TEMP: screenshot"` で残存ゼロ確認)。ミラー検証は `simctl spawn defaults write hud.mirrored` を利用
+- **未検証(要実車)**: Mode 02 実応答(手動コマンド `020C00` で確認可)、0101 実応答、MAF 燃費推定の妥当性。ディーゼルでは燃費が過大推定(将来 readiness の点火方式フラグで AFR 切替可)

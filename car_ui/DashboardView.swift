@@ -11,13 +11,16 @@ struct DashboardView: View {
     @EnvironmentObject private var obd: ELM327BluetoothModel
     @EnvironmentObject private var location: LocationModel
     @State private var showsConnectionSheet = false
+    @State private var showsCustomizeSheet = false
+    @State private var showsHUD = false
+    // ダッシュボードに優先表示する PID(対応していれば自動で並ぶ)。空 = 既定の並び。
+    @AppStorage("dashboardPIDs.v1") private var storedFeaturedPIDs = ""
 
     private let tileColumns = [GridItem(.adaptive(minimum: 150), spacing: 12)]
 
-    // ダッシュボードに優先表示する PID(対応していれば自動で並ぶ)
-    private let featuredPIDs: [UInt8] = [
-        0x05, 0x11, 0x04, 0x0B, 0x10, 0x0F, 0x5C, 0x2F, 0x0E, 0x5E, 0x46, 0x62
-    ]
+    private var featuredPIDs: [UInt8] {
+        DashboardConfig.decode(storedFeaturedPIDs)
+    }
 
     var body: some View {
         NavigationStack {
@@ -37,6 +40,14 @@ struct DashboardView: View {
             .background(Color(.systemGroupedBackground))
             .navigationTitle("ダッシュボード")
             .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button {
+                        showsCustomizeSheet = true
+                    } label: {
+                        Label("タイルを編集", systemImage: "slider.horizontal.3")
+                    }
+                }
+
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
                         openConnection()
@@ -52,6 +63,17 @@ struct DashboardView: View {
             }
             .sheet(isPresented: $showsConnectionSheet) {
                 ConnectionSheet()
+            }
+            .fullScreenCover(isPresented: $showsHUD) {
+                HUDView()
+            }
+            .sheet(isPresented: $showsCustomizeSheet) {
+                DashboardCustomizeView(
+                    selectedPIDs: Binding(
+                        get: { DashboardConfig.decode(storedFeaturedPIDs) },
+                        set: { storedFeaturedPIDs = DashboardConfig.encode($0) }
+                    )
+                )
             }
         }
     }
@@ -103,9 +125,23 @@ struct DashboardView: View {
         VStack(spacing: 14) {
             HStack(alignment: .center, spacing: 16) {
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(speedSourceLabel)
-                        .font(.caption.weight(.semibold))
-                        .foregroundStyle(.secondary)
+                    HStack(spacing: 8) {
+                        Text(speedSourceLabel)
+                            .font(.caption.weight(.semibold))
+                            .foregroundStyle(.secondary)
+
+                        Button {
+                            showsHUD = true
+                        } label: {
+                            Label("HUD", systemImage: "windshield.front.and.heat.waves")
+                                .font(.caption2.weight(.bold))
+                                .padding(.horizontal, 8)
+                                .padding(.vertical, 4)
+                                .background(.green.opacity(0.12), in: Capsule())
+                                .foregroundStyle(.green)
+                        }
+                        .buttonStyle(.plain)
+                    }
 
                     HStack(alignment: .firstTextBaseline, spacing: 6) {
                         Text(metricText(currentSpeed, digits: 0))

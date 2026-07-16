@@ -14,6 +14,7 @@ struct ContentView: View {
     @StateObject private var motion = MotionModel()
     @StateObject private var recorder = TelemetryRecorder.shared
     @StateObject private var engineSound = EngineSoundController()
+    @StateObject private var tripComputer = TripComputerModel()
     @State private var proStore = ProStore.shared
     @Environment(\.scenePhase) private var scenePhase
     @State private var selectedTab = 0
@@ -62,10 +63,12 @@ struct ContentView: View {
         .environmentObject(motion)
         .environmentObject(recorder)
         .environmentObject(engineSound)
+        .environmentObject(tripComputer)
         .environment(proStore)
         // ルートで購読することで、エンジン音タブを離れても再生が続く
         .onReceive(obd.$liveValues) { values in
             engineSound.ingest(values)
+            tripComputer.ingest(values)
         }
         .onChange(of: scenePhase) { _, newPhase in
             // 車載利用中は画面を暗転・スリープさせない(前面のときだけ有効化し、

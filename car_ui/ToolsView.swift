@@ -21,6 +21,8 @@ struct ToolsView: View {
                     proPanel
                     adapterPanel
                     diagnosticsPanel
+                    ReadinessPanel()
+                    FreezeFramePanel()
                     commandPanel
                     logPanel
                 }
