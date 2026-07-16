@@ -19,10 +19,10 @@ struct DashboardWidget: Identifiable, Codable, Equatable {
 
         var displayName: String {
             switch self {
-            case .tile: return "デジタル"
-            case .gauge: return "アナログメーター"
-            case .chart: return "チャート"
-            case .map: return "走行マップ"
+            case .tile: return String(localized: "デジタル")
+            case .gauge: return String(localized: "アナログメーター")
+            case .chart: return String(localized: "チャート")
+            case .map: return String(localized: "走行マップ")
             }
         }
 

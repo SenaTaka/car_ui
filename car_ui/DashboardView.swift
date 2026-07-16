@@ -98,16 +98,17 @@ struct DashboardView: View {
 
     private var statusDetail: String {
         guard obd.phase.isConnected else {
-            return "右上のボタンからアダプタに接続、またはデモモード"
+            return String(localized: "右上のボタンからアダプタに接続、またはデモモード")
         }
 
         var parts: [String] = []
         if obd.supportedMode01PIDCount > 0 {
-            parts.append("対応 PID \(obd.supportedMode01PIDCount) 件")
+            parts.append(String(localized: "対応 PID \(obd.supportedMode01PIDCount) 件"))
         }
-        parts.append("受信 \(obd.liveValues.count) 項目")
+        parts.append(String(localized: "受信 \(obd.liveValues.count) 項目"))
         if let lastUpdated = obd.lastUpdated {
-            parts.append("更新 \(lastUpdated.formatted(date: .omitted, time: .standard))")
+            let time = lastUpdated.formatted(date: .omitted, time: .standard)
+            parts.append(String(localized: "更新 \(time)"))
         }
         return parts.joined(separator: " ・ ")
     }
@@ -117,7 +118,7 @@ struct DashboardView: View {
             HStack(alignment: .center, spacing: 16) {
                 VStack(alignment: .leading, spacing: 2) {
                     HStack(spacing: 8) {
-                        Text(speedSourceLabel)
+                        Text(LocalizedStringKey(speedSourceLabel))
                             .font(.caption.weight(.semibold))
                             .foregroundStyle(.secondary)
 

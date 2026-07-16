@@ -140,7 +140,7 @@ struct TrackMapContent: MapContent {
         }
 
         if let last = points.last {
-            Annotation("現在", coordinate: last.coordinate) {
+            Annotation(String(localized: "現在"), coordinate: last.coordinate) {
                 Circle()
                     .fill(.blue)
                     .stroke(.white, lineWidth: 2)
@@ -209,11 +209,11 @@ struct TrackMapPanel: View {
                 Menu {
                     Picker("地図", selection: $mapStyleRaw) {
                         ForEach(TrackMapStyleOption.allCases) { option in
-                            Text(option.rawValue).tag(option.rawValue)
+                            Text(LocalizedStringKey(option.rawValue)).tag(option.rawValue)
                         }
                     }
                 } label: {
-                    Label(styleOption.rawValue, systemImage: "globe.asia.australia")
+                    Label(LocalizedStringKey(styleOption.rawValue), systemImage: "globe.asia.australia")
                 }
                 .font(.caption)
                 .buttonStyle(.bordered)
@@ -240,7 +240,7 @@ struct TrackMapPanel: View {
 
             Picker("色分け", selection: $colorSourceRaw) {
                 ForEach(TrackColorSource.allCases) { source in
-                    Text(source.rawValue).tag(source.rawValue)
+                    Text(LocalizedStringKey(source.rawValue)).tag(source.rawValue)
                 }
             }
             .pickerStyle(.segmented)
@@ -352,7 +352,7 @@ struct TrackMapExpandedView: View {
 
                 Picker("色分け", selection: $colorSourceRaw) {
                     ForEach(TrackColorSource.allCases) { source in
-                        Text(source.rawValue).tag(source.rawValue)
+                        Text(LocalizedStringKey(source.rawValue)).tag(source.rawValue)
                     }
                 }
                 .pickerStyle(.segmented)
@@ -366,7 +366,7 @@ struct TrackMapExpandedView: View {
 
                 Picker("地図", selection: $mapStyleRaw) {
                     ForEach(TrackMapStyleOption.allCases) { option in
-                        Text(option.rawValue).tag(option.rawValue)
+                        Text(LocalizedStringKey(option.rawValue)).tag(option.rawValue)
                     }
                 }
                 .pickerStyle(.segmented)

@@ -73,7 +73,7 @@ struct DashboardBuilderView: View {
                 }
             }
             .sheet(item: $pendingKind) { kind in
-                PIDPickerView(title: "\(kind.displayName)を追加") { pid in
+                PIDPickerView(title: String(localized: "\(kind.displayName)を追加")) { pid in
                     store.append(DashboardWidget(kind: kind, pid: pid))
                 }
             }

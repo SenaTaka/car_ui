@@ -277,6 +277,8 @@ struct ToolsView: View {
     }
 
     private var supportedPIDText: String {
-        obd.supportedMode01PIDCount > 0 ? "\(obd.supportedMode01PIDCount) 件対応" : "未取得"
+        obd.supportedMode01PIDCount > 0
+            ? String(localized: "\(obd.supportedMode01PIDCount) 件対応")
+            : String(localized: "未取得")
     }
 }

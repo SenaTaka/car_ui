@@ -38,19 +38,19 @@ enum OBDConnectionPhase: Equatable {
     var title: String {
         switch self {
         case .waitingForBluetooth:
-            return "Bluetooth 確認中"
+            return String(localized: "Bluetooth 確認中")
         case .idle:
-            return "未接続"
+            return String(localized: "未接続")
         case .scanning:
-            return "スキャン中"
+            return String(localized: "スキャン中")
         case .connecting(let name):
-            return "\(name) に接続中"
+            return String(localized: "\(name) に接続中")
         case .discovering(let name):
-            return "\(name) を確認中"
+            return String(localized: "\(name) を確認中")
         case .initializing(let name):
-            return "\(name) を初期化中"
+            return String(localized: "\(name) を初期化中")
         case .connected(let name):
-            return "\(name) に接続済み"
+            return String(localized: "\(name) に接続済み")
         case .disconnected(let message):
             return message
         case .unavailable(let message):
@@ -76,8 +76,8 @@ final class ELM327BluetoothModel: NSObject, ObservableObject {
     @Published private(set) var adapterVoltage: Double?
     @Published private(set) var lastUpdated: Date?
     @Published private(set) var isDemo = false
-    @Published private(set) var adapterInfo = "未取得"
-    @Published private(set) var protocolDescription = "未取得"
+    @Published private(set) var adapterInfo = String(localized: "未取得")
+    @Published private(set) var protocolDescription = String(localized: "未取得")
     @Published private(set) var supportedMode01PIDCount = 0
     @Published private(set) var diagnosticCodes: [String] = []
     @Published private(set) var diagnosticStatus = "未読取"
@@ -199,7 +199,7 @@ final class ELM327BluetoothModel: NSObject, ObservableObject {
 
     func connect(to device: OBDPeripheral) {
         guard canScan else {
-            phase = .unavailable("Bluetooth が利用できません")
+            phase = .unavailable(String(localized: "Bluetooth が利用できません"))
             return
         }
 
@@ -304,10 +304,10 @@ final class ELM327BluetoothModel: NSObject, ObservableObject {
         if let index = args.firstIndex(of: "-uiDemoName"), index + 1 < args.count {
             phase = .connected(args[index + 1])
         } else {
-            phase = .connected("デモモード")
+            phase = .connected(String(localized: "デモモード"))
         }
         adapterInfo = "DEMO"
-        protocolDescription = "シミュレーション"
+        protocolDescription = String(localized: "シミュレーション")
         let demoPIDs: Set<UInt8> = [
             0x04, 0x05, 0x06, 0x07, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F, 0x10,
             0x11, 0x1F, 0x2F, 0x33, 0x42, 0x46, 0x5C, 0x5E, 0x62
@@ -511,14 +511,14 @@ final class ELM327BluetoothModel: NSObject, ObservableObject {
         guard let connectedPeripheral else { return }
 
         phase = .initializing(displayName(for: connectedPeripheral))
-        adapterInfo = "初期化中"
-        protocolDescription = "自動判定中"
+        adapterInfo = String(localized: "初期化中")
+        protocolDescription = String(localized: "自動判定中")
         diagnosticCodes = []
         diagnosticStatus = "未読取"
         appendLog("ELM327 初期化開始")
 
         guard let resetResponse = await request("ATZ", timeout: 5) else {
-            phase = .failed("ELM327 から応答がありません")
+            phase = .failed(String(localized: "ELM327 から応答がありません"))
             appendLog("ATZ がタイムアウトしました")
             return
         }
@@ -768,12 +768,13 @@ final class ELM327BluetoothModel: NSObject, ObservableObject {
         rssi: NSNumber
     ) {
         let advertisedName = advertisementData[CBAdvertisementDataLocalNameKey] as? String
-        let name = advertisedName?.nonEmpty ?? peripheral.name?.nonEmpty ?? "名称未取得"
+        let resolvedName = advertisedName?.nonEmpty ?? peripheral.name?.nonEmpty
+        let name = resolvedName ?? String(localized: "名称未取得")
         let advertisedServices = advertisementData[CBAdvertisementDataServiceUUIDsKey] as? [CBUUID] ?? []
         let serviceUUIDs = advertisedServices.map(normalizedUUID)
         let isLikelyAdapter = looksLikeOBDAdapter(name: name, serviceUUIDs: serviceUUIDs)
 
-        guard isLikelyAdapter || name != "名称未取得" else { return }
+        guard isLikelyAdapter || resolvedName != nil else { return }
 
         peripheralsByID[peripheral.identifier] = peripheral
         let candidate = OBDPeripheral(
@@ -821,7 +822,7 @@ final class ELM327BluetoothModel: NSObject, ObservableObject {
     private func failIfTransportWasNotFound() {
         guard !didStartInitialization else { return }
 
-        phase = .failed("ELM327 の BLE 通信特性が見つかりません")
+        phase = .failed(String(localized: "ELM327 の BLE 通信特性が見つかりません"))
         appendLog("UART 互換の BLE characteristic が見つかりません")
     }
 
@@ -1126,11 +1127,11 @@ extension ELM327BluetoothModel: @preconcurrency CBCentralManagerDelegate {
         case .unknown, .resetting:
             phase = .waitingForBluetooth
         case .unsupported:
-            phase = .unavailable("この端末は Bluetooth LE に対応していません")
+            phase = .unavailable(String(localized: "この端末は Bluetooth LE に対応していません"))
         case .unauthorized:
-            phase = .unavailable("Bluetooth 権限がありません")
+            phase = .unavailable(String(localized: "Bluetooth 権限がありません"))
         case .poweredOff:
-            phase = .unavailable("Bluetooth がオフです")
+            phase = .unavailable(String(localized: "Bluetooth がオフです"))
             resetConnectionState(keepLog: true)
         case .poweredOn:
             if case .waitingForBluetooth = phase {
@@ -1138,7 +1139,7 @@ extension ELM327BluetoothModel: @preconcurrency CBCentralManagerDelegate {
             }
             appendLog("Bluetooth 使用可能")
         @unknown default:
-            phase = .unavailable("Bluetooth の状態を確認できません")
+            phase = .unavailable(String(localized: "Bluetooth の状態を確認できません"))
         }
     }
 
@@ -1166,7 +1167,7 @@ extension ELM327BluetoothModel: @preconcurrency CBCentralManagerDelegate {
         didFailToConnect peripheral: CBPeripheral,
         error: Error?
     ) {
-        let message = error?.localizedDescription ?? "接続に失敗しました"
+        let message = error?.localizedDescription ?? String(localized: "接続に失敗しました")
         resetConnectionState(keepLog: true)
         phase = .failed(message)
         appendLog(message)
@@ -1177,7 +1178,7 @@ extension ELM327BluetoothModel: @preconcurrency CBCentralManagerDelegate {
         didDisconnectPeripheral peripheral: CBPeripheral,
         error: Error?
     ) {
-        let message = error?.localizedDescription ?? "\(displayName(for: peripheral)) との接続を解除しました"
+        let message = error?.localizedDescription ?? String(localized: "\(displayName(for: peripheral)) との接続を解除しました")
         resetConnectionState(keepLog: true)
         phase = .disconnected(message)
         appendLog(message)

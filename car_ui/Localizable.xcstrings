@@ -1,0 +1,2836 @@
+{
+  "sourceLanguage": "ja",
+  "strings": {
+    "%@ %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ %@"
+          }
+        }
+      }
+    },
+    "%@ G": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ G"
+          }
+        }
+      }
+    },
+    "%@ rpm": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ rpm"
+          }
+        }
+      }
+    },
+    "%@ との接続を解除しました": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Disconnected from %@"
+          }
+        }
+      }
+    },
+    "%@ に接続中": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connecting to %@"
+          }
+        }
+      }
+    },
+    "%@ に接続済み": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connected to %@"
+          }
+        }
+      }
+    },
+    "%@ を初期化中": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Initializing %@"
+          }
+        }
+      }
+    },
+    "%@ を確認中": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Checking %@"
+          }
+        }
+      }
+    },
+    "%@ 秒": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ s"
+          }
+        }
+      }
+    },
+    "%@L": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@L"
+          }
+        }
+      }
+    },
+    "%@を追加": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add %@"
+          }
+        }
+      }
+    },
+    "%lld": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld"
+          }
+        }
+      }
+    },
+    "%lld / %lld": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld / %lld"
+          }
+        }
+      }
+    },
+    "%lld RPM": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld RPM"
+          }
+        }
+      }
+    },
+    "%lld ch": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld ch"
+          }
+        }
+      }
+    },
+    "%lld cyl": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld cyl"
+          }
+        }
+      }
+    },
+    "%lld dBm": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld dBm"
+          }
+        }
+      }
+    },
+    "%lld 件対応": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld supported"
+          }
+        }
+      }
+    },
+    "%lld分": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld min"
+          }
+        }
+      }
+    },
+    "%lld時間": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld h"
+          }
+        }
+      }
+    },
+    "* 燃費は吸入空気量(MAF)からの推定値です": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "* Fuel economy is estimated from mass air flow (MAF)"
+          }
+        }
+      }
+    },
+    "--": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "--"
+          }
+        }
+      }
+    },
+    "0-%lld km/h": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "0-%lld km/h"
+          }
+        }
+      }
+    },
+    "0-%lld: %@ 秒": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "0-%1$lld: %2$@ s"
+          }
+        }
+      }
+    },
+    "0-100 km/h 加速計測": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "0-100 km/h Timer"
+          }
+        }
+      }
+    },
+    "0-100 km/h 計測の完了後に「記録を保存」(Pro)で追加されます。": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Finish a 0-100 km/h run and tap “Save Run” (Pro) to add one."
+          }
+        }
+      }
+    },
+    "0-100: %@ 秒": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "0-100: %@ s"
+          }
+        }
+      }
+    },
+    "Bluetooth がオフです": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bluetooth is off"
+          }
+        }
+      }
+    },
+    "Bluetooth が利用できません": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bluetooth is unavailable"
+          }
+        }
+      }
+    },
+    "Bluetooth の状態を確認できません": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cannot determine Bluetooth status"
+          }
+        }
+      }
+    },
+    "Bluetooth 権限がありません": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bluetooth permission is not granted"
+          }
+        }
+      }
+    },
+    "Bluetooth 確認中": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Checking Bluetooth"
+          }
+        }
+      }
+    },
+    "CSV 形式": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CSV Format"
+          }
+        }
+      }
+    },
+    "CSV 書き出し": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Export CSV"
+          }
+        }
+      }
+    },
+    "DTC クリア後走行距離": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Distance Since DTC Clear"
+          }
+        }
+      }
+    },
+    "ECU が対応する全 PID を自動検出し、設定なしですべて表示・記録します。アダプタがなくてもデモモードで全機能を試せます。": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Every PID your ECU supports is auto-detected, displayed, and recorded with zero setup. No adapter? Try everything in demo mode."
+          }
+        }
+      }
+    },
+    "ECU 電圧": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ECU Voltage"
+          }
+        }
+      }
+    },
+    "EGR 指令値": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Commanded EGR"
+          }
+        }
+      }
+    },
+    "EGR 誤差": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "EGR Error"
+          }
+        }
+      }
+    },
+    "ELM327 BLE": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ELM327 BLE"
+          }
+        }
+      }
+    },
+    "ELM327 から応答がありません": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No response from the ELM327"
+          }
+        }
+      }
+    },
+    "ELM327 の BLE 通信特性が見つかりません": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Could not find the ELM327's BLE characteristics"
+          }
+        }
+      }
+    },
+    "ENGINE": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ENGINE"
+          }
+        }
+      }
+    },
+    "ENGINE SOUND": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ENGINE SOUND"
+          }
+        }
+      }
+    },
+    "G フォース": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "G-Force"
+          }
+        }
+      }
+    },
+    "GPS": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GPS"
+          }
+        }
+      }
+    },
+    "GPS を使用": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Use GPS"
+          }
+        }
+      }
+    },
+    "HUD": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "HUD"
+          }
+        }
+      }
+    },
+    "L/h(停車中)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L/h (idling)"
+          }
+        }
+      }
+    },
+    "MIL 点灯後走行距離": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Distance with MIL On"
+          }
+        }
+      }
+    },
+    "O2 センサー B1S1": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O2 Sensor B1S1"
+          }
+        }
+      }
+    },
+    "O2 センサー B1S2": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O2 Sensor B1S2"
+          }
+        }
+      }
+    },
+    "O2 センサー B1S3": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O2 Sensor B1S3"
+          }
+        }
+      }
+    },
+    "O2 センサー B1S4": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O2 Sensor B1S4"
+          }
+        }
+      }
+    },
+    "O2 センサー B2S1": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O2 Sensor B2S1"
+          }
+        }
+      }
+    },
+    "O2 センサー B2S2": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O2 Sensor B2S2"
+          }
+        }
+      }
+    },
+    "O2 センサー B2S3": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O2 Sensor B2S3"
+          }
+        }
+      }
+    },
+    "O2 センサー B2S4": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O2 Sensor B2S4"
+          }
+        }
+      }
+    },
+    "OBD と GPS の車速差: %@ km/h(メーター誤差の目安)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OBD vs GPS speed difference: %@ km/h (speedometer error estimate)"
+          }
+        }
+      }
+    },
+    "OBD-II": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OBD-II"
+          }
+        }
+      }
+    },
+    "OK": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OK"
+          }
+        }
+      }
+    },
+    "POPS & BANGS": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "POPS & BANGS"
+          }
+        }
+      }
+    },
+    "Pro にアップグレード": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Upgrade to Pro"
+          }
+        }
+      }
+    },
+    "Pro 有効": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pro Active"
+          }
+        }
+      }
+    },
+    "RPM": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "RPM"
+          }
+        }
+      }
+    },
+    "SPEED": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SPEED"
+          }
+        }
+      }
+    },
+    "car_ui Pro": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "car_ui Pro"
+          }
+        }
+      }
+    },
+    "iPhone では BLE 型 ELM327 アダプタを使用します。Bluetooth Classic SPP 型は iOS の公開 API では接続できません。": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Use a BLE ELM327 adapter with iPhone. Bluetooth Classic SPP adapters cannot connect through public iOS APIs."
+          }
+        }
+      }
+    },
+    "km/L": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "km/L"
+          }
+        }
+      }
+    },
+    "km/h": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "km/h"
+          }
+        }
+      }
+    },
+    "rpm": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "rpm"
+          }
+        }
+      }
+    },
+    "x1000": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "x1000"
+          }
+        }
+      }
+    },
+    "±%@ m": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "±%@ m"
+          }
+        }
+      }
+    },
+    "おすすめ": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recommended"
+          }
+        }
+      }
+    },
+    "お支払いは一度だけ。自動更新や定期課金は一切ありません。": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pay once. No auto-renewals or recurring charges, ever."
+          }
+        }
+      }
+    },
+    "この端末ではモーションセンサーを利用できません。": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The motion sensor is not available on this device."
+          }
+        }
+      }
+    },
+    "この端末は Bluetooth LE に対応していません": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This device does not support Bluetooth LE"
+          }
+        }
+      }
+    },
+    "この記録が 0-100 km/h のベストタイムです": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This run is your 0-100 km/h best time"
+          }
+        }
+      }
+    },
+    "アクセルペダル D": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Accel Pedal D"
+          }
+        }
+      }
+    },
+    "アクセルペダル E": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Accel Pedal E"
+          }
+        }
+      }
+    },
+    "アダプタ": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adapter"
+          }
+        }
+      }
+    },
+    "アダプタを検索": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan for Adapters"
+          }
+        }
+      }
+    },
+    "アダプタ電圧": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adapter Voltage"
+          }
+        }
+      }
+    },
+    "アナログメーター": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analog Gauge"
+          }
+        }
+      }
+    },
+    "ウィジェット(ドラッグで並べ替え)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Widgets (drag to reorder)"
+          }
+        }
+      }
+    },
+    "ウィジェットがありません。左上の編集ボタンから追加できます。": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No widgets yet. Add one from the edit button at the top left."
+          }
+        }
+      }
+    },
+    "エタノール比率": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ethanol %"
+          }
+        }
+      }
+    },
+    "エンジンプリセット": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Engine Presets"
+          }
+        }
+      }
+    },
+    "エンジン回転数": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Engine RPM"
+          }
+        }
+      }
+    },
+    "エンジン油温": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Engine Oil Temp"
+          }
+        }
+      }
+    },
+    "エンジン稼働時間": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Engine Run Time"
+          }
+        }
+      }
+    },
+    "エンジン負荷": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Engine Load"
+          }
+        }
+      }
+    },
+    "エンジン音": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Engine Sound"
+          }
+        }
+      }
+    },
+    "オンの場合、OBD 接続中(デモ含む)だけ画面を常時点灯します。未接続時は通常どおりスリープします。": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "When on, the screen stays awake only while connected to OBD (incl. demo mode). It sleeps normally when disconnected."
+          }
+        }
+      }
+    },
+    "キャンセル": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cancel"
+          }
+        }
+      }
+    },
+    "サウンド停止": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stop Sound"
+          }
+        }
+      }
+    },
+    "サウンド開始": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Start Sound"
+          }
+        }
+      }
+    },
+    "サブスクはありません。一度買えばずっと使えます。": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No subscriptions. Buy once, use forever."
+          }
+        }
+      }
+    },
+    "シミュレーション": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Simulation"
+          }
+        }
+      }
+    },
+    "スキャン中": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scanning"
+          }
+        }
+      }
+    },
+    "スプリット": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Splits"
+          }
+        }
+      }
+    },
+    "スロットル指令値": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Commanded Throttle"
+          }
+        }
+      }
+    },
+    "スロットル絶対 B": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abs. Throttle B"
+          }
+        }
+      }
+    },
+    "スロットル開度": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Throttle Position"
+          }
+        }
+      }
+    },
+    "センサー": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sensors"
+          }
+        }
+      }
+    },
+    "タイルを編集": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Edit Tiles"
+          }
+        }
+      }
+    },
+    "ダッシュボード": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dashboard"
+          }
+        }
+      }
+    },
+    "ダッシュボード編集": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Edit Dashboard"
+          }
+        }
+      }
+    },
+    "チャンネル": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Channels"
+          }
+        }
+      }
+    },
+    "チャンネル選択": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Select Channels"
+          }
+        }
+      }
+    },
+    "チャート": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Charts"
+          }
+        }
+      }
+    },
+    "ツール": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tools"
+          }
+        }
+      }
+    },
+    "テレメトリ CSV": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Telemetry CSV"
+          }
+        }
+      }
+    },
+    "デジタル": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Digital"
+          }
+        }
+      }
+    },
+    "デジタル/アナログは2列グリッド、チャート/マップは横幅いっぱいに表示されます。": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Digital/analog tiles use a 2-column grid; charts and maps span the full width."
+          }
+        }
+      }
+    },
+    "デフォルトに戻す": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restore Defaults"
+          }
+        }
+      }
+    },
+    "デモモード": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Demo Mode"
+          }
+        }
+      }
+    },
+    "デモモードで試す(アダプタ不要)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Try Demo Mode (no adapter needed)"
+          }
+        }
+      }
+    },
+    "デモモード終了": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Exit Demo Mode"
+          }
+        }
+      }
+    },
+    "データ": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Data"
+          }
+        }
+      }
+    },
+    "データ受信待ち": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Waiting for data"
+          }
+        }
+      }
+    },
+    "データ待ち…": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Waiting for data…"
+          }
+        }
+      }
+    },
+    "トリップ": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trip"
+          }
+        }
+      }
+    },
+    "トリップをリセットしますか?": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reset trip?"
+          }
+        }
+      }
+    },
+    "ドライブ": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Drive"
+          }
+        }
+      }
+    },
+    "パージ制御": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Evap Purge"
+          }
+        }
+      }
+    },
+    "ピーク": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Peak"
+          }
+        }
+      }
+    },
+    "ピーク解除": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reset Peak"
+          }
+        }
+      }
+    },
+    "フロントガラスの下に置いて反射で読み取ります。タップで操作ボタンを隠せます。": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Place the phone under the windshield and read the reflection. Tap to hide the controls."
+          }
+        }
+      }
+    },
+    "プライバシー": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Privacy"
+          }
+        }
+      }
+    },
+    "プラン": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plans"
+          }
+        }
+      }
+    },
+    "プリセット": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Presets"
+          }
+        }
+      }
+    },
+    "ベスト": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Best"
+          }
+        }
+      }
+    },
+    "ミラー反転": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mirror"
+          }
+        }
+      }
+    },
+    "リセット": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reset"
+          }
+        }
+      }
+    },
+    "ログはまだありません": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No log yet"
+          }
+        }
+      }
+    },
+    "一時停止": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pause"
+          }
+        }
+      }
+    },
+    "下の「追加」からウィジェットを置いてください。": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add widgets with the “Add” button below."
+          }
+        }
+      }
+    },
+    "中止": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stop"
+          }
+        }
+      }
+    },
+    "位置情報が拒否されています。設定アプリから許可してください。": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Location access is denied. Please allow it in the Settings app."
+          }
+        }
+      }
+    },
+    "保存済み %lld 件": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Saved: %lld"
+          }
+        }
+      }
+    },
+    "保存済み記録": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Saved Runs"
+          }
+        }
+      }
+    },
+    "保存済み記録: %lld 件": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Saved runs: %lld"
+          }
+        }
+      }
+    },
+    "保存済み記録はありません": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No saved runs"
+          }
+        }
+      }
+    },
+    "個別表示": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Separate"
+          }
+        }
+      }
+    },
+    "停止状態から発進してください": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Launch from a standstill"
+          }
+        }
+      }
+    },
+    "全体": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "All"
+          }
+        }
+      }
+    },
+    "全機能・買い切り": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "All Features, One-Time"
+          }
+        }
+      }
+    },
+    "共有": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Share"
+          }
+        }
+      }
+    },
+    "再開": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Resume"
+          }
+        }
+      }
+    },
+    "冷却水温": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Coolant Temp"
+          }
+        }
+      }
+    },
+    "処理中": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Working"
+          }
+        }
+      }
+    },
+    "切断": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Disconnect"
+          }
+        }
+      }
+    },
+    "初期化中": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Initializing"
+          }
+        }
+      }
+    },
+    "前後 G": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Longitudinal G"
+          }
+        }
+      }
+    },
+    "加速度計": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Accelerometer"
+          }
+        }
+      }
+    },
+    "加速度計が停止しています(センサータブで有効化)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Accelerometer is stopped (enable it from the sensor toggles)"
+          }
+        }
+      }
+    },
+    "加速度計を使用": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Use Accelerometer"
+          }
+        }
+      }
+    },
+    "受信 %lld 項目": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld values received"
+          }
+        }
+      }
+    },
+    "右上のボタンからアダプタに接続、またはデモモード": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connect an adapter from the top-right button, or use demo mode"
+          }
+        }
+      }
+    },
+    "合成 G": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Combined G"
+          }
+        }
+      }
+    },
+    "名称未取得": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unnamed"
+          }
+        }
+      }
+    },
+    "吸入空気量 (MAF)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mass Air Flow (MAF)"
+          }
+        }
+      }
+    },
+    "吸気圧 (MAP)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Intake Pressure (MAP)"
+          }
+        }
+      }
+    },
+    "吸気温": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Intake Air Temp"
+          }
+        }
+      }
+    },
+    "周辺の BLE デバイスを検索中": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scanning for nearby BLE devices"
+          }
+        }
+      }
+    },
+    "回転数": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "RPM"
+          }
+        }
+      }
+    },
+    "地図": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Map"
+          }
+        }
+      }
+    },
+    "基準トルク": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reference Torque"
+          }
+        }
+      }
+    },
+    "外気温": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ambient Temp"
+          }
+        }
+      }
+    },
+    "大気圧": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Barometric Pressure"
+          }
+        }
+      }
+    },
+    "完了": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Done"
+          }
+        }
+      }
+    },
+    "実トルク": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Actual Torque"
+          }
+        }
+      }
+    },
+    "対応 PID %lld 件": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld PIDs supported"
+          }
+        }
+      }
+    },
+    "平均": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Average"
+          }
+        }
+      }
+    },
+    "平均燃費": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Avg Economy"
+          }
+        }
+      }
+    },
+    "平均速度": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Avg Speed"
+          }
+        }
+      }
+    },
+    "広告プライバシー設定を変更": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Change Ad Privacy Settings"
+          }
+        }
+      }
+    },
+    "広告表示に関する同意内容をいつでも変更できます。": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You can change your ad consent choices at any time."
+          }
+        }
+      }
+    },
+    "広告除去は購入済み。Pro で CSV 無制限・記録保存も使えます": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ad removal purchased. Pro adds unlimited CSV and saved runs"
+          }
+        }
+      }
+    },
+    "広告除去は購入済みです。Pro にすると残りの機能も使えます。": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ad removal purchased. Upgrade to Pro to unlock the rest."
+          }
+        }
+      }
+    },
+    "広告除去・CSV 無制限・記録保存": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ad-free, unlimited CSV, saved runs"
+          }
+        }
+      }
+    },
+    "待機": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Idle"
+          }
+        }
+      }
+    },
+    "拡大": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zoom"
+          }
+        }
+      }
+    },
+    "接続": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connected"
+          }
+        }
+      }
+    },
+    "接続してデバイスを検索": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connect & Scan for Devices"
+          }
+        }
+      }
+    },
+    "接続に失敗しました": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connection failed"
+          }
+        }
+      }
+    },
+    "接続またはデモモードを開始すると、全チャンネルの時系列が自動で記録されます。": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Start a connection or demo mode and every channel is recorded automatically."
+          }
+        }
+      }
+    },
+    "接続中は画面をスリープさせない": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keep Screen Awake While Connected"
+          }
+        }
+      }
+    },
+    "接続済み": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connected"
+          }
+        }
+      }
+    },
+    "方位": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Heading"
+          }
+        }
+      }
+    },
+    "方位 (GPS)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Heading (GPS)"
+          }
+        }
+      }
+    },
+    "時刻": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Time"
+          }
+        }
+      }
+    },
+    "時系列": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Timeline"
+          }
+        }
+      }
+    },
+    "更新 %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Updated %@"
+          }
+        }
+      }
+    },
+    "未取得": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not read yet"
+          }
+        }
+      }
+    },
+    "未接続": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not Connected"
+          }
+        }
+      }
+    },
+    "未接続 — アイドル音を試聴できます": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not connected — preview the idle sound"
+          }
+        }
+      }
+    },
+    "未接続(接続すると対応 PID が自動で並びます)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not connected (supported PIDs appear automatically after connecting)"
+          }
+        }
+      }
+    },
+    "検出したデバイス": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Discovered Devices"
+          }
+        }
+      }
+    },
+    "検索": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scanning"
+          }
+        }
+      }
+    },
+    "検索を停止": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stop Scanning"
+          }
+        }
+      }
+    },
+    "標準": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Standard"
+          }
+        }
+      }
+    },
+    "横 G": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lateral G"
+          }
+        }
+      }
+    },
+    "横持ち(1行=1時刻)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wide (1 row = 1 timestamp)"
+          }
+        }
+      }
+    },
+    "横持ち: 時刻ごとに選択チャンネルを列で並べます(表計算向け)。": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wide: selected channels as columns per timestamp (spreadsheet-friendly)."
+          }
+        }
+      }
+    },
+    "機能": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Features"
+          }
+        }
+      }
+    },
+    "正規化(単位の異なる系列を 0-1 で重ねる)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Normalize (overlay series with different units on a 0-1 scale)"
+          }
+        }
+      }
+    },
+    "水平精度": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Horizontal Accuracy"
+          }
+        }
+      }
+    },
+    "注意": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Attention"
+          }
+        }
+      }
+    },
+    "消去": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clear"
+          }
+        }
+      }
+    },
+    "消費燃料": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fuel Used"
+          }
+        }
+      }
+    },
+    "点火時期": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ignition Timing"
+          }
+        }
+      }
+    },
+    "無料版は直近%lld件(行)までエクスポート。Pro で無制限。": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Free version exports up to the latest %lld rows. Unlimited with Pro."
+          }
+        }
+      }
+    },
+    "燃圧": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fuel Pressure"
+          }
+        }
+      }
+    },
+    "燃圧 (マニホールド比)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fuel Pressure (rel. manifold)"
+          }
+        }
+      }
+    },
+    "燃圧 (直噴レール)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fuel Rail Pressure (DI)"
+          }
+        }
+      }
+    },
+    "燃料残量": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fuel Level"
+          }
+        }
+      }
+    },
+    "燃料流量": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fuel Rate"
+          }
+        }
+      }
+    },
+    "現在": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Now"
+          }
+        }
+      }
+    },
+    "目標空燃比 (λ)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Commanded AFR (λ)"
+          }
+        }
+      }
+    },
+    "相対アクセルペダル": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Relative Accel Pedal"
+          }
+        }
+      }
+    },
+    "相対スロットル": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Relative Throttle"
+          }
+        }
+      }
+    },
+    "瞬間燃費": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Instant Economy"
+          }
+        }
+      }
+    },
+    "短期燃料補正 B1": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Short Fuel Trim B1"
+          }
+        }
+      }
+    },
+    "短期燃料補正 B2": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Short Fuel Trim B2"
+          }
+        }
+      }
+    },
+    "秒": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "s"
+          }
+        }
+      }
+    },
+    "端末の取り付け角度に依存せず、水平面の G を表示します。": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shows level-plane G regardless of the device's mounting angle."
+          }
+        }
+      }
+    },
+    "経度": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Longitude"
+          }
+        }
+      }
+    },
+    "絶対負荷": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Absolute Load"
+          }
+        }
+      }
+    },
+    "緯度": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Latitude"
+          }
+        }
+      }
+    },
+    "縦持ち(1行=1サンプル)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Long (1 row = 1 sample)"
+          }
+        }
+      }
+    },
+    "縦持ち: channel,name,unit,time,value の生ログ形式。": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Long: raw log format with channel,name,unit,time,value."
+          }
+        }
+      }
+    },
+    "自動判定中": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auto-detecting"
+          }
+        }
+      }
+    },
+    "航空写真": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Satellite"
+          }
+        }
+      }
+    },
+    "色分け": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Color Coding"
+          }
+        }
+      }
+    },
+    "表示": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Display"
+          }
+        }
+      }
+    },
+    "表示中のチャンネル": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Visible Channels"
+          }
+        }
+      }
+    },
+    "表示範囲": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Time Range"
+          }
+        }
+      }
+    },
+    "要求トルク": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Demanded Torque"
+          }
+        }
+      }
+    },
+    "触媒温度 B1S1": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Catalyst Temp B1S1"
+          }
+        }
+      }
+    },
+    "触媒温度 B1S2": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Catalyst Temp B1S2"
+          }
+        }
+      }
+    },
+    "触媒温度 B2S1": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Catalyst Temp B2S1"
+          }
+        }
+      }
+    },
+    "触媒温度 B2S2": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Catalyst Temp B2S2"
+          }
+        }
+      }
+    },
+    "計測中": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Measuring"
+          }
+        }
+      }
+    },
+    "計測完了": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Finished"
+          }
+        }
+      }
+    },
+    "計測開始": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Start Run"
+          }
+        }
+      }
+    },
+    "記録": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recording"
+          }
+        }
+      }
+    },
+    "記録 %lld 点": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recorded: %lld pts"
+          }
+        }
+      }
+    },
+    "記録が%lld件を超えています。エクスポートは切り詰められます — Pro で無制限に": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Over %lld records — the export will be truncated. Go unlimited with Pro"
+          }
+        }
+      }
+    },
+    "記録されたデータがまだありません": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No recorded data yet"
+          }
+        }
+      }
+    },
+    "記録を保存": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Save Run"
+          }
+        }
+      }
+    },
+    "記録を保存 (Pro)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Save Run (Pro)"
+          }
+        }
+      }
+    },
+    "記録を保存しました": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Run Saved"
+          }
+        }
+      }
+    },
+    "記録を消去": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clear Recording"
+          }
+        }
+      }
+    },
+    "設定": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Settings"
+          }
+        }
+      }
+    },
+    "買い切り、一回だけ。": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "One-time purchase."
+          }
+        }
+      }
+    },
+    "購入を復元": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restore Purchases"
+          }
+        }
+      }
+    },
+    "走行するとここに軌跡が描かれます(GPS 必須)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your route will be drawn here as you drive (GPS required)"
+          }
+        }
+      }
+    },
+    "走行すると軌跡が描かれます": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your route will be drawn as you drive"
+          }
+        }
+      }
+    },
+    "走行マップ": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Track Map"
+          }
+        }
+      }
+    },
+    "走行時間": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elapsed Time"
+          }
+        }
+      }
+    },
+    "走行距離": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Distance"
+          }
+        }
+      }
+    },
+    "走行距離 (GPS)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Distance (GPS)"
+          }
+        }
+      }
+    },
+    "距離リセット": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reset Distance"
+          }
+        }
+      }
+    },
+    "距離・時間・燃費の積算をゼロに戻します。": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Resets accumulated distance, time, and fuel economy to zero."
+          }
+        }
+      }
+    },
+    "車両に接続してライブデータを表示": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connect to your car to see live data"
+          }
+        }
+      }
+    },
+    "車速 (GPS)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Speed (GPS)"
+          }
+        }
+      }
+    },
+    "車速 (OBD)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Speed (OBD)"
+          }
+        }
+      }
+    },
+    "車速ソースがありません。OBD 接続(またはデモモード)か GPS を有効にしてください。": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No speed source. Connect OBD (or start demo mode) or enable GPS."
+          }
+        }
+      }
+    },
+    "軌跡を消去しますか?": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clear the track?"
+          }
+        }
+      }
+    },
+    "追加": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add"
+          }
+        }
+      }
+    },
+    "追従": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Follow"
+          }
+        }
+      }
+    },
+    "追従中": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Following"
+          }
+        }
+      }
+    },
+    "通信ログ": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Communication Log"
+          }
+        }
+      }
+    },
+    "速度": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Speed"
+          }
+        }
+      }
+    },
+    "選択したチャンネルの直近データがありません": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No recent data for the selected channels"
+          }
+        }
+      }
+    },
+    "重ね表示": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Overlay"
+          }
+        }
+      }
+    },
+    "長期燃料補正 B1": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Long Fuel Trim B1"
+          }
+        }
+      }
+    },
+    "長期燃料補正 B2": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Long Fuel Trim B2"
+          }
+        }
+      }
+    },
+    "閉じる": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Close"
+          }
+        }
+      }
+    },
+    "高度": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Altitude"
+          }
+        }
+      }
+    },
+    "高度 (GPS)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Altitude (GPS)"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

@@ -48,16 +48,16 @@ struct ChannelInfo: Identifiable {
     }
 
     private static let builtins: [String: ChannelInfo] = [
-        "meta.voltage": ChannelInfo(id: "meta.voltage", name: "アダプタ電圧", unit: "V", icon: "bolt.fill", tint: .yellow, fractionDigits: 2),
-        "gps.lat": ChannelInfo(id: "gps.lat", name: "緯度", unit: "°", icon: "mappin.and.ellipse", tint: .red, fractionDigits: 6),
-        "gps.lon": ChannelInfo(id: "gps.lon", name: "経度", unit: "°", icon: "mappin.and.ellipse", tint: .red, fractionDigits: 6),
-        "gps.speed": ChannelInfo(id: "gps.speed", name: "車速 (GPS)", unit: "km/h", icon: "location.fill", tint: .blue, fractionDigits: 1),
-        "gps.altitude": ChannelInfo(id: "gps.altitude", name: "高度 (GPS)", unit: "m", icon: "mountain.2", tint: .brown, fractionDigits: 1),
-        "gps.course": ChannelInfo(id: "gps.course", name: "方位 (GPS)", unit: "°", icon: "safari", tint: .cyan, fractionDigits: 0),
-        "gps.distance": ChannelInfo(id: "gps.distance", name: "走行距離 (GPS)", unit: "km", icon: "road.lanes", tint: .green, fractionDigits: 2),
-        "motion.gx": ChannelInfo(id: "motion.gx", name: "横 G", unit: "G", icon: "arrow.left.and.right", tint: .pink, fractionDigits: 2),
-        "motion.gy": ChannelInfo(id: "motion.gy", name: "前後 G", unit: "G", icon: "arrow.up.and.down", tint: .orange, fractionDigits: 2),
-        "motion.gmag": ChannelInfo(id: "motion.gmag", name: "合成 G", unit: "G", icon: "circle.dotted.circle", tint: .purple, fractionDigits: 2),
+        "meta.voltage": ChannelInfo(id: "meta.voltage", name: String(localized: "アダプタ電圧"), unit: "V", icon: "bolt.fill", tint: .yellow, fractionDigits: 2),
+        "gps.lat": ChannelInfo(id: "gps.lat", name: String(localized: "緯度"), unit: "°", icon: "mappin.and.ellipse", tint: .red, fractionDigits: 6),
+        "gps.lon": ChannelInfo(id: "gps.lon", name: String(localized: "経度"), unit: "°", icon: "mappin.and.ellipse", tint: .red, fractionDigits: 6),
+        "gps.speed": ChannelInfo(id: "gps.speed", name: String(localized: "車速 (GPS)"), unit: "km/h", icon: "location.fill", tint: .blue, fractionDigits: 1),
+        "gps.altitude": ChannelInfo(id: "gps.altitude", name: String(localized: "高度 (GPS)"), unit: "m", icon: "mountain.2", tint: .brown, fractionDigits: 1),
+        "gps.course": ChannelInfo(id: "gps.course", name: String(localized: "方位 (GPS)"), unit: "°", icon: "safari", tint: .cyan, fractionDigits: 0),
+        "gps.distance": ChannelInfo(id: "gps.distance", name: String(localized: "走行距離 (GPS)"), unit: "km", icon: "road.lanes", tint: .green, fractionDigits: 2),
+        "motion.gx": ChannelInfo(id: "motion.gx", name: String(localized: "横 G"), unit: "G", icon: "arrow.left.and.right", tint: .pink, fractionDigits: 2),
+        "motion.gy": ChannelInfo(id: "motion.gy", name: String(localized: "前後 G"), unit: "G", icon: "arrow.up.and.down", tint: .orange, fractionDigits: 2),
+        "motion.gmag": ChannelInfo(id: "motion.gmag", name: String(localized: "合成 G"), unit: "G", icon: "circle.dotted.circle", tint: .purple, fractionDigits: 2),
     ]
 }
 

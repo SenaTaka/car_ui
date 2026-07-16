@@ -155,7 +155,7 @@ struct DriveView: View {
 
     private func gValueRow(label: String, value: Double, tint: Color) -> some View {
         HStack {
-            Text(label)
+            Text(LocalizedStringKey(label))
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
 
@@ -236,7 +236,7 @@ struct DriveView: View {
                             saveRecord()
                         } label: {
                             Label(
-                                proStore.isPro ? "記録を保存" : "記録を保存 (Pro)",
+                                proStore.isPro ? String(localized: "記録を保存") : String(localized: "記録を保存 (Pro)"),
                                 systemImage: proStore.isPro ? "square.and.arrow.down" : "lock.fill"
                             )
                         }
@@ -275,13 +275,13 @@ struct DriveView: View {
     private var accelStateText: String {
         switch accelTest.state {
         case .idle:
-            return "待機"
+            return String(localized: "待機")
         case .armed:
-            return "停止状態から発進してください"
+            return String(localized: "停止状態から発進してください")
         case .running:
-            return "計測中"
+            return String(localized: "計測中")
         case .finished:
-            return "計測完了"
+            return String(localized: "計測完了")
         }
     }
 

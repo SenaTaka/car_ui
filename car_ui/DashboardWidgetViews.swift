@@ -42,7 +42,7 @@ struct ChartWidgetView: View {
             if samples.count >= 2 {
                 Chart(samples) { sample in
                     LineMark(
-                        x: .value("時刻", sample.time),
+                        x: .value(String(localized: "時刻"), sample.time),
                         y: .value(definition?.name ?? "", sample.value)
                     )
                     .foregroundStyle(definition?.tint ?? .blue)

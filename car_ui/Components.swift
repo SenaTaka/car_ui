@@ -17,7 +17,7 @@ struct StatusPill: View {
             Circle()
                 .fill(color)
                 .frame(width: 8, height: 8)
-            Text(label)
+            Text(LocalizedStringKey(label))
                 .font(.caption.weight(.semibold))
         }
         .padding(.horizontal, 10)
@@ -125,7 +125,9 @@ struct InfoItem: View {
                 .frame(width: 18)
 
             VStack(alignment: .leading, spacing: 2) {
-                Text(title)
+                // LocalizedStringKey 化: 呼び出し側の日本語リテラルをカタログで解決する
+                // (未登録の動的文字列はそのまま表示される)
+                Text(LocalizedStringKey(title))
                     .font(.caption)
                     .foregroundStyle(.secondary)
                 Text(value)

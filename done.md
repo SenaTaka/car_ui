@@ -205,3 +205,9 @@
 - IAP Pro 説明の DTC 除去: `/v1/apps/{id}/inAppPurchasesV2` が持続 500 のため、既知 IAP ID(6791539912)へ直接 PATCH する `asc_check_iap_loc.py`(scratchpad)で適用 → 読み返しで ja「広告除去・CSV無制限・記録保存」/ en「Ad-free, unlimited CSV, save runs」を確認
 - biz/asc/iap_spec.json も同文言へ修正済み(biz は git 管理外)
 - ASC 側の残り: App Privacy 回答見直し・iPad 非対応化の確認・IAP 審査提出(スクショ添付)・AdMob GDPR メッセージ作成 — いずれも Web での手動作業
+
+## 2026/07/17 02:15 (P1完了: 自動テスト + 全UI英語対応)
+- **REL-014 自動テスト**: car_uiTests ターゲット新設(pbxproj/scheme 手術)。PIDデコード境界値・0-100状態遷移・CSV行数制限・DriveRecord保存削除再読込・TrackPoint Codable往復・永続化往復=21テスト全パス。isolated deinit で落ちる iOS26.3 sim ランタイム問題は TestRetention + テスト時UI非起動ガードで回避
+- **REL-010 完全英語対応**: developmentRegion=ja、Localizable.xcstrings(283キー)+ InfoPlist.xcstrings(権限文言3種+表示名)を新設。PID名/チャンネル名/接続状態/G値/ウィジェット種別/地図凡例/StatusPill/加速計測状態など直書き159箇所を String(localized:)/LocalizedStringKey 化。英語ロケール実起動で Dashboard/Data/Drive/Tools 全タブが英語表示、権限ダイアログ理由文も en 解決を確認(※権限ダイアログ自体はシミュレータ既定言語依存)
+- コミット: 4249732(テスト), +本コミット(英語化)
+- **未対応**: REL-008 実車QAのみ(実車必須)。P0/P1のコード対応は全完了

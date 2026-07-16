@@ -155,7 +155,7 @@ struct SensorsView: View {
                 .foregroundStyle(tint)
                 .frame(width: 24)
 
-            Text(name)
+            Text(LocalizedStringKey(name))
                 .font(.subheadline)
                 .lineLimit(1)
                 .minimumScaleFactor(0.8)

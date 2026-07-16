@@ -143,9 +143,10 @@
 				};
 			};
 			buildConfigurationList = 5FEA57452F48A04400241157 /* Build configuration list for PBXProject "car_ui" */;
-			developmentRegion = en;
+			developmentRegion = ja;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				ja,
 				en,
 				Base,
 			);
