@@ -16,13 +16,12 @@ FIVE FOCUSED TABS
 • Data — every live sensor, overlaid or separate charts, CSV export (long or spreadsheet-friendly wide format)
 • Drive — trip computer with fuel economy, the color-coded track map, a G-force ball, and 0–100 timing
 • Engine Sound — procedural sound that follows your real RPM (all presets free)
-• Tools — read and clear trouble codes (DTC), raw commands, communication log
+• Tools — adapter info and communication log
 
 FREE INCLUDES
 Live data, the dashboard, track map, trip computer, HUD, and engine sound — free, with a small banner ad.
 
 PRO (ONE-TIME PURCHASE, OPTIONAL)
-• Clear diagnostic trouble codes (DTC)
 • Unlimited CSV logging
 • Save your 0–100 and G-force runs
 • Remove ads

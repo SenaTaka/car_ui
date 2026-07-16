@@ -1,1 +1,1 @@
-hud,rpm,gauge,vehicle,fault,code,bluetooth,ble,map,dashboard,speed,coolant,boost,reader,sensor
+hud,rpm,gauge,vehicle,bluetooth,ble,map,dashboard,speed,coolant,boost,reader,sensor

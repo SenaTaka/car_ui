@@ -23,7 +23,8 @@ struct PaywallView: View {
 
     private let benefits: [BenefitRow] = [
         BenefitRow(name: "広告なし", detail: "全タブのバナー広告を非表示", inAdFree: true),
-        BenefitRow(name: "DTC 消去", detail: "故障コードをワンタップで消去", inAdFree: false),
+        // 2026-07-16 リリース品質監査(REL-001〜004)により診断系を無効化したため特典から除外
+        // BenefitRow(name: "DTC 消去", detail: "故障コードをワンタップで消去", inAdFree: false),
         BenefitRow(name: "CSV 無制限", detail: "横持ち/縦持ちエクスポートを制限なく", inAdFree: false),
         BenefitRow(name: "記録の保存", detail: "0-100 加速・G フォースの記録を保存", inAdFree: false)
     ]

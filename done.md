@@ -181,3 +181,12 @@
 - FB対応: ①診断系(ツール/フリーズフレーム)スクショ削除=実車未検証のためプロモ除外(metadata からも車検セクション・promo の DTC 消去を削除、Pro リストの事実記載は残置)②マップ見出し「速度、回転数を地図上に表示」③計器→見たい情報 ④ルートが道路上にない問題 → **御堂筋(直線大通り)に高密度ウェイポイント**で撮り直し(直線補間でも路上に乗る)⑤「デモモード に接続済み」表記 → `-uiDemoName` 起動引数(撮影用フック、ELM327BluetoothModel.startDemoMode)で自然な接続名に
 - 再フレーム 5枚×2ロケール(01 ダッシュボード/02 マップ/03 HUD/04 エンジン音/05 データ)、store_lint PASS
 - ASC 再反映: メタデータ PATCH + スクショ入れ替え(旧7枚削除→新5枚、ja/en-US とも全 COMPLETE 確認)
+
+## 2026/07/16 21:15 (診断系をコメントアウトで全面無効化 — 監査 REL-001〜004 対応)
+- リリース品質監査(RELEASE_QUALITY_AUDIT.md)の P0 4件(DTC読取誤表示/消去誤表示/Pro回避/書き込みコマンド無警告送信)への管理者判断: 修正ではなく**診断系すべてを無効化**(レディネス/フリーズフレーム含む、ユーザー確認済み)
+- ToolsView: diagnosticsPanel・commandPanel・ReadinessPanel()・FreezeFramePanel() をコメントアウト(ツールタブはアダプタ情報+通信ログのみ)。proPanel の宣伝文言から DTC 消去を削除
+- ELM327BluetoothModel: readDiagnosticTroubleCodes/clearDiagnosticTroubleCodes/readReadinessStatus/readFreezeFrame/sendManualCommand をコメントアウト、接続時の自動レディネス読取も停止。@Published プロパティは内部リセットが参照するため残置
+- ReadinessPanel.swift / FreezeFramePanel.swift: struct 全体をコメントアウト
+- 文言整合(ガイドライン2.3): PaywallView 特典から DTC 消去除外、Products.storekit の Pro 説明を「広告除去・CSV ログ無制限・記録の保存」へ(F1 V10 恒久解錠の古い記載も除去=監査 §6.3)、store/metadata ja/en の description・subtitle・keywords から DTC/診断を除去
+- 検証: BUILD SUCCEEDED(iOS Simulator generic)
+- **残タスク**: ASC 反映済みメタデータが旧文言のまま → `biz/bin/asc_update_metadata.py` を再実行して subtitle/keywords/description を同期する必要あり。ASC の IAP(Pro)説明文も DTC 消去を含むなら要修正

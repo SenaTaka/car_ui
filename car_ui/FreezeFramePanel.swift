@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+// 2026-07-16 リリース品質監査(REL-001〜004)により診断系を無効化。再有効化には RELEASE_QUALITY_AUDIT.md の合格条件を満たすこと
+/*
 struct FreezeFramePanel: View {
     @EnvironmentObject private var obd: ELM327BluetoothModel
 
@@ -78,3 +80,4 @@ struct FreezeFramePanel: View {
         .panelStyle()
     }
 }
+*/

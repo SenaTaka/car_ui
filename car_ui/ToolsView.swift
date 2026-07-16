@@ -2,7 +2,7 @@
 //  ToolsView.swift
 //  car_ui
 //
-//  診断(DTC)・アダプタ情報・手動コマンド・通信ログ。
+//  アダプタ情報・通信ログ。
 //
 
 import SwiftUI
@@ -11,7 +11,8 @@ struct ToolsView: View {
     @EnvironmentObject private var obd: ELM327BluetoothModel
     @EnvironmentObject private var recorder: TelemetryRecorder
     @Environment(ProStore.self) private var proStore
-    @State private var manualCommand = "010C"
+    // 2026-07-16 リリース品質監査(REL-001〜004)により診断系を無効化。再有効化には RELEASE_QUALITY_AUDIT.md の合格条件を満たすこと
+    // @State private var manualCommand = "010C"
     @State private var showingPaywall = false
 
     var body: some View {
@@ -20,10 +21,11 @@ struct ToolsView: View {
                 VStack(alignment: .leading, spacing: 14) {
                     proPanel
                     adapterPanel
-                    diagnosticsPanel
-                    ReadinessPanel()
-                    FreezeFramePanel()
-                    commandPanel
+                    // 2026-07-16 リリース品質監査(REL-001〜004)により診断系を無効化。再有効化には RELEASE_QUALITY_AUDIT.md の合格条件を満たすこと
+                    // diagnosticsPanel
+                    // ReadinessPanel()
+                    // FreezeFramePanel()
+                    // commandPanel
                     logPanel
                 }
                 .padding()
@@ -60,8 +62,8 @@ struct ToolsView: View {
 
             if !proStore.isPro {
                 Text(proStore.isAdFree
-                     ? "広告除去は購入済み。Pro で DTC 消去・CSV 無制限・記録保存も使えます"
-                     : "広告除去・DTC 消去・CSV 無制限・記録保存")
+                     ? "広告除去は購入済み。Pro で CSV 無制限・記録保存も使えます"
+                     : "広告除去・CSV 無制限・記録保存")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
@@ -109,6 +111,8 @@ struct ToolsView: View {
         .panelStyle()
     }
 
+    // 2026-07-16 リリース品質監査(REL-001〜004)により診断系を無効化。再有効化には RELEASE_QUALITY_AUDIT.md の合格条件を満たすこと
+    /*
     private var diagnosticsPanel: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
@@ -202,6 +206,7 @@ struct ToolsView: View {
         }
         .panelStyle()
     }
+    */
 
     private var logPanel: some View {
         VStack(alignment: .leading, spacing: 10) {

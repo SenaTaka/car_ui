@@ -372,6 +372,9 @@ final class ELM327BluetoothModel: NSObject, ObservableObject {
         }
     }
 
+    // 2026-07-16 リリース品質監査(REL-001〜004)により診断系(DTC読取・消去・レディネス・フリーズフレーム・手動コマンド)を無効化。
+    // 再有効化には RELEASE_QUALITY_AUDIT.md の合格条件を満たすこと
+    /*
     func readDiagnosticTroubleCodes() {
         guard phase.isConnected else { return }
 
@@ -502,6 +505,7 @@ final class ELM327BluetoothModel: NSObject, ObservableObject {
             self.isSendingManualCommand = false
         }
     }
+    */
 
     private func initializeELM() async {
         guard let connectedPeripheral else { return }
@@ -546,7 +550,8 @@ final class ELM327BluetoothModel: NSObject, ObservableObject {
 
         phase = .connected(displayName(for: connectedPeripheral))
         appendLog("ELM327 初期化完了")
-        readReadinessStatus()
+        // 2026-07-16 診断系無効化に伴い自動レディネス読取も停止(RELEASE_QUALITY_AUDIT.md 参照)
+        // readReadinessStatus()
         startPolling()
     }
 
