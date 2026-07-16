@@ -171,3 +171,8 @@
 - **ASC へ API 反映**: `biz/bin/asc_update_metadata.py` 新設(store/metadata を読んで appStoreVersionLocalizations / appInfoLocalizations を PATCH)。version 1.0(PREPARE_FOR_SUBMISSION)に ja/en-US の説明文・キーワード・プロモ文・name/subtitle 反映済み。**初回バージョンは whatsNew 編集不可**(除外して再試行するフォールバック実装済み)
 - 検証: BUILD SUCCEEDED。比較表ペイウォール・初回提案フックをスクショ確認。ASC API は本実行ログで成功確認
 - **残タスク(手動)**: ①ASC Web でスクショ添付(store/screenshots/ja・en-US の 7枚ずつ) ②IAP の審査提出(スクショ添付要) ③Xcode Run で新プロダクト ID の価格表示・購入・復元確認 ④PrivacyInfo の広告SDK対応更新(既知・提出前)
+
+## 2026/07/16 (スクショも ASC へ API アップロード完了)
+- `biz/bin/asc_upload_screenshots.py` 新設: store/screenshots/<locale>/*.png をファイル名順に appScreenshotSet(APP_IPHONE_67)へ登録。手順=①POST /v1/appScreenshots で枠予約 ②uploadOperations に従いバイナリ PUT(分割対応)③PATCH uploaded=true + MD5 checksum。セット内の既存分は削除してから入れ直す(冪等)
+- 実行結果: ja 7枚 + en-US 7枚 全て assetDeliveryState=**COMPLETE** を API で確認(version 1.0)
+- これで ASC 側の残りは ①IAP 審査提出(IAP ごとの審査用スクショ添付が必要 — ASC Web)②ビルドのアップロードと審査提出 ③Xcode Run での購入フロー確認 ④PrivacyInfo 広告SDK対応
