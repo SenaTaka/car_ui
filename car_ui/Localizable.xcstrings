@@ -1031,6 +1031,16 @@
         }
       }
     },
+    "コンター凡例": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Contour legend"
+          }
+        }
+      }
+    },
     "サウンド": {
       "localizations": {
         "en": {
@@ -1537,6 +1547,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Location access is denied. Please allow it in the Settings app."
+          }
+        }
+      }
+    },
+    "低い %@ から 高い %@ %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "From low %1$@ to high %2$@ %3$@"
           }
         }
       }
@@ -2277,6 +2297,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Standard"
+          }
+        }
+      }
+    },
+    "横 %@ G、前後 %@ G": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lateral %1$@ G, longitudinal %2$@ G"
           }
         }
       }

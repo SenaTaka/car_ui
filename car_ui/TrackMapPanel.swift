@@ -247,6 +247,10 @@ private struct TrackLegend: View {
                 .font(.caption)
                 .foregroundStyle(.secondary)
         }
+        // レビュー 14章: 色だけに依存しないよう、凡例の意味を明示
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("コンター凡例")
+        .accessibilityValue("低い \(metricText(range?.lowerBound, digits: 0)) から 高い \(metricText(range?.upperBound, digits: 0)) \(unit)")
     }
 }
 

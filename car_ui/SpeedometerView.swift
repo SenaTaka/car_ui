@@ -22,6 +22,9 @@ struct SpeedometerView: View {
             centerLabel
         }
         .frame(width: size, height: size)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("車速")
+        .accessibilityValue("\(Int(currentSpeed)) km/h")
     }
 
     private var dialFace: some View {

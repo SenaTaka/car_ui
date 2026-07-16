@@ -215,6 +215,8 @@ struct Sparkline: View {
 
             context.stroke(path, with: .color(tint), style: StrokeStyle(lineWidth: 1.5, lineCap: .round, lineJoin: .round))
         }
+        // スパークラインは装飾。値は同じ行のテキストが読み上げるので VoiceOver からは隠す
+        .accessibilityHidden(true)
     }
 }
 

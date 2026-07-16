@@ -25,6 +25,9 @@ struct RPMGaugeView: View {
             centerLabel
         }
         .frame(width: size, height: size)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("エンジン回転数")
+        .accessibilityValue("\(Int(currentRpm)) rpm")
     }
 
     private var dialFace: some View {

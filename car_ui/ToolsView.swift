@@ -31,9 +31,10 @@ struct ToolsView: View {
                     privacyPanel
                 }
                 .padding()
+                .padding(.bottom, 72)
             }
             .background(Color(.systemGroupedBackground))
-            .navigationTitle("ツール")
+            .navigationTitle("その他")
             .sheet(isPresented: $showingPaywall) {
                 PaywallView()
             }

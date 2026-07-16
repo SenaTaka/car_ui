@@ -99,6 +99,9 @@ struct DriveView: View {
             HStack(spacing: 18) {
                 gBall
                     .frame(width: 170, height: 170)
+                    .accessibilityElement(children: .ignore)
+                    .accessibilityLabel("G フォース")
+                    .accessibilityValue("横 \(metricText(motion.lateralG, digits: 2)) G、前後 \(metricText(motion.longitudinalG, digits: 2)) G")
 
                 VStack(alignment: .leading, spacing: 10) {
                     gValueRow(label: "横 G", value: motion.lateralG, tint: .pink)

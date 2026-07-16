@@ -36,6 +36,10 @@ struct AnalogGaugeView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
         .aspectRatio(1, contentMode: .fit)
+        // レビュー 10-3・14章: カスタム描画は意味を自動で伝えないため明示する
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(Text(LocalizedStringKey(title)))
+        .accessibilityValue(Text(value == nil ? "未取得" : "\(metricText(value, digits: fractionDigits)) \(unit)"))
     }
 
     private func track(size: CGFloat) -> some View {
