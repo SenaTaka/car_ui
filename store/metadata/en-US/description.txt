@@ -27,8 +27,8 @@ PRO (ONE-TIME PURCHASE, OPTIONAL)
 • Remove ads
 Prefer just no ads? A cheaper ad-removal-only purchase is also available.
 
-NO ACCOUNT, NO TRACKING
-car_ui talks only to your ELM327 adapter over Bluetooth. There is no developer server for your car data. Try it with no hardware using the built-in demo mode.
+NO ACCOUNT NEEDED
+Your vehicle data comes straight from the ELM327 adapter over Bluetooth and is processed on your device — there is no developer server collecting it. The free version shows ads served by Google's ad SDK (buy Ad Removal or Pro and no ads are shown). Try it with no hardware using the built-in demo mode.
 
 REQUIRES an ELM327-compatible Bluetooth LE (BLE) OBD2 adapter and a vehicle with an OBD2 port (most cars sold since 2008).
 

@@ -75,6 +75,13 @@ struct ContentView: View {
             UIApplication.shared.isIdleTimerDisabled = true
             applyUITestLaunchArgumentsIfPresent()
         }
+        // 監査 REL-007: 起動ごとに UMP 同意情報を更新し、必要な同意フォームを表示。
+        // 同意が確定するまで広告 SDK は開始されない(広告除去購入者には不要)。
+        .task {
+            if !proStore.removesAds {
+                await AdConsentManager.shared.gatherConsent()
+            }
+        }
     }
 
     private var tabs: some View {

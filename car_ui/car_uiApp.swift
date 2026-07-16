@@ -5,14 +5,12 @@
 //  Created by Sena Takasawa on 2026/2/20.
 //
 
-import GoogleMobileAds
 import SwiftUI
 
 @main
 struct car_uiApp: App {
-    init() {
-        MobileAds.shared.start()
-    }
+    // 2026-07-16 監査 REL-007 対応: Mobile Ads SDK の開始は UMP 同意確定後に
+    // AdConsentManager が行う(ContentView の .task から起動ごとに更新)。
 
     var body: some Scene {
         WindowGroup {

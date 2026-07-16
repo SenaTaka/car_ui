@@ -27,6 +27,7 @@ struct ToolsView: View {
                     // FreezeFramePanel()
                     // commandPanel
                     logPanel
+                    privacyPanel
                 }
                 .padding()
             }
@@ -231,6 +232,29 @@ struct ToolsView: View {
             }
         }
         .panelStyle()
+    }
+
+    /// 監査 REL-007: UMP プライバシーオプション(広告同意の再設定)入口。
+    /// 同意フォームが必須の地域でのみ表示される。
+    @ViewBuilder
+    private var privacyPanel: some View {
+        if AdConsentManager.shared.isPrivacyOptionsRequired {
+            VStack(alignment: .leading, spacing: 10) {
+                Label("プライバシー", systemImage: "hand.raised")
+                    .font(.headline)
+
+                Button("広告プライバシー設定を変更") {
+                    Task {
+                        await AdConsentManager.shared.presentPrivacyOptions()
+                    }
+                }
+
+                Text("広告表示に関する同意内容をいつでも変更できます。")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+            .panelStyle()
+        }
     }
 
     private var supportedPIDText: String {

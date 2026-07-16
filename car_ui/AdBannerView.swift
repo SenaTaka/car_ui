@@ -23,12 +23,13 @@ struct AdBannerView: View {
         // シミュレータ用フック(本番挙動には影響しない)
         if ProcessInfo.processInfo.arguments.contains("-uiFakeBanner") {
             Color.orange.frame(maxWidth: .infinity).frame(height: 50)
-        } else {
-        BannerAdRepresentable(isLoaded: $isLoaded)
-            .frame(maxWidth: .infinity)
-            .frame(height: isLoaded ? 50 : 0)
-            .clipped()
-            .background(Color(.systemBackground))
+        } else if AdConsentManager.shared.canShowAds {
+            // 監査 REL-007: UMP 同意が確定(canRequestAds)するまで広告をリクエストしない
+            BannerAdRepresentable(isLoaded: $isLoaded)
+                .frame(maxWidth: .infinity)
+                .frame(height: isLoaded ? 50 : 0)
+                .clipped()
+                .background(Color(.systemBackground))
         }
     }
 }

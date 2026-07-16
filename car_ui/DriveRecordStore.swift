@@ -49,6 +49,25 @@ final class DriveRecordStore {
         return record
     }
 
+    func delete(atOffsets offsets: IndexSet) {
+        for index in offsets.sorted(by: >) where records.indices.contains(index) {
+            records.remove(at: index)
+        }
+        persist()
+    }
+
+    func delete(_ record: DriveRecord) {
+        records.removeAll { $0.id == record.id }
+        persist()
+    }
+
+    /// 0-100 km/h のベストタイム(秒)。該当スプリットがない記録は対象外。
+    var bestZeroToHundred: Double? {
+        records.compactMap { record in
+            record.splits.first { $0.targetKPH == 100 }?.seconds
+        }.min()
+    }
+
     private func load() {
         guard let data = UserDefaults.standard.data(forKey: Self.storageKey) else { return }
         records = (try? JSONDecoder().decode([DriveRecord].self, from: data)) ?? []

@@ -31,6 +31,13 @@ struct DriveView: View {
             }
             .background(Color(.systemGroupedBackground))
             .navigationTitle("ドライブ")
+            .toolbar {
+                NavigationLink {
+                    DriveRecordsView(store: recordStore)
+                } label: {
+                    Label("保存済み記録", systemImage: "list.bullet.clipboard")
+                }
+            }
             .onAppear {
                 motion.start()
                 location.start()
@@ -229,9 +236,12 @@ struct DriveView: View {
                         Spacer()
 
                         if !recordStore.records.isEmpty {
-                            Text("保存済み \(recordStore.records.count) 件")
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
+                            NavigationLink {
+                                DriveRecordsView(store: recordStore)
+                            } label: {
+                                Text("保存済み \(recordStore.records.count) 件")
+                                    .font(.caption)
+                            }
                         }
                     }
                 }

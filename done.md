@@ -190,3 +190,12 @@
 - 文言整合(ガイドライン2.3): PaywallView 特典から DTC 消去除外、Products.storekit の Pro 説明を「広告除去・CSV ログ無制限・記録の保存」へ(F1 V10 恒久解錠の古い記載も除去=監査 §6.3)、store/metadata ja/en の description・subtitle・keywords から DTC/診断を除去
 - 検証: BUILD SUCCEEDED(iOS Simulator generic)
 - **残タスク**: ASC 反映済みメタデータが旧文言のまま → `biz/bin/asc_update_metadata.py` を再実行して subtitle/keywords/description を同期する必要あり。ASC の IAP(Pro)説明文も DTC 消去を含むなら要修正
+
+## 2026/07/16 23:05 (残P0一括対応: REL-005/006/007/009 + ストア文言)
+- **REL-007 UMP同意フロー**: `AdConsentManager.swift` 新設(起動ごとに requestConsentInfoUpdate → loadAndPresentIfRequired → canRequestAds 確定後にのみ MobileAds.start + バナーロード)。`car_uiApp` の init からの無条件 SDK 開始を廃止、`ContentView.task` で広告除去未購入時のみ同意取得。`AdBannerView` は canShowAds までリクエストしない。ToolsView に UMP プライバシーオプション再設定入口(必須地域のみ表示)
+- **REL-005 保存記録閲覧**: `DriveRecordsView.swift` 新設(一覧/詳細/スワイプ削除/ShareLink共有/0-100ベスト表示)。`DriveRecordStore` に delete・bestZeroToHundred 追加。DriveView のツールバーと「保存済み N 件」から遷移
+- **REL-006 文言整合**: store/metadata ja/en の「トラッキングなし」「ELM327とだけ通信」を削除し、広告SDK通信を明示する正確な記述へ。keywords の subtitle 重複も解消、store_lint **PASS**
+- **REL-009 iPhone専用化**: TARGETED_DEVICE_FAMILY "1,2"→1(iPadスクショ不要に)
+- 検証: BUILD SUCCEEDED + iPhone Air(iOS 26.3.1)シミュレータで起動確認(ツールタブ=Pro/アダプタ/ログのみ、ドライブタブに記録入口、クラッシュなし)
+- **残タスク(手動)**: ①ASC メタデータ再同期(asc_update_metadata.py — APIキー要)②ASC 側 IAP Pro 説明の DTC 記載修正 ③ASC App Privacy 回答を Google SDK 込みで監査 ④iPad 非対応化に伴う ASC 設定確認 ⑤実車QA(REL-008)・UMP の EEA 実地検証
+- 注: UMP同意フォームは AdMob 管理画面の「プライバシーとメッセージ」で GDPR メッセージ作成が済んでいないと必須地域で表示されない — 提出前に要確認
