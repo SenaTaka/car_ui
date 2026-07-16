@@ -16,6 +16,7 @@ struct ChartsView: View {
     @State private var windowMinutes = 5
     @State private var normalized = false
     @State private var exportWideFormat = true
+    @State private var showingPaywall = false
     @AppStorage("charts.separate") private var separateCharts = false
 
     private let windowOptions = [1, 5, 15, 60]
@@ -43,6 +44,9 @@ struct ChartsView: View {
             }
             .background(Color(.systemGroupedBackground))
             .navigationTitle("チャート")
+            .sheet(isPresented: $showingPaywall) {
+                PaywallView()
+            }
             .onAppear(perform: selectDefaultChannels)
             // 起動直後にこのタブを開くと記録がまだ空でデフォルト選択が効かないため、
             // チャンネルが現れたタイミングでも選択し直す
@@ -265,9 +269,28 @@ struct ChartsView: View {
                 .foregroundStyle(.secondary)
 
             if !proStore.isPro {
-                Text("無料版は直近\(TelemetryRecorder.freeExportRowLimit)件(行)までエクスポート。Pro で無制限。")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+                if exportWillTruncate {
+                    // 制限に実際に達している瞬間が最も購入意欲が高い(文脈導線)
+                    Button {
+                        showingPaywall = true
+                    } label: {
+                        HStack(spacing: 6) {
+                            Image(systemName: "exclamationmark.triangle.fill")
+                            Text("記録が\(TelemetryRecorder.freeExportRowLimit)件を超えています。エクスポートは切り詰められます — Pro で無制限に")
+                                .multilineTextAlignment(.leading)
+                        }
+                        .font(.caption.weight(.semibold))
+                        .foregroundStyle(.orange)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(10)
+                        .background(.orange.opacity(0.1), in: RoundedRectangle(cornerRadius: 8))
+                    }
+                    .buttonStyle(.plain)
+                } else {
+                    Text("無料版は直近\(TelemetryRecorder.freeExportRowLimit)件(行)までエクスポート。Pro で無制限。")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
             }
         }
         .panelStyle()
@@ -275,6 +298,11 @@ struct ChartsView: View {
 
     private var exportChannels: [String] {
         selectedChannels.isEmpty ? recorder.channelIDs : Array(selectedChannels).sorted()
+    }
+
+    /// 無料版の切り詰めが実際に発生する記録量か
+    private var exportWillTruncate: Bool {
+        exportChannels.contains { recorder.samples($0).count > TelemetryRecorder.freeExportRowLimit }
     }
 
     private struct ChartSeries: Identifiable {

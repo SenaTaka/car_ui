@@ -16,8 +16,8 @@ import StoreKit
 final class ProStore {
     static let shared = ProStore()
 
-    static let proProductID = "Sena.car-ui.pro"
-    static let adFreeProductID = "Sena.car-ui.adfree"
+    static let proProductID = "Sena.car_ui.pro"
+    static let adFreeProductID = "Sena.car_ui.adfree"
     private static let allProductIDs = [proProductID, adFreeProductID]
 
     private(set) var products: [Product] = []

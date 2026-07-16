@@ -161,3 +161,13 @@
 - **編集UI**: `DashboardBuilderView.swift`(旧 DashboardCustomizeView は削除)— 並べ替え/削除/種類のあと変更(行の Menu で デジタル⇄アナログ⇄チャート)/追加(4種、PID 対象は PIDPickerView で選択)/デフォルトに戻す
 - 検証: BUILD SUCCEEDED。UserDefaults に混在レイアウトを直接注入して デモ+GPS ルートでスクショ確認(アナログメーター2種・航空写真ミニマップ・チャート2枚縦積み・タイル併存)。ビルダー画面は一時初期値で撮影→復元(TEMP 残存ゼロ)。注入した検証用レイアウトは defaults delete で除去済み
 - 注意: タイルは値未受信でも "--" で表示する仕様に変更(従来は自動非表示)。ウィジェットは明示追加制のため
+
+## 2026/07/16 (Pro収益最大化: ペイウォール刷新+導線+IAP/ASO を ASC 反映)
+- **ペイウォール刷新**: PaywallView を 無料/広告除去/Pro の3列比較表に(Pro おすすめバッジ・価格アンカリング・「買い切り、一回だけ。」訴求・2購入ボタン+復元)。sheet を .environment(proStore) の外側に付けると ProStore 未注入でクラッシュする点に注意(ContentView の初回提案 sheet は明示注入で対処)
+- **購入導線**: ①ChartsView — 記録が500件を超え実際に切り詰めが起きる時だけ警告ボタン→ペイウォール(exportWillTruncate) ②初回接続成功3秒後に一度だけプラン提案(@AppStorage "paywall.introOffered"、-uiDemo では抑制、-uiIntroOffer 1 で強制表示=検証フック)
+- **IAP を ASC 登録**: iap_spec.json に car_ui 2エントリ追加 → asc_create_iap.py 本実行で `Sena.car_ui.pro`(¥730)/`Sena.car_ui.adfree`(¥300)作成完了(ja/en-US ローカライズ・全175地域)。**ASC のプロダクト ID はハイフン不可**のため `Sena.car-ui.*` → `Sena.car_ui.*` に改名(ProStore/Products.storekit/spec の3箇所、未リリースなので安全)
+- **ASO 更新**: metadata(ja/en-US)を新機能反映で全面改稿(走行マップ色分け/自分用ダッシュボード/HUD/トリップ燃費/フリーズフレーム/レディネス=車検前チェック/CSV横持ち)。keywords: ja に「車検」、en を hud/map 入りに入れ替え。store_lint PASS
+- **スクショ 7枚×2ロケール**: 新機能入りで撮り直し(ダッシュボードウィジェット/ドライブ+マップ/HUD/エンジン音/データ個別チャート/レディネス/フリーズフレーム)。store_frame --lang ja で見出し加工、1290x2796、lint PASS。生素材は store/raw/new_*.png
+- **ASC へ API 反映**: `biz/bin/asc_update_metadata.py` 新設(store/metadata を読んで appStoreVersionLocalizations / appInfoLocalizations を PATCH)。version 1.0(PREPARE_FOR_SUBMISSION)に ja/en-US の説明文・キーワード・プロモ文・name/subtitle 反映済み。**初回バージョンは whatsNew 編集不可**(除外して再試行するフォールバック実装済み)
+- 検証: BUILD SUCCEEDED。比較表ペイウォール・初回提案フックをスクショ確認。ASC API は本実行ログで成功確認
+- **残タスク(手動)**: ①ASC Web でスクショ添付(store/screenshots/ja・en-US の 7枚ずつ) ②IAP の審査提出(スクショ添付要) ③Xcode Run で新プロダクト ID の価格表示・購入・復元確認 ④PrivacyInfo の広告SDK対応更新(既知・提出前)

@@ -18,6 +18,10 @@ struct ContentView: View {
     @State private var proStore = ProStore.shared
     @Environment(\.scenePhase) private var scenePhase
     @State private var selectedTab = 0
+    // 初回接続成功後に一度だけ出すプラン提案(価値体験の直後が最も反発が少ない)
+    @AppStorage("paywall.introOffered") private var introOffered = false
+    @State private var showingIntroPaywall = false
+    @State private var suppressIntroOffer = false
 
     var body: some View {
         VStack(spacing: 0) {
@@ -40,6 +44,21 @@ struct ContentView: View {
         .onReceive(obd.$liveValues) { values in
             engineSound.ingest(values)
             tripComputer.ingest(values)
+        }
+        // この sheet は .environment(proStore) より外側に付くため、
+        // シート内容へ明示的に環境を注入する(欠けると起動時クラッシュ)
+        .sheet(isPresented: $showingIntroPaywall) {
+            PaywallView()
+                .environment(proStore)
+        }
+        .onChange(of: obd.phase.isConnected) { _, isConnected in
+            guard isConnected, !introOffered, !suppressIntroOffer,
+                  !proStore.isPro, !proStore.isAdFree else { return }
+            introOffered = true
+            Task {
+                try? await Task.sleep(nanoseconds: 3_000_000_000)
+                showingIntroPaywall = true
+            }
         }
         .onChange(of: scenePhase) { _, newPhase in
             // 車載利用中は画面を暗転・スリープさせない(前面のときだけ有効化し、
@@ -101,10 +120,16 @@ struct ContentView: View {
             return args[idx + 1]
         }
         if value(after: "-uiDemo") == "1" {
+            // スクショ撮影を初回提案シートで汚さない
+            suppressIntroOffer = true
             obd.startDemoMode()
         }
         if let tabString = value(after: "-uiTab"), let tab = Int(tabString), (0...4).contains(tab) {
             selectedTab = tab
+        }
+        // 初回提案シートの検証用フック(フラグ状態に関係なく強制表示)
+        if value(after: "-uiIntroOffer") == "1" {
+            showingIntroPaywall = true
         }
     }
 }

@@ -13,7 +13,7 @@
           "locale" : "ja_JP"
         }
       ],
-      "productID" : "Sena.car-ui.adfree",
+      "productID" : "Sena.car_ui.adfree",
       "referenceName" : "広告除去",
       "type" : "NonConsumable"
     },
@@ -28,7 +28,7 @@
           "locale" : "ja_JP"
         }
       ],
-      "productID" : "Sena.car-ui.pro",
+      "productID" : "Sena.car_ui.pro",
       "referenceName" : "car_ui Pro",
       "type" : "NonConsumable"
     }

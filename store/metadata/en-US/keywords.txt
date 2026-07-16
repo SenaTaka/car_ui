@@ -1,1 +1,1 @@
-dtc,rpm,gauge,vehicle,fault,code,bluetooth,ble,tuner,dashboard,speed,coolant,boost,reader,sensor
+hud,rpm,gauge,vehicle,fault,code,bluetooth,ble,map,dashboard,speed,coolant,boost,reader,sensor
