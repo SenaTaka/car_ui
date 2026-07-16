@@ -42,6 +42,15 @@ struct DriveView: View {
                 motion.start()
                 location.start()
             }
+            // 監査 REL-012: ドライブセッション(OBD 接続)中でなければ、タブを離れた時点で
+            // GPS を停止する(以前はタブを一度開くと他タブでも最高精度 GPS が回り続けた)。
+            // 接続中は走行マップ・トリップの記録を継続するため止めない。
+            // データタブのセンサートグルからいつでも手動で制御できる。
+            .onDisappear {
+                if !obd.phase.isConnected {
+                    location.stop()
+                }
+            }
             .onReceive(obd.$liveValues) { values in
                 if let speed = values[0x0D] {
                     accelTest.update(speedKPH: speed)

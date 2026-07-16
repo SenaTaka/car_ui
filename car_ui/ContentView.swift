@@ -20,6 +20,8 @@ struct ContentView: View {
     @State private var selectedTab = 0
     // 初回接続成功後に一度だけ出すプラン提案(価値体験の直後が最も反発が少ない)
     @AppStorage("paywall.introOffered") private var introOffered = false
+    // 監査 REL-012: スリープ防止は接続中のみ+設定で無効化可能
+    @AppStorage("display.keepAwakeWhileConnected") private var keepAwakeWhileConnected = true
     @State private var showingIntroPaywall = false
     @State private var suppressIntroOffer = false
 
@@ -52,6 +54,7 @@ struct ContentView: View {
                 .environment(proStore)
         }
         .onChange(of: obd.phase.isConnected) { _, isConnected in
+            updateScreenWake()
             guard isConnected, !introOffered, !suppressIntroOffer,
                   !proStore.isPro, !proStore.isAdFree else { return }
             introOffered = true
@@ -61,18 +64,25 @@ struct ContentView: View {
             }
         }
         .onChange(of: scenePhase) { _, newPhase in
-            // 車載利用中は画面を暗転・スリープさせない(前面のときだけ有効化し、
-            // 背面ではロックを解放して電池を無駄にしない)
-            UIApplication.shared.isIdleTimerDisabled = (newPhase == .active)
+            // 監査 REL-012: スリープ防止は「前面 + OBD 接続中 + 設定オン」のときだけ
+            updateScreenWake()
             // エンジン音は他アプリ表示中もバックグラウンド再生を継続する
             // (Info.plist の UIBackgroundModes=audio + .playback セッション)。
             // OBD も背面継続(bluetooth-central)。駐車中の電池消費は
             // モデル側の駐車検知オートオフで保護する。
             obd.setBackgrounded(newPhase == .background)
+            // 監査 REL-011: 背面移行時に記録と軌跡をディスクへ退避(強制終了に備える)
+            if newPhase == .background {
+                recorder.persistToDisk()
+                TrackStore.shared.persistToDisk()
+            }
+        }
+        .onChange(of: keepAwakeWhileConnected) { _, _ in
+            updateScreenWake()
         }
         .onAppear {
             motion.start()
-            UIApplication.shared.isIdleTimerDisabled = true
+            updateScreenWake()
             applyUITestLaunchArgumentsIfPresent()
         }
         // 監査 REL-007: 起動ごとに UMP 同意情報を更新し、必要な同意フォームを表示。
@@ -116,6 +126,12 @@ struct ContentView: View {
                 }
                 .tag(4)
         }
+    }
+
+    /// 監査 REL-012: 画面スリープ防止は「前面 + OBD 接続中(デモ含む)+ 設定オン」に限定。
+    private func updateScreenWake() {
+        UIApplication.shared.isIdleTimerDisabled =
+            keepAwakeWhileConnected && scenePhase == .active && obd.phase.isConnected
     }
 
     /// App Store スクショ撮影用フック。起動引数が無ければ何もしない(本番挙動は不変)。

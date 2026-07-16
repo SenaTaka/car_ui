@@ -17,35 +17,43 @@ struct EngineSoundView: View {
         ZStack {
             background
 
-            VStack(spacing: 10) {
-                headerView
+            // 監査 REL-013: 固定 172pt ×2 は iPhone SE(論理幅 375pt)に収まらず、
+            // 横画面では縦方向がはみ出す。メーターは画面幅から可変にし、
+            // 全体をスクロール可能にして小型端末・横画面でも全操作へ到達できるようにする。
+            GeometryReader { geometry in
+                let gaugeSize = min(172, (geometry.size.width - 32 - 8) / 2)
 
-                // ツインダイヤル: 左タコ・右スピード(enjine-sim と同じ JDM 風)
-                HStack(spacing: 8) {
-                    RPMGaugeView(
-                        currentRpm: sound.displayRpm,
-                        maxRpm: sound.preset.parameters.maxRpm,
-                        redlineRpm: sound.preset.parameters.redlineRpm,
-                        idleRpm: sound.preset.parameters.idleRpm,
-                        size: 172
-                    )
+                ScrollView {
+                    VStack(spacing: 10) {
+                        headerView
 
-                    SpeedometerView(
-                        currentSpeed: sound.displaySpeed,
-                        topSpeed: 260,
-                        size: 172
-                    )
+                        // ツインダイヤル: 左タコ・右スピード(enjine-sim と同じ JDM 風)
+                        HStack(spacing: 8) {
+                            RPMGaugeView(
+                                currentRpm: sound.displayRpm,
+                                maxRpm: sound.preset.parameters.maxRpm,
+                                redlineRpm: sound.preset.parameters.redlineRpm,
+                                idleRpm: sound.preset.parameters.idleRpm,
+                                size: gaugeSize
+                            )
+
+                            SpeedometerView(
+                                currentSpeed: sound.displaySpeed,
+                                topSpeed: 260,
+                                size: gaugeSize
+                            )
+                        }
+
+                        infoDisplay
+                        statusRow
+                        controlButtons
+                        popsToggleRow
+                    }
+                    .padding(.horizontal, 16)
+                    .padding(.top, 8)
+                    .padding(.bottom, 12)
                 }
-
-                infoDisplay
-                statusRow
-                controlButtons
-                popsToggleRow
-
-                Spacer(minLength: 0)
             }
-            .padding(.horizontal, 16)
-            .padding(.top, 8)
         }
         .onAppear {
             restorePresetAndSync()

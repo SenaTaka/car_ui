@@ -10,7 +10,8 @@ import Combine
 import SwiftUI
 import UniformTypeIdentifiers
 
-struct TelemetrySample: Identifiable {
+// nonisolated: バックグラウンドでの JSON 符号化(persistToDisk)で使うため
+nonisolated struct TelemetrySample: Identifiable, Codable {
     let time: Date
     let value: Double
 
@@ -73,8 +74,15 @@ final class TelemetryRecorder: ObservableObject {
     private(set) var channelIDs: [String] = []
     private var storage: [String: [TelemetrySample]] = [:]
     private var lastPublish = Date.distantPast
+    private var lastPersist = Date()
 
     private let maxSamplesPerChannel = 3600
+    /// 監査 REL-011: 記録中はこの間隔でディスクへ退避(クラッシュ・強制終了に備える)
+    private let persistInterval: TimeInterval = 60
+
+    init() {
+        restoreFromDisk()
+    }
 
     var startDate: Date? {
         storage.values.compactMap { $0.first?.time }.min()
@@ -104,6 +112,41 @@ final class TelemetryRecorder: ObservableObject {
             lastPublish = now
             revision += 1
         }
+        if now.timeIntervalSince(lastPersist) > persistInterval {
+            persistToDisk()
+        }
+    }
+
+    // MARK: - 永続化(監査 REL-011: アプリ終了・クラッシュで記録が消えないように)
+
+    nonisolated static var persistURL: URL {
+        let dir = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
+            .appendingPathComponent("car_ui", isDirectory: true)
+        try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
+        return dir.appendingPathComponent("telemetry.json")
+    }
+
+    /// スナップショットをバックグラウンドで JSON 保存する(呼び出し側は待たない)。
+    func persistToDisk() {
+        lastPersist = Date()
+        let snapshot = storage
+        Task.detached(priority: .utility) {
+            let encoder = JSONEncoder()
+            encoder.dateEncodingStrategy = .secondsSince1970
+            guard let data = try? encoder.encode(snapshot) else { return }
+            try? data.write(to: Self.persistURL, options: .atomic)
+        }
+    }
+
+    private func restoreFromDisk() {
+        guard let data = try? Data(contentsOf: Self.persistURL) else { return }
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .secondsSince1970
+        guard let restored = try? decoder.decode([String: [TelemetrySample]].self, from: data),
+              !restored.isEmpty else { return }
+        storage = restored
+        channelIDs = restored.keys.sorted()
+        revision += 1
     }
 
     func latest(_ channelID: String) -> Double? {

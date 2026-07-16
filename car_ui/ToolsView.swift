@@ -27,6 +27,7 @@ struct ToolsView: View {
                     // FreezeFramePanel()
                     // commandPanel
                     logPanel
+                    settingsPanel
                     privacyPanel
                 }
                 .padding()
@@ -230,6 +231,24 @@ struct ToolsView: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
+        }
+        .panelStyle()
+    }
+
+    // 監査 REL-012: スリープ防止のユーザー制御
+    @AppStorage("display.keepAwakeWhileConnected") private var keepAwakeWhileConnected = true
+
+    private var settingsPanel: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Label("設定", systemImage: "gearshape")
+                .font(.headline)
+
+            Toggle("接続中は画面をスリープさせない", isOn: $keepAwakeWhileConnected)
+                .font(.subheadline)
+
+            Text("オンの場合、OBD 接続中(デモ含む)だけ画面を常時点灯します。未接続時は通常どおりスリープします。")
+                .font(.caption)
+                .foregroundStyle(.secondary)
         }
         .panelStyle()
     }
