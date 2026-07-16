@@ -17,6 +17,7 @@ struct ChartsView: View {
     @State private var normalized = false
     @State private var exportWideFormat = true
     @State private var showingPaywall = false
+    @State private var showingChannelPicker = false
     @AppStorage("charts.separate") private var separateCharts = false
 
     private let windowOptions = [1, 5, 15, 60]
@@ -53,6 +54,9 @@ struct ChartsView: View {
             .onChange(of: recorder.channelIDs.count) { _, _ in
                 selectDefaultChannels()
             }
+            .sheet(isPresented: $showingChannelPicker) {
+                ChannelPickerView(channelIDs: recorder.channelIDs, selected: $selectedChannels)
+            }
         }
     }
 
@@ -81,37 +85,35 @@ struct ChartsView: View {
                 Label("チャンネル選択", systemImage: "checklist")
                     .font(.headline)
                 Spacer()
-                Text("\(selectedChannels.count) / \(recorder.channelIDs.count)")
-                    .font(.caption.monospacedDigit())
-                    .foregroundStyle(.secondary)
+                Button {
+                    showingChannelPicker = true
+                } label: {
+                    Label("\(selectedChannels.count) 件を選択", systemImage: "slider.horizontal.3")
+                        .font(.subheadline)
+                }
+                .buttonStyle(.bordered)
+                .controlSize(.small)
             }
 
-            FlowLayout(items: recorder.channelIDs) { channelID in
-                let info = ChannelInfo.info(for: channelID)
-                let isSelected = selectedChannels.contains(channelID)
-
-                Button {
-                    if isSelected {
-                        selectedChannels.remove(channelID)
-                    } else {
-                        selectedChannels.insert(channelID)
+            // 選択中チャンネルを色チップで一覧(タップでピッカーを開く)
+            if selectedChannels.isEmpty {
+                Text("チャンネルが選択されていません")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            } else {
+                FlowLayout(items: selectedChannels.sorted()) { channelID in
+                    let info = ChannelInfo.info(for: channelID)
+                    HStack(spacing: 5) {
+                        Circle().fill(info.tint).frame(width: 7, height: 7)
+                        Text(info.name)
+                            .font(.caption.weight(.semibold))
+                            .lineLimit(1)
                     }
-                } label: {
-                    Text(info.name)
-                        .font(.caption.weight(.semibold))
-                        .lineLimit(1)
-                        .padding(.horizontal, 10)
-                        .padding(.vertical, 6)
-                        .background(
-                            isSelected ? info.tint.opacity(0.18) : Color(.systemFill).opacity(0.5),
-                            in: Capsule()
-                        )
-                        .foregroundStyle(isSelected ? info.tint : .secondary)
-                        .overlay(
-                            Capsule().stroke(isSelected ? info.tint : .clear, lineWidth: 1)
-                        )
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 6)
+                    .background(info.tint.opacity(0.14), in: Capsule())
+                    .foregroundStyle(info.tint)
                 }
-                .buttonStyle(.plain)
             }
         }
         .panelStyle()
@@ -123,10 +125,19 @@ struct ChartsView: View {
                 Label("時系列", systemImage: "chart.xyaxis.line")
                     .font(.headline)
                 Spacer()
-                Text("記録 \(recorder.totalSampleCount) 点")
+                // レビュー 7-8: 生の点数ではなく記録時間を表示(ユーザーに意味のある情報)
+                Text(recordingDurationText)
                     .font(.caption.monospacedDigit())
                     .foregroundStyle(.secondary)
             }
+
+            // レビュー 7-7: 期間切替をチャート上部へ固定(下までスクロール不要)
+            Picker("表示範囲", selection: $windowMinutes) {
+                ForEach(windowOptions, id: \.self) { minutes in
+                    Text(minutes >= 60 ? "\(minutes / 60)時間" : "\(minutes)分").tag(minutes)
+                }
+            }
+            .pickerStyle(.segmented)
 
             Picker("表示", selection: $separateCharts) {
                 Text("重ね表示").tag(false)
@@ -154,10 +165,16 @@ struct ChartsView: View {
 
                                 Spacer()
 
-                                if let lastValue = series.points.last?.value {
-                                    Text(metricText(lastValue, digits: 1))
-                                        .font(.caption.monospacedDigit().weight(.semibold))
-                                        .foregroundStyle(series.tint)
+                                // レビュー 7-3: 現在値に「現在」+ 時刻ラベルを添える
+                                if let last = series.points.last {
+                                    VStack(alignment: .trailing, spacing: 0) {
+                                        Text("現在 \(metricText(last.value, digits: 1))")
+                                            .font(.caption.monospacedDigit().weight(.semibold))
+                                            .foregroundStyle(series.tint)
+                                        Text(last.time, format: .dateTime.hour().minute().second())
+                                            .font(.caption2.monospacedDigit())
+                                            .foregroundStyle(.secondary)
+                                    }
                                 }
                             }
 
@@ -167,8 +184,10 @@ struct ChartsView: View {
                                     y: .value(series.name, point.value)
                                 )
                                 .foregroundStyle(series.tint)
+                                .lineStyle(series.strokeStyle)
                                 .interpolationMethod(.monotone)
                             }
+                            .chartXAxis { sharedXAxis }
                             .frame(height: 110)
                         }
                     }
@@ -183,6 +202,8 @@ struct ChartsView: View {
                                 series: .value("チャンネル", series.name)
                             )
                             .foregroundStyle(by: .value("チャンネル", series.name))
+                            // レビュー 7-1: GPS 速度は破線にして OBD 速度と線種でも区別
+                            .lineStyle(series.strokeStyle)
                             .interpolationMethod(.monotone)
                         }
                     }
@@ -191,6 +212,7 @@ struct ChartsView: View {
                     domain: chartSeries.map(\.name),
                     range: chartSeries.map(\.tint)
                 )
+                .chartXAxis { sharedXAxis }
                 .chartLegend(position: .bottom, alignment: .leading)
                 .frame(height: 260)
             }
@@ -200,18 +222,33 @@ struct ChartsView: View {
         .onChange(of: recorder.revision) { _, _ in }
     }
 
+    /// レビュー 7-4: X軸ラベルの右端切れを防ぐ(本数を絞り時刻のみ・内側寄せ)
+    private var sharedXAxis: some AxisContent {
+        AxisMarks(preset: .aligned, values: .automatic(desiredCount: 4)) { value in
+            AxisGridLine()
+            AxisValueLabel(format: .dateTime.hour().minute(), anchor: .top)
+        }
+    }
+
+    /// レビュー 7-8: 記録時間(生の点数ではなく意味のある情報)
+    private var recordingDurationText: String {
+        guard let start = recorder.startDate else { return "" }
+        let secs = Int(Date().timeIntervalSince(start))
+        let m = secs / 60, s = secs % 60
+        return m > 0 ? String(localized: "記録 \(m)分\(s)秒") : String(localized: "記録 \(s)秒")
+    }
+
     private var controlPanel: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Picker("表示範囲", selection: $windowMinutes) {
-                ForEach(windowOptions, id: \.self) { minutes in
-                    Text(minutes >= 60 ? "\(minutes / 60)時間" : "\(minutes)分").tag(minutes)
-                }
-            }
-            .pickerStyle(.segmented)
-
+            // レビュー 7-6: 専門語「正規化」を平易な表現へ
             Toggle(isOn: $normalized) {
-                Label("正規化(単位の異なる系列を 0-1 で重ねる)", systemImage: "arrow.up.left.and.arrow.down.right")
-                    .font(.subheadline)
+                VStack(alignment: .leading, spacing: 2) {
+                    Label("変化を比較", systemImage: "arrow.up.left.and.arrow.down.right")
+                        .font(.subheadline)
+                    Text("各データを 0〜100% に換算して重ねます")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
             }
 
             HStack(spacing: 8) {
@@ -310,6 +347,12 @@ struct ChartsView: View {
         let name: String
         let tint: Color
         let points: [TelemetrySample]
+        /// GPS 系は破線にして OBD 系と線種でも区別する(レビュー 7-1)
+        let dashed: Bool
+
+        var strokeStyle: StrokeStyle {
+            dashed ? StrokeStyle(lineWidth: 2, dash: [5, 3]) : StrokeStyle(lineWidth: 2)
+        }
     }
 
     private var chartSeries: [ChartSeries] {
@@ -325,7 +368,7 @@ struct ChartsView: View {
             }
 
             let displayName = info.unit.isEmpty ? info.name : "\(info.name) [\(info.unit)]"
-            return ChartSeries(id: channelID, name: displayName, tint: info.tint, points: points)
+            return ChartSeries(id: channelID, name: displayName, tint: info.tint, points: points, dashed: channelID.hasPrefix("gps."))
         }
     }
 

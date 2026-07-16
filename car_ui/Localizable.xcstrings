@@ -131,6 +131,16 @@
         }
       }
     },
+    "%lld / 最大 %lld": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld / max %lld"
+          }
+        }
+      }
+    },
     "%lld RPM": {
       "localizations": {
         "en": {
@@ -167,6 +177,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "%lld dBm"
+          }
+        }
+      }
+    },
+    "%lld 件": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld selected"
+          }
+        }
+      }
+    },
+    "%lld 件を選択": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld selected"
           }
         }
       }
@@ -1151,6 +1181,26 @@
         }
       }
     },
+    "チャンネルが選択されていません": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No channels selected"
+          }
+        }
+      }
+    },
+    "チャンネルを検索": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Search channels"
+          }
+        }
+      }
+    },
     "チャンネル選択": {
       "localizations": {
         "en": {
@@ -1591,6 +1641,16 @@
         }
       }
     },
+    "全解除": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clear all"
+          }
+        }
+      }
+    },
     "共有": {
       "localizations": {
         "en": {
@@ -1731,6 +1791,16 @@
         }
       }
     },
+    "各データを 0〜100% に換算して重ねます": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Overlays each series rescaled to 0–100%"
+          }
+        }
+      }
+    },
     "合成 G": {
       "localizations": {
         "en": {
@@ -1827,6 +1897,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Reference Torque"
+          }
+        }
+      }
+    },
+    "変化を比較": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Compare changes"
           }
         }
       }
@@ -2371,6 +2451,16 @@
         }
       }
     },
+    "現在 %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Now %@"
+          }
+        }
+      }
+    },
     "目標空燃比 (λ)": {
       "localizations": {
         "en": {
@@ -2687,6 +2777,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Recorded: %lld pts"
+          }
+        }
+      }
+    },
+    "記録 %lld分%lld秒": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recorded %1 %2"
+          }
+        }
+      }
+    },
+    "記録 %lld秒": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recorded %llds"
           }
         }
       }
@@ -3047,6 +3157,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "No recent data for the selected channels"
+          }
+        }
+      }
+    },
+    "選択中 %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Selected %@"
           }
         }
       }

@@ -150,22 +150,34 @@ struct SensorsView: View {
         unit: String,
         digits: Int
     ) -> some View {
-        HStack(spacing: 10) {
+        // レビュー P0#10・13章: 未取得 / 古い値 / 現行値 を区別する
+        let hasValue = value != nil
+        let isStale = hasValue && recorder.isStale(channelID)
+        _ = recorder.revision  // 鮮度の再評価トリガ
+
+        return HStack(spacing: 10) {
             Image(systemName: icon)
-                .foregroundStyle(tint)
+                .foregroundStyle(isStale ? AnyShapeStyle(.secondary) : AnyShapeStyle(tint))
                 .frame(width: 24)
 
-            Text(LocalizedStringKey(name))
-                .font(.subheadline)
-                .lineLimit(1)
-                .minimumScaleFactor(0.8)
+            VStack(alignment: .leading, spacing: 1) {
+                Text(LocalizedStringKey(name))
+                    .font(.subheadline)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.8)
+                if isStale {
+                    Text("更新なし")
+                        .font(.caption2)
+                        .foregroundStyle(.orange)
+                }
+            }
 
             Spacer(minLength: 8)
 
             // recorder.revision の更新でスパークラインが再描画される
             Sparkline(
                 samples: recorder.samples(channelID, since: Date().addingTimeInterval(-120)),
-                tint: tint
+                tint: isStale ? .secondary : tint
             )
             .frame(width: 64, height: 22)
             .id(recorder.revision)
@@ -173,6 +185,7 @@ struct SensorsView: View {
             HStack(alignment: .firstTextBaseline, spacing: 3) {
                 Text(metricText(value, digits: digits))
                     .font(.subheadline.weight(.bold).monospacedDigit())
+                    .foregroundStyle(hasValue ? (isStale ? Color.secondary : Color.primary) : Color(.tertiaryLabel))
                 Text(unit)
                     .font(.caption2)
                     .foregroundStyle(.secondary)

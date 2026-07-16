@@ -100,14 +100,8 @@ struct MetricTile: View {
         }
         .padding(12)
         .frame(maxWidth: .infinity, minHeight: 104, alignment: .leading)
-        .background(Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 10))
-        .overlay(alignment: .topTrailing) {
-            Circle()
-                .fill(tint.opacity(0.16))
-                .frame(width: 44, height: 44)
-                .offset(x: 14, y: -14)
-        }
-        .clipShape(RoundedRectangle(cornerRadius: 10))
+        // レビュー 3-5: 意味を持たない装飾半透明円を削除(データUIのノイズ)
+        .background(Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: DS.Radius.control))
     }
 }
 

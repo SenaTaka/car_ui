@@ -110,11 +110,11 @@ struct EngineSoundView: View {
 
     private var infoDisplay: some View {
         HStack(spacing: 0) {
-            infoStat(value: "\(Int(obd.liveValues[0x0D] ?? 0))", unit: "KM/H", color: .white)
+            infoStat(value: "\(Int(obd.liveValues[0x0D] ?? 0))", unit: "km/h", color: .white)
             divider
             infoStat(value: "\(Int(obd.liveValues[0x04] ?? 0))%", unit: "LOAD", color: .orange)
             divider
-            infoStat(value: "\(sound.preset.parameters.cylinders)", unit: "CYLINDERS", color: .blue)
+            infoStat(value: "\(sound.preset.parameters.cylinders)", unit: "CYL", color: .blue)
         }
         .padding(.vertical, 10)
         .background(Color.white.opacity(0.04))
