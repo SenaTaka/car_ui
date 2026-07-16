@@ -105,8 +105,13 @@ final class AccelTestModel: ObservableObject {
     @Published private(set) var state: State = .idle
     @Published private(set) var splits: [Split] = []
     @Published private(set) var elapsed: Double = 0
+    /// 自動計測モード(レビュー 9-3: 完全停止で自動待機→発進で自動開始)。
+    /// 走行直前のタップを運転者に要求しないための安全機能。
+    @Published var autoStart = true
 
     private let targets = [20, 40, 60, 80, 100]
+    /// この速度未満を「停止」とみなす
+    private let stopThreshold: Double = 1
 
     var isMeasuring: Bool {
         if case .running = state { return true }
@@ -119,6 +124,14 @@ final class AccelTestModel: ObservableObject {
         elapsed = 0
     }
 
+    func setAutoStart(_ enabled: Bool) {
+        autoStart = enabled
+        // 手動へ切り替えたら待機状態はリセット(誤発進を防ぐ)
+        if !enabled, state == .armed {
+            state = .idle
+        }
+    }
+
     func cancel() {
         state = .idle
         splits = []
@@ -127,10 +140,22 @@ final class AccelTestModel: ObservableObject {
 
     func update(speedKPH: Double, at time: Date = Date()) {
         switch state {
-        case .idle, .finished:
-            return
+        case .idle:
+            // 自動モード: 停止を検出したら発進待ちへ(手動時は arm() を待つ)
+            if autoStart, speedKPH < stopThreshold {
+                state = .armed
+                splits = []
+                elapsed = 0
+            }
+        case .finished:
+            // 自動モード: 完了後に再び停止したら次の計測へ自動リセット
+            if autoStart, speedKPH < stopThreshold {
+                state = .armed
+                splits = []
+                elapsed = 0
+            }
         case .armed:
-            if speedKPH >= 1 {
+            if speedKPH >= stopThreshold {
                 state = .running(time)
             }
         case .running(let startTime):

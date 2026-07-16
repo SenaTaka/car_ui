@@ -25,6 +25,7 @@ struct ChannelInfo: Identifiable {
     let icon: String
     let tint: Color
     let fractionDigits: Int
+    var category: PIDCategory = .other
 
     static func info(for channelID: String) -> ChannelInfo {
         if let pid = PIDCatalog.definition(forChannel: channelID) {
@@ -34,7 +35,8 @@ struct ChannelInfo: Identifiable {
                 unit: pid.unit,
                 icon: pid.icon,
                 tint: pid.tint,
-                fractionDigits: pid.fractionDigits
+                fractionDigits: pid.fractionDigits,
+                category: pid.category
             )
         }
         return builtins[channelID] ?? ChannelInfo(
@@ -48,16 +50,16 @@ struct ChannelInfo: Identifiable {
     }
 
     private static let builtins: [String: ChannelInfo] = [
-        "meta.voltage": ChannelInfo(id: "meta.voltage", name: String(localized: "アダプタ電圧"), unit: "V", icon: "bolt.fill", tint: .yellow, fractionDigits: 2),
-        "gps.lat": ChannelInfo(id: "gps.lat", name: String(localized: "緯度"), unit: "°", icon: "mappin.and.ellipse", tint: .red, fractionDigits: 6),
-        "gps.lon": ChannelInfo(id: "gps.lon", name: String(localized: "経度"), unit: "°", icon: "mappin.and.ellipse", tint: .red, fractionDigits: 6),
-        "gps.speed": ChannelInfo(id: "gps.speed", name: String(localized: "車速 (GPS)"), unit: "km/h", icon: "location.fill", tint: .blue, fractionDigits: 1),
-        "gps.altitude": ChannelInfo(id: "gps.altitude", name: String(localized: "高度 (GPS)"), unit: "m", icon: "mountain.2", tint: .brown, fractionDigits: 1),
-        "gps.course": ChannelInfo(id: "gps.course", name: String(localized: "方位 (GPS)"), unit: "°", icon: "safari", tint: .cyan, fractionDigits: 0),
-        "gps.distance": ChannelInfo(id: "gps.distance", name: String(localized: "走行距離 (GPS)"), unit: "km", icon: "road.lanes", tint: .green, fractionDigits: 2),
-        "motion.gx": ChannelInfo(id: "motion.gx", name: String(localized: "横 G"), unit: "G", icon: "arrow.left.and.right", tint: .pink, fractionDigits: 2),
-        "motion.gy": ChannelInfo(id: "motion.gy", name: String(localized: "前後 G"), unit: "G", icon: "arrow.up.and.down", tint: .orange, fractionDigits: 2),
-        "motion.gmag": ChannelInfo(id: "motion.gmag", name: String(localized: "合成 G"), unit: "G", icon: "circle.dotted.circle", tint: .purple, fractionDigits: 2),
+        "meta.voltage": ChannelInfo(id: "meta.voltage", name: String(localized: "アダプタ電圧"), unit: "V", icon: "bolt.fill", tint: .yellow, fractionDigits: 2, category: .engine),
+        "gps.lat": ChannelInfo(id: "gps.lat", name: String(localized: "緯度"), unit: "°", icon: "mappin.and.ellipse", tint: .red, fractionDigits: 6, category: .other),
+        "gps.lon": ChannelInfo(id: "gps.lon", name: String(localized: "経度"), unit: "°", icon: "mappin.and.ellipse", tint: .red, fractionDigits: 6, category: .other),
+        "gps.speed": ChannelInfo(id: "gps.speed", name: String(localized: "車速 (GPS)"), unit: "km/h", icon: "location.fill", tint: .blue, fractionDigits: 1, category: .driving),
+        "gps.altitude": ChannelInfo(id: "gps.altitude", name: String(localized: "高度 (GPS)"), unit: "m", icon: "mountain.2", tint: .brown, fractionDigits: 1, category: .other),
+        "gps.course": ChannelInfo(id: "gps.course", name: String(localized: "方位 (GPS)"), unit: "°", icon: "safari", tint: .cyan, fractionDigits: 0, category: .other),
+        "gps.distance": ChannelInfo(id: "gps.distance", name: String(localized: "走行距離 (GPS)"), unit: "km", icon: "road.lanes", tint: .green, fractionDigits: 2, category: .driving),
+        "motion.gx": ChannelInfo(id: "motion.gx", name: String(localized: "横 G"), unit: "G", icon: "arrow.left.and.right", tint: .pink, fractionDigits: 2, category: .driving),
+        "motion.gy": ChannelInfo(id: "motion.gy", name: String(localized: "前後 G"), unit: "G", icon: "arrow.up.and.down", tint: .orange, fractionDigits: 2, category: .driving),
+        "motion.gmag": ChannelInfo(id: "motion.gmag", name: String(localized: "合成 G"), unit: "G", icon: "circle.dotted.circle", tint: .purple, fractionDigits: 2, category: .driving),
     ]
 }
 
@@ -151,6 +153,17 @@ final class TelemetryRecorder: ObservableObject {
 
     func latest(_ channelID: String) -> Double? {
         storage[channelID]?.last?.value
+    }
+
+    /// チャンネルの最終サンプル時刻(未取得なら nil)。データ鮮度の判定に使う(レビュー P0#10, 13章)。
+    func lastUpdated(_ channelID: String) -> Date? {
+        storage[channelID]?.last?.time
+    }
+
+    /// チャンネルが「古い」か(最終更新から `DS.staleThreshold` 秒超)。未取得は false(= 別途「未取得」扱い)。
+    func isStale(_ channelID: String, now: Date = Date()) -> Bool {
+        guard let last = storage[channelID]?.last?.time else { return false }
+        return now.timeIntervalSince(last) > DS.staleThreshold
     }
 
     func samples(_ channelID: String, since: Date? = nil) -> [TelemetrySample] {

@@ -19,18 +19,24 @@ struct DriveView: View {
 
     var body: some View {
         NavigationStack {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 14) {
-                    TripPanel()
-                    TrackMapPanel()
-                    gForcePanel
-                    accelTestPanel
-                    gpsPanel
+            VStack(spacing: 0) {
+                // レビュー 1-3: 走行タブ上部に常設のセッションバー
+                SessionBar()
+
+                ScrollView {
+                    VStack(alignment: .leading, spacing: DS.Space.cardGap) {
+                        TripPanel()
+                        gForcePanel
+                        accelTestPanel
+                        gpsPanel
+                    }
+                    .padding()
+                    // タブバー被り回避(レビュー 2-2)
+                    .padding(.bottom, 72)
                 }
-                .padding()
             }
             .background(Color(.systemGroupedBackground))
-            .navigationTitle("ドライブ")
+            .navigationTitle("走行")
             .toolbar {
                 NavigationLink {
                     DriveRecordsView(store: recordStore)
@@ -192,6 +198,13 @@ struct DriveView: View {
 
                 Spacer()
 
+                // レビュー 9-3: 自動モードは走行直前のタップを要求しない
+                Toggle(isOn: autoStartTiming) {
+                    Text("自動")
+                        .font(.caption.weight(.semibold))
+                }
+                .toggleStyle(.button)
+
                 if accelTest.isMeasuring {
                     Button(role: .destructive) {
                         accelTest.cancel()
@@ -199,7 +212,7 @@ struct DriveView: View {
                         Label("中止", systemImage: "xmark")
                     }
                     .buttonStyle(.bordered)
-                } else {
+                } else if !accelTest.autoStart {
                     Button {
                         accelTest.arm()
                     } label: {
@@ -210,7 +223,23 @@ struct DriveView: View {
                 }
             }
 
-            if speedSourceUnavailable {
+            // 自動モードの状態説明(停止検出→発進で自動開始)
+            if accelTest.autoStart, !accelTest.isMeasuring {
+                Text(speedSourceUnavailable
+                     ? "車速ソースがありません。OBD 接続かデモモード、または GPS を有効にしてください。"
+                     : "完全停止すると自動で待機し、発進で計測を開始します。")
+                    .font(.caption)
+                    .foregroundStyle(speedSourceUnavailable ? .orange : .secondary)
+            }
+
+            // GPS のみで計測する場合、精度が低いと信頼できない(レビュー 9-4)
+            if obd.liveValues[0x0D] == nil, location.isActive, !location.quality.allowsAccelTiming {
+                Text("GPS 精度が低いため、加速計測の値は参考値です。")
+                    .font(.caption)
+                    .foregroundStyle(.orange)
+            }
+
+            if speedSourceUnavailable, !accelTest.autoStart {
                 Text("車速ソースがありません。OBD 接続(またはデモモード)か GPS を有効にしてください。")
                     .font(.caption)
                     .foregroundStyle(.orange)
@@ -268,6 +297,10 @@ struct DriveView: View {
         showingSaveConfirmation = true
     }
 
+    private var autoStartTiming: Binding<Bool> {
+        Binding(get: { accelTest.autoStart }, set: { accelTest.setAutoStart($0) })
+    }
+
     private var speedSourceUnavailable: Bool {
         obd.liveValues[0x0D] == nil && location.speedKPH == nil
     }
@@ -322,6 +355,16 @@ struct DriveView: View {
                 InfoItem(title: "方位", value: location.courseDegrees.map { "\(metricText($0, digits: 0))°" } ?? "--", systemImage: "safari")
                 InfoItem(title: "走行距離", value: "\(metricText(location.totalDistanceKm, digits: 2)) km", systemImage: "road.lanes")
                 InfoItem(title: "水平精度", value: location.horizontalAccuracyM.map { "±\(metricText($0, digits: 0)) m" } ?? "--", systemImage: "scope")
+            }
+
+            // レビュー 9-4: GPS 精度を数値だけでなく品質として言語化
+            HStack(spacing: 6) {
+                Circle().fill(location.quality.color).frame(width: 8, height: 8)
+                Text("GPS 品質: ")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                + Text(location.quality.label)
+                    .font(.caption.weight(.semibold))
             }
 
             if let obdSpeed = obd.liveValues[0x0D], let gpsSpeed = location.speedKPH {

@@ -8,6 +8,31 @@
 
 import SwiftUI
 
+/// チャンネル分類(レビュー 6章・8章: チャンネル選択のカテゴリ化)
+enum PIDCategory: String, CaseIterable, Identifiable {
+    case driving   // 走行
+    case engine    // エンジン
+    case fuel      // 燃料
+    case intake    // 吸排気
+    case temperature // 温度
+    case diagnostics // 診断
+    case other     // その他
+
+    var id: String { rawValue }
+
+    var label: LocalizedStringKey {
+        switch self {
+        case .driving: return "走行"
+        case .engine: return "エンジン"
+        case .fuel: return "燃料"
+        case .intake: return "吸排気"
+        case .temperature: return "温度"
+        case .diagnostics: return "診断"
+        case .other: return "その他"
+        }
+    }
+}
+
 struct PIDDefinition: Identifiable {
     let pid: UInt8
     let name: String
@@ -21,6 +46,26 @@ struct PIDDefinition: Identifiable {
     var id: UInt8 { pid }
     var channelID: String { String(format: "obd.%02X", pid) }
     var command: String { String(format: "01%02X", pid) }
+
+    /// PID から分類を決定(レビュー 6章・8章)
+    var category: PIDCategory {
+        switch pid {
+        case 0x0C, 0x0D, 0x11, 0x45, 0x49, 0x4A, 0x4C, 0x31, 0x62, 0x63, 0x64:
+            return .driving          // 回転数・車速・スロットル・トルク・距離
+        case 0x04, 0x05, 0x0E, 0x1F, 0x43, 0x52, 0x5C, 0x42:
+            return .engine           // 負荷・点火・稼働時間・エタノール・油温・ECU電圧
+        case 0x06, 0x07, 0x08, 0x09, 0x0A, 0x22, 0x23, 0x2F, 0x5E, 0x51, 0x44:
+            return .fuel             // 燃料補正・燃圧・残量・流量・λ
+        case 0x0B, 0x0F, 0x10, 0x33, 0x46, 0x47, 0x48, 0x2C, 0x2D:
+            return .intake           // 吸気圧・吸気温・MAF・大気圧・EGR/パージ
+        case 0x3C, 0x3D, 0x3E, 0x3F:
+            return .temperature      // 触媒温度
+        case 0x14...0x1B:
+            return .fuel             // O2 センサー(燃料系)
+        default:
+            return .other
+        }
+    }
 }
 
 enum PIDCatalog {

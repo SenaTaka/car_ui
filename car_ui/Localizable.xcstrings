@@ -471,6 +471,26 @@
         }
       }
     },
+    "GPS 品質: ": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GPS quality: "
+          }
+        }
+      }
+    },
+    "GPS 精度が低いため、加速計測の値は参考値です。": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GPS accuracy is low; timing values are approximate."
+          }
+        }
+      }
+    },
     "HUD": {
       "localizations": {
         "en": {
@@ -781,6 +801,16 @@
         }
       }
     },
+    "その他": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "More"
+          }
+        }
+      }
+    },
     "アクセルペダル D": {
       "localizations": {
         "en": {
@@ -967,6 +997,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Contour Range"
+          }
+        }
+      }
+    },
+    "サウンド": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sound"
           }
         }
       }
@@ -1351,12 +1391,42 @@
         }
       }
     },
+    "マップ": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Map"
+          }
+        }
+      }
+    },
     "ミラー反転": {
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Mirror"
+          }
+        }
+      }
+    },
+    "メーター": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gauges"
+          }
+        }
+      }
+    },
+    "ライブ": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Live"
           }
         }
       }
@@ -1421,6 +1491,16 @@
         }
       }
     },
+    "低精度": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Low"
+          }
+        }
+      }
+    },
     "保存済み %lld 件": {
       "localizations": {
         "en": {
@@ -1467,6 +1547,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Separate"
+          }
+        }
+      }
+    },
+    "停止": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stop"
           }
         }
       }
@@ -1541,6 +1631,16 @@
         }
       }
     },
+    "分析": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analysis"
+          }
+        }
+      }
+    },
     "切断": {
       "localizations": {
         "en": {
@@ -1557,6 +1657,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Initializing"
+          }
+        }
+      }
+    },
+    "利用不可": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unavailable"
           }
         }
       }
@@ -1747,6 +1857,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Done"
+          }
+        }
+      }
+    },
+    "完全停止すると自動で待機し、発進で計測を開始します。": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auto-arms at a full stop and starts timing when you launch."
           }
         }
       }
@@ -2016,7 +2136,7 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Not Connected"
+            "value": "Offline"
           }
         }
       }
@@ -2381,6 +2501,16 @@
         }
       }
     },
+    "自動": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auto"
+          }
+        }
+      }
+    },
     "自動(実測の最小〜最大)": {
       "localizations": {
         "en": {
@@ -2411,6 +2541,16 @@
         }
       }
     },
+    "良好": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Good"
+          }
+        }
+      }
+    },
     "色分け": {
       "localizations": {
         "en": {
@@ -2426,7 +2566,7 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Display"
+            "value": "View"
           }
         }
       }
@@ -2571,6 +2711,16 @@
         }
       }
     },
+    "記録していません": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not recording"
+          }
+        }
+      }
+    },
     "記録を保存": {
       "localizations": {
         "en": {
@@ -2611,6 +2761,26 @@
         }
       }
     },
+    "記録を開始": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Start Recording"
+          }
+        }
+      }
+    },
+    "記録中": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recording"
+          }
+        }
+      }
+    },
     "設定": {
       "localizations": {
         "en": {
@@ -2637,6 +2807,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Restore Purchases"
+          }
+        }
+      }
+    },
+    "走行": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Drive"
           }
         }
       }
@@ -2771,6 +2951,16 @@
         }
       }
     },
+    "車速ソースがありません。OBD 接続かデモモード、または GPS を有効にしてください。": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No speed source. Connect OBD or demo mode, or enable GPS."
+          }
+        }
+      }
+    },
     "軌跡を消去しますか?": {
       "localizations": {
         "en": {
@@ -2817,6 +3007,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Communication Log"
+          }
+        }
+      }
+    },
+    "通常": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Normal"
           }
         }
       }

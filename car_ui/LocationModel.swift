@@ -8,6 +8,38 @@
 @preconcurrency import CoreLocation
 import Combine
 import Foundation
+import SwiftUI
+
+/// GPS 精度の言語化(レビュー 9-4)。数値だけでなく品質を明示する。
+enum GPSQuality {
+    case unavailable  // 取得できていない
+    case low          // 低精度(> 25m): 軌跡・加速計測に影響
+    case normal       // 通常(10〜25m)
+    case good         // 良好(< 10m)
+
+    var label: LocalizedStringKey {
+        switch self {
+        case .unavailable: return "利用不可"
+        case .low: return "低精度"
+        case .normal: return "通常"
+        case .good: return "良好"
+        }
+    }
+
+    var color: Color {
+        switch self {
+        case .unavailable: return DS.Role.disabled
+        case .low: return DS.Role.danger
+        case .normal: return DS.Role.warn
+        case .good: return DS.Role.ok
+        }
+    }
+
+    /// この品質で 0-100 GPS 計測を許可してよいか(低精度・利用不可は不可)
+    var allowsAccelTiming: Bool {
+        self == .good || self == .normal
+    }
+}
 
 final class LocationModel: NSObject, ObservableObject {
     @Published private(set) var isActive = false
@@ -17,6 +49,16 @@ final class LocationModel: NSObject, ObservableObject {
     @Published private(set) var courseDegrees: Double?
     @Published private(set) var horizontalAccuracyM: Double?
     @Published private(set) var totalDistanceKm: Double = 0
+
+    /// 水平精度から算出した GPS 品質(レビュー 9-4)
+    var quality: GPSQuality {
+        guard isActive, let accuracy = horizontalAccuracyM else { return .unavailable }
+        switch accuracy {
+        case ..<10: return .good
+        case ..<25: return .normal
+        default: return .low
+        }
+    }
 
     private let manager = CLLocationManager()
     private var lastLocation: CLLocation?

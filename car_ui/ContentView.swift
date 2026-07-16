@@ -47,6 +47,10 @@ struct ContentView: View {
             engineSound.ingest(values)
             tripComputer.ingest(values)
         }
+        // セッションの走行距離を LocationModel の積算距離から更新
+        .onReceive(location.$totalDistanceKm) { km in
+            DriveSessionManager.shared.updateDistance(km)
+        }
         // この sheet は .environment(proStore) より外側に付くため、
         // シート内容へ明示的に環境を注入する(欠けると起動時クラッシュ)
         .sheet(isPresented: $showingIntroPaywall) {
@@ -95,34 +99,35 @@ struct ContentView: View {
     }
 
     private var tabs: some View {
+        // レビュー 1-1: 5タブを行動単位へ再定義(メーター/走行/分析/サウンド/その他)
         TabView(selection: $selectedTab) {
             DashboardView()
                 .tabItem {
-                    Label("ダッシュボード", systemImage: "gauge.with.dots.needle.67percent")
+                    Label("メーター", systemImage: "gauge.with.dots.needle.67percent")
                 }
                 .tag(0)
 
-            DataView()
+            DriveView()
                 .tabItem {
-                    Label("データ", systemImage: "chart.bar.xaxis")
+                    Label("走行", systemImage: "steeringwheel")
                 }
                 .tag(1)
 
-            DriveView()
+            AnalysisView()
                 .tabItem {
-                    Label("ドライブ", systemImage: "steeringwheel")
+                    Label("分析", systemImage: "chart.xyaxis.line")
                 }
                 .tag(2)
 
             EngineSoundView()
                 .tabItem {
-                    Label("エンジン音", systemImage: "engine.combustion.fill")
+                    Label("サウンド", systemImage: "engine.combustion.fill")
                 }
                 .tag(3)
 
             ToolsView()
                 .tabItem {
-                    Label("ツール", systemImage: "wrench.and.screwdriver")
+                    Label("その他", systemImage: "ellipsis.circle")
                 }
                 .tag(4)
         }
