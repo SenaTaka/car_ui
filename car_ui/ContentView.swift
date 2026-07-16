@@ -20,41 +20,41 @@ struct ContentView: View {
     @State private var selectedTab = 0
 
     var body: some View {
-        VStack(spacing: 0) {
-            TabView(selection: $selectedTab) {
-                DashboardView()
-                    .tabItem {
-                        Label("ダッシュボード", systemImage: "gauge.with.dots.needle.67percent")
-                    }
-                    .tag(0)
+        TabView(selection: $selectedTab) {
+            DashboardView()
+                .tabItem {
+                    Label("ダッシュボード", systemImage: "gauge.with.dots.needle.67percent")
+                }
+                .tag(0)
 
-                DataView()
-                    .tabItem {
-                        Label("データ", systemImage: "chart.bar.xaxis")
-                    }
-                    .tag(1)
+            DataView()
+                .tabItem {
+                    Label("データ", systemImage: "chart.bar.xaxis")
+                }
+                .tag(1)
 
-                DriveView()
-                    .tabItem {
-                        Label("ドライブ", systemImage: "steeringwheel")
-                    }
-                    .tag(2)
+            DriveView()
+                .tabItem {
+                    Label("ドライブ", systemImage: "steeringwheel")
+                }
+                .tag(2)
 
-                EngineSoundView()
-                    .tabItem {
-                        Label("エンジン音", systemImage: "engine.combustion.fill")
-                    }
-                    .tag(3)
+            EngineSoundView()
+                .tabItem {
+                    Label("エンジン音", systemImage: "engine.combustion.fill")
+                }
+                .tag(3)
 
-                ToolsView()
-                    .tabItem {
-                        Label("ツール", systemImage: "wrench.and.screwdriver")
-                    }
-                    .tag(4)
-            }
-
-            // 全タブ共通の最下部バナー(タブバーの下)。Pro は広告除去。
-            if !proStore.isPro {
+            ToolsView()
+                .tabItem {
+                    Label("ツール", systemImage: "wrench.and.screwdriver")
+                }
+                .tag(4)
+        }
+        // 全タブ共通の最下部バナー。safeAreaInset なのでタブバーはバナーの上に
+        // 正しく持ち上がり、下端が切れない。Pro / 広告除去購入者は非表示。
+        .safeAreaInset(edge: .bottom, spacing: 0) {
+            if !proStore.removesAds {
                 AdBannerView()
             }
         }

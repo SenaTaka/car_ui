@@ -3,6 +3,21 @@
   "nonRenewingSubscriptions" : [],
   "products" : [
     {
+      "displayPrice" : "300",
+      "familyShareable" : false,
+      "internalID" : "7A31FF20-64B1-4E64-9C0D-2B58F1D3A611",
+      "localizations" : [
+        {
+          "description" : "全タブのバナー広告を非表示にします",
+          "displayName" : "広告除去",
+          "locale" : "ja_JP"
+        }
+      ],
+      "productID" : "Sena.car-ui.adfree",
+      "referenceName" : "広告除去",
+      "type" : "NonConsumable"
+    },
+    {
       "displayPrice" : "730",
       "familyShareable" : false,
       "internalID" : "410827E9-D6F2-4C1F-938D-C15AD900F0DB",

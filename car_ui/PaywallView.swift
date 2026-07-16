@@ -38,6 +38,9 @@ struct PaywallView: View {
             .onChange(of: proStore.isPro) { _, isPro in
                 if isPro { dismiss() }
             }
+            .onChange(of: proStore.isAdFree) { _, isAdFree in
+                if isAdFree { dismiss() }
+            }
         }
     }
 
@@ -112,6 +115,30 @@ struct PaywallView: View {
             .foregroundStyle(.white)
             .disabled(proStore.isPurchasing || proStore.proProduct == nil)
 
+            // 広告だけ消したい人向けの単品(Pro は広告除去を含む上位互換)
+            if !proStore.isAdFree {
+                Button {
+                    Task { await proStore.purchaseAdFree() }
+                } label: {
+                    Text(adFreeButtonTitle)
+                        .font(.subheadline.weight(.semibold))
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 44)
+                }
+                .buttonStyle(.bordered)
+                .disabled(proStore.isPurchasing || proStore.adFreeProduct == nil)
+
+                Text("広告除去のみの買い切りです。DTC 消去などの Pro 機能は含みません。")
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
+                    .frame(maxWidth: .infinity, alignment: .center)
+            } else {
+                Text("広告除去は購入済みです。Pro にすると残りの機能も使えます。")
+                    .font(.caption)
+                    .foregroundStyle(.green)
+                    .frame(maxWidth: .infinity, alignment: .center)
+            }
+
             Button("購入を復元") {
                 Task { await proStore.restore() }
             }
@@ -126,6 +153,13 @@ struct PaywallView: View {
             return "\(product.displayPrice) で Pro を購入"
         }
         return proStore.isLoadingProducts ? "読み込み中…" : "Pro を購入"
+    }
+
+    private var adFreeButtonTitle: String {
+        if let product = proStore.adFreeProduct {
+            return "広告除去のみ \(product.displayPrice)"
+        }
+        return proStore.isLoadingProducts ? "読み込み中…" : "広告除去のみ"
     }
 }
 

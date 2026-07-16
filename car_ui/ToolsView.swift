@@ -59,7 +59,9 @@ struct ToolsView: View {
             }
 
             if !proStore.isPro {
-                Text("広告除去・DTC 消去・CSV 無制限・記録保存")
+                Text(proStore.isAdFree
+                     ? "広告除去は購入済み。Pro で DTC 消去・CSV 無制限・記録保存も使えます"
+                     : "広告除去・DTC 消去・CSV 無制限・記録保存")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }

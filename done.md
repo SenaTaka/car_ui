@@ -137,3 +137,10 @@
 - **バナー隙間修正(ユーザー指摘)**: AdBannerView が未ロードでも 50pt の白枠を常時確保していた → BannerViewDelegate で受信検知し、ロード完了まで高さ 0 に collapse。タブバー下の空白帯が解消
 - 検証: xcodebuild BUILD SUCCEEDED。csvWideData は swiftc 単体テストで出力確認(時刻整列・空欄化・縦持ち互換)。地図は `simctl location start --speed=17 --distance=40 <5点>` で東京の実ルートを流し、速度コンター(青→赤)・凡例・現在位置マーカーをスクショ確認。CSV UI はパネル順を一時入替で撮影→復元(`rg "TEMP:"` 残存ゼロ)
 - 注意: 軌跡・記録はメモリのみ(アプリ終了で消える)。地図の再構築は 10 点ごとに間引き(mapRefreshKey)。加速度計の前後 G 符号問題は未修正(別タスク、車速相関の自動キャリブレーション案を提示済み)
+
+## 2026/07/16 (広告除去単品IAP + 走行マップ拡大/追従/航空写真 + タブバー切れ修正)
+- **広告除去の有料モデル(2段構え)**: `Sena.car-ui.adfree`(¥300 買い切り・広告非表示のみ)を Products.storekit に追加。ProStore を 2 商品対応に(`isAdFree`、広告判定は `removesAds = isPro || isAdFree`)。PaywallView に「広告除去のみ」ボタン+購入済み表示、ToolsView の Pro パネル文言も対応。**要対応: App Store Connect に adfree 商品(¥300)の登録が必要**。scheme の StoreKit 構成での価格表示・購入・復元は Xcode Run で要確認(simctl 起動では構成が乗らない)
+- **走行マップ改善(ユーザー要望)**: ①「拡大」ボタン+パネル地図タップでフルスクリーン表示(`TrackMapExpandedView`)。自由にパン/ズーム、「追従」ボタンで現在位置中心の固定表示(800m スパン、車載常時表示向け・画面スリープなしは既存対応)、「全体」で軌跡全体にフィット ②地図スタイル「標準/航空写真(hybrid)」切替(パネル・拡大共通の @AppStorage) ③コンター計算を `TrackContour` に共通化、パネル地図は `interactionModes: []` のプレビュー扱い
+- **タブバー下端切れ修正(ユーザー指摘)**: バナーを VStack 下段 → `TabView.safeAreaInset(edge: .bottom)` に変更。TabView 圧縮でセーフエリアが失われタブバーが切れる問題を解消。広告ロード時はタブバーがバナーの上に正しく持ち上がる
+- 検証: xcodebuild BUILD SUCCEEDED。simctl location の東京ルートで拡大マップ(航空写真+コンター+追従中/全体/凡例)をスクショ確認。ペイウォール 2 ボタン構成もスクショ確認(価格は StoreKit 構成が乗らないため未表示 = 既知の環境制約)。タブバーが下端まで表示されることを確認。一時変更(`TEMP:`)は復元済み・残存ゼロ
+- 未検証: 実機での広告ロード時のタブバー持ち上がり、adfree 購入フロー(App Store Connect 登録後)
