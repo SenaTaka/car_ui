@@ -15,8 +15,16 @@ struct ChartsView: View {
     @State private var selectedChannels: Set<String> = []
     @State private var windowMinutes = 5
     @State private var normalized = false
+    @State private var exportWideFormat = true
 
     private let windowOptions = [1, 5, 15, 60]
+
+    /// エクスポート用チャンネルプリセット(存在するチャンネルだけ選択される)
+    private let exportPresets: [(name: String, channels: [String])] = [
+        ("ドライブ", ["gps.lat", "gps.lon", "obd.0D", "gps.speed", "obd.0C", "motion.gx", "motion.gy", "motion.gmag"]),
+        ("エンジン", ["obd.0C", "obd.04", "obd.11", "obd.05", "obd.0B", "obd.10", "obd.0E"]),
+        ("燃費", ["obd.0D", "obd.0C", "obd.10", "obd.5E", "obd.2F", "gps.distance"])
+    ]
 
     var body: some View {
         NavigationStack {
@@ -156,9 +164,36 @@ struct ChartsView: View {
                     .font(.subheadline)
             }
 
+            HStack(spacing: 8) {
+                Text("プリセット")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+
+                ForEach(exportPresets, id: \.name) { preset in
+                    Button(preset.name) {
+                        selectedChannels = Set(preset.channels.filter { recorder.channelIDs.contains($0) })
+                    }
+                    .font(.caption.weight(.semibold))
+                    .buttonStyle(.bordered)
+                    .controlSize(.small)
+                }
+
+                Spacer()
+            }
+
+            Picker("CSV 形式", selection: $exportWideFormat) {
+                Text("横持ち(1行=1時刻)").tag(true)
+                Text("縦持ち(1行=1サンプル)").tag(false)
+            }
+            .pickerStyle(.segmented)
+
             HStack {
                 ShareLink(
-                    item: TelemetryCSV(channelIDs: exportChannels, isPro: proStore.isPro),
+                    item: TelemetryCSV(
+                        channelIDs: exportChannels,
+                        isPro: proStore.isPro,
+                        format: exportWideFormat ? .wide : .long
+                    ),
                     preview: SharePreview("テレメトリ CSV", image: Image(systemName: "tablecells"))
                 ) {
                     Label("CSV 書き出し", systemImage: "square.and.arrow.up")
@@ -177,8 +212,14 @@ struct ChartsView: View {
                 .buttonStyle(.bordered)
             }
 
+            Text(exportWideFormat
+                 ? "横持ち: 時刻ごとに選択チャンネルを列で並べます(表計算向け)。"
+                 : "縦持ち: channel,name,unit,time,value の生ログ形式。")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+
             if !proStore.isPro {
-                Text("無料版は各チャンネル直近\(TelemetryRecorder.freeExportRowLimit)件までエクスポート。Pro で無制限。")
+                Text("無料版は直近\(TelemetryRecorder.freeExportRowLimit)件(行)までエクスポート。Pro で無制限。")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }

@@ -130,3 +130,10 @@
 - **HUD**: `HUDView.swift`(fullScreenCover、黒背景+緑の巨大速度+RPM バー、`hud.mirrored` でコンテンツのみ scaleEffect(x:-1)、操作ボタンは非反転)。起動はダッシュボード heroPanel の HUD バッジ
 - 検証: 各ステップで xcodebuild BUILD SUCCEEDED。iPhone 17 Pro Max (B35FB639) デモモードで全画面スクショ確認(レディネス/トリップ積算/カスタマイズシート/HUD 通常+ミラー)。タップが必要な画面は初期値を一時変更して撮影→復元済み(`rg "TEMP: screenshot"` で残存ゼロ確認)。ミラー検証は `simctl spawn defaults write hud.mirrored` を利用
 - **未検証(要実車)**: Mode 02 実応答(手動コマンド `020C00` で確認可)、0101 実応答、MAF 燃費推定の妥当性。ディーゼルでは燃費が過大推定(将来 readiness の点火方式フラグで AFR 切替可)
+
+## 2026/07/16 (走行マップ・コンター表示 + CSV 横持ち + バナー隙間修正)
+- **走行マップ**: `TrackStore.swift`(GPS 軌跡リングバッファ 7200 点・1 秒間引き。各点に OBD 車速優先の速度と RPM を紐付け、5 秒より古い OBD 値は不採用)+ `TrackMapPanel.swift`(DriveView に配置。MapKit の MapPolyline を色バケット単位でまとめて描画、速度/回転数の切替 Picker、青→赤ヒートマップ+凡例、60 秒超のギャップで線を分断、消去ボタン)。LocationModel から水平精度 <100m の点だけ送る
+- **CSV 横持ち**: `TelemetryRecorder.csvWideData`(0.5 秒グリッドに時刻整列、各セルは直前サンプルを forward-fill、5 秒超の古い値は空欄、全列空の行はスキップ)。`TelemetryCSV` に format(.long/.wide)追加。`gps.lat`/`gps.lon` チャンネルを新設(LocationModel が記録、fractionDigits 6)。ChartsView にプリセット(ドライブ/エンジン/燃費)+ 横持ち/縦持ち切替を追加。無料版の 500 行制限は両形式に適用
+- **バナー隙間修正(ユーザー指摘)**: AdBannerView が未ロードでも 50pt の白枠を常時確保していた → BannerViewDelegate で受信検知し、ロード完了まで高さ 0 に collapse。タブバー下の空白帯が解消
+- 検証: xcodebuild BUILD SUCCEEDED。csvWideData は swiftc 単体テストで出力確認(時刻整列・空欄化・縦持ち互換)。地図は `simctl location start --speed=17 --distance=40 <5点>` で東京の実ルートを流し、速度コンター(青→赤)・凡例・現在位置マーカーをスクショ確認。CSV UI はパネル順を一時入替で撮影→復元(`rg "TEMP:"` 残存ゼロ)
+- 注意: 軌跡・記録はメモリのみ(アプリ終了で消える)。地図の再構築は 10 点ごとに間引き(mapRefreshKey)。加速度計の前後 G 符号問題は未修正(別タスク、車速相関の自動キャリブレーション案を提示済み)

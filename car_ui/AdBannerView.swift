@@ -12,21 +12,32 @@ enum AdConfig {
     static let bannerUnitID = "ca-app-pub-3848493291218445/1160611372"
 }
 
-/// Bottom banner slot: a standard 320x50 AdMob banner with a fixed frame so
-/// the layout never shifts whether an ad has loaded or not.
+/// Bottom banner slot: a standard 320x50 AdMob banner.
+/// 広告がロードされるまでは高さ 0 に畳む(未ロード時にタブバーの下へ
+/// 白い空白帯が出るのを防ぐ)。ロード完了時のみ 50pt を確保する。
 struct AdBannerView: View {
+    @State private var isLoaded = false
+
     var body: some View {
-        BannerAdRepresentable()
+        BannerAdRepresentable(isLoaded: $isLoaded)
             .frame(maxWidth: .infinity)
-            .frame(height: 50)
+            .frame(height: isLoaded ? 50 : 0)
+            .clipped()
             .background(Color(.systemBackground))
     }
 }
 
 private struct BannerAdRepresentable: UIViewRepresentable {
+    @Binding var isLoaded: Bool
+
+    func makeCoordinator() -> Coordinator {
+        Coordinator(isLoaded: $isLoaded)
+    }
+
     func makeUIView(context: Context) -> BannerView {
         let banner = BannerView(adSize: AdSizeBanner)
         banner.adUnitID = AdConfig.bannerUnitID
+        banner.delegate = context.coordinator
         banner.rootViewController = UIApplication.shared.connectedScenes
             .compactMap { ($0 as? UIWindowScene)?.keyWindow }
             .first?.rootViewController
@@ -35,6 +46,22 @@ private struct BannerAdRepresentable: UIViewRepresentable {
     }
 
     func updateUIView(_ uiView: BannerView, context: Context) {}
+
+    final class Coordinator: NSObject, BannerViewDelegate {
+        @Binding var isLoaded: Bool
+
+        init(isLoaded: Binding<Bool>) {
+            _isLoaded = isLoaded
+        }
+
+        func bannerViewDidReceiveAd(_ bannerView: BannerView) {
+            isLoaded = true
+        }
+
+        func bannerView(_ bannerView: BannerView, didFailToReceiveAdWithError error: Error) {
+            isLoaded = false
+        }
+    }
 }
 
 #Preview {

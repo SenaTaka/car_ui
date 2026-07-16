@@ -48,6 +48,8 @@ struct ChannelInfo: Identifiable {
 
     private static let builtins: [String: ChannelInfo] = [
         "meta.voltage": ChannelInfo(id: "meta.voltage", name: "アダプタ電圧", unit: "V", icon: "bolt.fill", tint: .yellow, fractionDigits: 2),
+        "gps.lat": ChannelInfo(id: "gps.lat", name: "緯度", unit: "°", icon: "mappin.and.ellipse", tint: .red, fractionDigits: 6),
+        "gps.lon": ChannelInfo(id: "gps.lon", name: "経度", unit: "°", icon: "mappin.and.ellipse", tint: .red, fractionDigits: 6),
         "gps.speed": ChannelInfo(id: "gps.speed", name: "車速 (GPS)", unit: "km/h", icon: "location.fill", tint: .blue, fractionDigits: 1),
         "gps.altitude": ChannelInfo(id: "gps.altitude", name: "高度 (GPS)", unit: "m", icon: "mountain.2", tint: .brown, fractionDigits: 1),
         "gps.course": ChannelInfo(id: "gps.course", name: "方位 (GPS)", unit: "°", icon: "safari", tint: .cyan, fractionDigits: 0),
@@ -143,17 +145,95 @@ final class TelemetryRecorder: ObservableObject {
 
         return Data(lines.joined(separator: "\n").utf8)
     }
+
+    // MARK: - CSV エクスポート(wide 形式: time,ch1,ch2,... の複数カラム)
+
+    /// 選択チャンネルを時刻グリッド(`step` 秒刻み)に整列し、1 行 = 1 時刻の複数カラムで出す。
+    /// 各セルはその時刻以前の最新サンプル(`staleTolerance` 秒より古い値は空欄)。
+    /// `rowLimit` が nil なら全期間(Pro)、指定時は直近 N 行のみ(無料版)。
+    func csvWideData(
+        for channelIDs: [String],
+        step: TimeInterval = 0.5,
+        staleTolerance: TimeInterval = 5,
+        rowLimit: Int? = nil
+    ) -> Data {
+        let formatter = ISO8601DateFormatter()
+        formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+
+        let infos = channelIDs.map { ChannelInfo.info(for: $0) }
+        let header = "time," + infos
+            .map { $0.unit.isEmpty ? $0.name : "\($0.name) [\($0.unit)]" }
+            .joined(separator: ",")
+
+        let series = channelIDs.map { storage[$0] ?? [] }
+        guard let start = series.compactMap({ $0.first?.time }).min(),
+              let end = series.compactMap({ $0.last?.time }).max() else {
+            return Data((header + "\n").utf8)
+        }
+
+        // 各チャンネルを二本指ポインタで前進させながらグリッドを埋める
+        var indices = [Int](repeating: 0, count: series.count)
+        var rows: [String] = []
+        var gridTime = start
+
+        while gridTime <= end {
+            var cells: [String] = []
+            var hasValue = false
+
+            for (channelIndex, samples) in series.enumerated() {
+                while indices[channelIndex] + 1 < samples.count,
+                      samples[indices[channelIndex] + 1].time <= gridTime {
+                    indices[channelIndex] += 1
+                }
+
+                let candidate = samples.indices.contains(indices[channelIndex])
+                    ? samples[indices[channelIndex]]
+                    : nil
+
+                if let candidate,
+                   candidate.time <= gridTime,
+                   gridTime.timeIntervalSince(candidate.time) <= staleTolerance {
+                    cells.append(String(format: "%.\(infos[channelIndex].fractionDigits)f", candidate.value))
+                    hasValue = true
+                } else {
+                    cells.append("")
+                }
+            }
+
+            if hasValue {
+                rows.append("\(formatter.string(from: gridTime)),\(cells.joined(separator: ","))")
+            }
+            gridTime = gridTime.addingTimeInterval(step)
+        }
+
+        if let rowLimit, rows.count > rowLimit {
+            rows.removeFirst(rows.count - rowLimit)
+        }
+
+        return Data(([header] + rows).joined(separator: "\n").utf8)
+    }
 }
 
 struct TelemetryCSV: Transferable {
+    enum Format {
+        case long
+        case wide
+    }
+
     let channelIDs: [String]
-    /// Pro なら無制限、無料版は `TelemetryRecorder.freeExportRowLimit` 件/ch に切り詰める。
+    /// Pro なら無制限、無料版は `TelemetryRecorder.freeExportRowLimit` 件(/ch または行)に切り詰める。
     let isPro: Bool
+    var format: Format = .long
 
     static var transferRepresentation: some TransferRepresentation {
         DataRepresentation(exportedContentType: .commaSeparatedText) { export in
             let limit = export.isPro ? nil : TelemetryRecorder.freeExportRowLimit
-            return TelemetryRecorder.shared.csvData(for: export.channelIDs, rowLimit: limit)
+            switch export.format {
+            case .long:
+                return TelemetryRecorder.shared.csvData(for: export.channelIDs, rowLimit: limit)
+            case .wide:
+                return TelemetryRecorder.shared.csvWideData(for: export.channelIDs, rowLimit: limit)
+            }
         }
         .suggestedFileName("telemetry.csv")
     }

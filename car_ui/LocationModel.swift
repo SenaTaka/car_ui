@@ -72,6 +72,8 @@ final class LocationModel: NSObject, ObservableObject {
         }
 
         let recorder = TelemetryRecorder.shared
+        recorder.record("gps.lat", value: location.coordinate.latitude, at: location.timestamp)
+        recorder.record("gps.lon", value: location.coordinate.longitude, at: location.timestamp)
         if let speedKPH {
             recorder.record("gps.speed", value: speedKPH, at: location.timestamp)
         }
@@ -82,6 +84,11 @@ final class LocationModel: NSObject, ObservableObject {
             recorder.record("gps.course", value: courseDegrees, at: location.timestamp)
         }
         recorder.record("gps.distance", value: totalDistanceKm, at: location.timestamp)
+
+        // 走行軌跡(地図のコンター表示用)。精度の悪い点は軌跡を汚すので捨てる
+        if location.horizontalAccuracy >= 0, location.horizontalAccuracy < 100 {
+            TrackStore.shared.record(location: location)
+        }
     }
 }
 
