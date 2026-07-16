@@ -211,3 +211,13 @@
 - **REL-010 完全英語対応**: developmentRegion=ja、Localizable.xcstrings(283キー)+ InfoPlist.xcstrings(権限文言3種+表示名)を新設。PID名/チャンネル名/接続状態/G値/ウィジェット種別/地図凡例/StatusPill/加速計測状態など直書き159箇所を String(localized:)/LocalizedStringKey 化。英語ロケール実起動で Dashboard/Data/Drive/Tools 全タブが英語表示、権限ダイアログ理由文も en 解決を確認(※権限ダイアログ自体はシミュレータ既定言語依存)
 - コミット: 4249732(テスト), +本コミット(英語化)
 - **未対応**: REL-008 実車QAのみ(実車必須)。P0/P1のコード対応は全完了
+
+## 2026/07/17 02:50 (走行マップの操作性・視認性・配色改善)
+- **jet配色+滑らか化**: TrackContour.color を HSV青→赤 から MATLAB jet(濃青→シアン→緑→黄→赤→濃赤)の区分線形RGBへ。bucketCount 10→32 で段差低減。凡例グラデも同数サンプル。実地図で滑らかなグラデーション確認済み
+- **コンター min/max 手動指定**: TrackRangeResolver.effectiveRange 新設(自動=実測min-max / 手動=ソース別 speedMin/Max・rpmMin/Max)。TrackMapSettingsView シート(ギアボタン)で自動/手動トグル+ステッパー。segments/bucket/TrackMapContent/TrackLegend をレンジ引数化、範囲外はクランプ
+- **北向き/進行方向切替**: trackMap.headingUp(既定=進行方向)。TrackContour.bearingOfTravel(末尾から15m手前との大円方位)。拡大表示に方位トグルボタン+設定シートにも
+- **追従しながらズーム**: 拡大表示のカメラを MKCoordinateRegion固定800m → MapCamera(distance/heading)へ。onMapCameraChange で followDistance を記憶し、追従の再センタリングでズーム倍率を保持(毎回800mリセットの問題解消)
+- **UI拡大**: 凡例フォント caption2→caption・バー8→12pt、拡大表示コントロールを44pt円ボタン+全幅凡例に
+- 影響ファイル: TrackMapPanel.swift(主), DashboardWidgetViews.swift(ミニマップ呼び出し), Localizable.xcstrings(+新規UI文字列)
+- 検証: BUILD SUCCEEDED、simctl location で御堂筋ルート供給しjet描画を実機確認、ユニットテスト29件全パス(TrackContourTests 8件追加=jet端点/バケットクランプ/レンジ解決/方位)
+- スコープ外: レビュー指摘の他項目(タブ再編・セッション概念・チャート/センサー改修・タイムライン再生等)は未着手

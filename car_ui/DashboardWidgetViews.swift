@@ -69,6 +69,11 @@ struct MapWidgetView: View {
     @ObservedObject private var track = TrackStore.shared
     @AppStorage("trackMap.colorSource") private var colorSourceRaw = TrackColorSource.speed.rawValue
     @AppStorage("trackMap.style") private var mapStyleRaw = TrackMapStyleOption.standard.rawValue
+    @AppStorage("trackMap.rangeAuto") private var rangeAuto = true
+    @AppStorage("trackMap.speedMin") private var speedMin = 0.0
+    @AppStorage("trackMap.speedMax") private var speedMax = 120.0
+    @AppStorage("trackMap.rpmMin") private var rpmMin = 0.0
+    @AppStorage("trackMap.rpmMax") private var rpmMax = 8000.0
     @State private var showingExpanded = false
 
     private var colorSource: TrackColorSource {
@@ -77,6 +82,13 @@ struct MapWidgetView: View {
 
     private var styleOption: TrackMapStyleOption {
         TrackMapStyleOption(rawValue: mapStyleRaw) ?? .standard
+    }
+
+    private var effectiveRange: ClosedRange<Double>? {
+        TrackRangeResolver.effectiveRange(
+            points: track.points, source: colorSource, auto: rangeAuto,
+            speedMin: speedMin, speedMax: speedMax, rpmMin: rpmMin, rpmMax: rpmMax
+        )
     }
 
     var body: some View {
@@ -105,7 +117,7 @@ struct MapWidgetView: View {
                 .frame(maxWidth: .infinity, minHeight: 150)
             } else {
                 Map(initialPosition: .automatic, interactionModes: []) {
-                    TrackMapContent(points: track.points, colorSource: colorSource)
+                    TrackMapContent(points: track.points, colorSource: colorSource, range: effectiveRange)
                 }
                 .mapStyle(styleOption.mapStyle)
                 .frame(height: 180)

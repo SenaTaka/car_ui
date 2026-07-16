@@ -931,6 +931,16 @@
         }
       }
     },
+    "オフにすると常に北が上になります。": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "When off, north is always up."
+          }
+        }
+      }
+    },
     "オンの場合、OBD 接続中(デモ含む)だけ画面を常時点灯します。未接続時は通常どおりスリープします。": {
       "localizations": {
         "en": {
@@ -947,6 +957,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Cancel"
+          }
+        }
+      }
+    },
+    "コンターの範囲": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Contour Range"
           }
         }
       }
@@ -1681,6 +1701,16 @@
         }
       }
     },
+    "地図の向き": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Map Orientation"
+          }
+        }
+      }
+    },
     "基準トルク": {
       "localizations": {
         "en": {
@@ -1947,6 +1977,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Updated %@"
+          }
+        }
+      }
+    },
+    "最大 (%@)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Max (%@)"
+          }
+        }
+      }
+    },
+    "最小 (%@)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Min (%@)"
           }
         }
       }
@@ -2331,6 +2381,16 @@
         }
       }
     },
+    "自動(実測の最小〜最大)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auto (measured min–max)"
+          }
+        }
+      }
+    },
     "自動判定中": {
       "localizations": {
         "en": {
@@ -2611,6 +2671,16 @@
         }
       }
     },
+    "走行マップ設定": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Track Map Settings"
+          }
+        }
+      }
+    },
     "走行時間": {
       "localizations": {
         "en": {
@@ -2757,6 +2827,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Speed"
+          }
+        }
+      }
+    },
+    "進行方向を上にする": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Heading up"
           }
         }
       }
