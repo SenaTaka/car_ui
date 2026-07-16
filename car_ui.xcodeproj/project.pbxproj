@@ -10,14 +10,30 @@
 		5F5784DA300345DC007EF777 /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = A1B2C3D4E5F6A7B8C9D0E1F3 /* GoogleMobileAds */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		CA11AB1E00000000000000A8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5FEA57422F48A04400241157 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5FEA57492F48A04400241157;
+			remoteInfo = car_ui;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		5FEA574A2F48A04400241157 /* car_ui.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = car_ui.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CA11AB1E00000000000000A1 /* car_uiTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = car_uiTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		5FEA574C2F48A04400241157 /* car_ui */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = car_ui;
+			sourceTree = "<group>";
+		};
+		CA11AB1E00000000000000A2 /* car_uiTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = car_uiTests;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -31,6 +47,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		CA11AB1E00000000000000A3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -38,6 +61,7 @@
 			isa = PBXGroup;
 			children = (
 				5FEA574C2F48A04400241157 /* car_ui */,
+				CA11AB1E00000000000000A2 /* car_uiTests */,
 				5FEA574B2F48A04400241157 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -46,6 +70,7 @@
 			isa = PBXGroup;
 			children = (
 				5FEA574A2F48A04400241157 /* car_ui.app */,
+				CA11AB1E00000000000000A1 /* car_uiTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -76,6 +101,28 @@
 			productReference = 5FEA574A2F48A04400241157 /* car_ui.app */;
 			productType = "com.apple.product-type.application";
 		};
+		CA11AB1E00000000000000A4 /* car_uiTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CA11AB1E00000000000000A5 /* Build configuration list for PBXNativeTarget "car_uiTests" */;
+			buildPhases = (
+				CA11AB1E00000000000000A6 /* Sources */,
+				CA11AB1E00000000000000A3 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CA11AB1E00000000000000A7 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				CA11AB1E00000000000000A2 /* car_uiTests */,
+			);
+			name = car_uiTests;
+			packageProductDependencies = (
+			);
+			productName = car_uiTests;
+			productReference = CA11AB1E00000000000000A1 /* car_uiTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -88,6 +135,10 @@
 				TargetAttributes = {
 					5FEA57492F48A04400241157 = {
 						CreatedOnToolsVersion = 26.0.1;
+					};
+					CA11AB1E00000000000000A4 = {
+						CreatedOnToolsVersion = 26.0.1;
+						TestTargetID = 5FEA57492F48A04400241157;
 					};
 				};
 			};
@@ -109,6 +160,7 @@
 			projectRoot = "";
 			targets = (
 				5FEA57492F48A04400241157 /* car_ui */,
+				CA11AB1E00000000000000A4 /* car_uiTests */,
 			);
 		};
 /* End PBXProject section */
@@ -131,7 +183,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		CA11AB1E00000000000000A6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		CA11AB1E00000000000000A7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5FEA57492F48A04400241157 /* car_ui */;
+			targetProxy = CA11AB1E00000000000000A8 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		5FEA57532F48A04600241157 /* Debug */ = {
@@ -333,6 +400,50 @@
 			};
 			name = Release;
 		};
+		CA11AB1E00000000000000A9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6325NASDSP;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "Sena.car-uiTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/car_ui.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/car_ui";
+			};
+			name = Debug;
+		};
+		CA11AB1E00000000000000AA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6325NASDSP;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "Sena.car-uiTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/car_ui.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/car_ui";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -350,6 +461,15 @@
 			buildConfigurations = (
 				5FEA57562F48A04600241157 /* Debug */,
 				5FEA57572F48A04600241157 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CA11AB1E00000000000000A5 /* Build configuration list for PBXNativeTarget "car_uiTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CA11AB1E00000000000000A9 /* Debug */,
+				CA11AB1E00000000000000AA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

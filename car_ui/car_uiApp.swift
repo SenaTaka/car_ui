@@ -14,7 +14,12 @@ struct car_uiApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            // ユニットテスト実行時はアプリ UI を起動しない(SwiftUI の再構築で
+            // MainActor 既定分離クラスの isolated deinit がテストホストを
+            // 落とすランタイム問題の回避 + テスト安定化)
+            if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] == nil {
+                ContentView()
+            }
         }
     }
 }
