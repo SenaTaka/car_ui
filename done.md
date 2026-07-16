@@ -199,3 +199,9 @@
 - 検証: BUILD SUCCEEDED + iPhone Air(iOS 26.3.1)シミュレータで起動確認(ツールタブ=Pro/アダプタ/ログのみ、ドライブタブに記録入口、クラッシュなし)
 - **残タスク(手動)**: ①ASC メタデータ再同期(asc_update_metadata.py — APIキー要)②ASC 側 IAP Pro 説明の DTC 記載修正 ③ASC App Privacy 回答を Google SDK 込みで監査 ④iPad 非対応化に伴う ASC 設定確認 ⑤実車QA(REL-008)・UMP の EEA 実地検証
 - 注: UMP同意フォームは AdMob 管理画面の「プライバシーとメッセージ」で GDPR メッセージ作成が済んでいないと必須地域で表示されない — 提出前に要確認
+
+## 2026/07/16 23:40 (ASC 反映完了)
+- メタデータ同期: asc_update_metadata.py で ja/en-US の説明・キーワード・name/subtitle を version 1.0 へ反映済み
+- IAP Pro 説明の DTC 除去: `/v1/apps/{id}/inAppPurchasesV2` が持続 500 のため、既知 IAP ID(6791539912)へ直接 PATCH する `asc_check_iap_loc.py`(scratchpad)で適用 → 読み返しで ja「広告除去・CSV無制限・記録保存」/ en「Ad-free, unlimited CSV, save runs」を確認
+- biz/asc/iap_spec.json も同文言へ修正済み(biz は git 管理外)
+- ASC 側の残り: App Privacy 回答見直し・iPad 非対応化の確認・IAP 審査提出(スクショ添付)・AdMob GDPR メッセージ作成 — いずれも Web での手動作業
