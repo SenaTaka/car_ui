@@ -1781,6 +1781,16 @@
         }
       }
     },
+    "再生位置": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Playback position"
+          }
+        }
+      }
+    },
     "再開": {
       "localizations": {
         "en": {
@@ -3061,6 +3071,16 @@
         }
       }
     },
+    "走行するとここで再生・スクラブできます(GPS 必須)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Drive to replay and scrub here (GPS required)"
+          }
+        }
+      }
+    },
     "走行するとここに軌跡が描かれます(GPS 必須)": {
       "localizations": {
         "en": {
@@ -3107,6 +3127,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Track Map Settings"
+          }
+        }
+      }
+    },
+    "走行リプレイ": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Replay"
           }
         }
       }

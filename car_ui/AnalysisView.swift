@@ -41,6 +41,8 @@ private struct MapAnalysisView: View {
             ScrollView {
                 VStack(spacing: DS.Space.cardGap) {
                     TrackMapPanel()
+                    // レビュー 10-4: 地図⇄チャート連動の再生・スクラブ
+                    TrackReplayView()
                 }
                 .padding()
                 // タブバー被り回避(レビュー 2-2)
