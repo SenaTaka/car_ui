@@ -238,3 +238,11 @@
 - **地図⇄チャート連動**: TrackReplayView(スクラブ+再生で地図マーカーとチャート垂直カーソルを時刻同期、速度青/回転数橙、Analysisのマップ下)(10-4)
 - 検証: 全ビルド成功・ユニット29件パス・Live/Map実機スクショで色統一とReplay動作確認
 - コミット: b797f49(色/数値/バナー/プリセット)+ 本コミット(Replay)。レビュー全項目(走行中モード除く)を完了
+
+## 2026/07/17 05:00 (リリース準備: スクショ刷新・ビルド番号・分析マップGPS修正)
+- **App Store スクショ全面刷新**(新UI対応、旧「データ」タブ等の陳腐化を解消): 5枚×日英を iPhone 15 Pro Max(iOS26, 1290×2796)で撮影→store_frame で見出し合成。①メーター②マップ(jetコンター+リプレイ)③分析ライブ(色役割統一)④サウンド(音量スライダー)⑤走行(トリップ+G+0-100)。store_lint PASS。旧 03_hud/04_enginesound/05_data は削除
+- **ビルド番号** CURRENT_PROJECT_VERSION 1→2(再提出用)
+- **分析マップのGPS修正**: MapAnalysisView.onAppear で location.start()。走行タブを開かなくても分析マップ/リプレイで軌跡が溜まる(従来は溜まらなかった)
+- **Release ビルド**: -configuration Release で BUILD SUCCEEDED、ユニット29件パス
+- スクショ撮影の知見: TrackStore はディスク永続(track.json)から復元するため、コンテナに直接 seed して地図付きスクショを確実に生成可能(simctl location は権限ダイアログで不安定)
+- **残(要ユーザー/手動)**: ①ASCへスクショ+メタデータ再アップロード(asc_upload_screenshots.py / asc_update_metadata.py、APIキー要)②ASC App Privacy 回答(Google広告SDK込み)③AdMob GDPRメッセージ作成 ④IAP審査提出(審査用スクショ)⑤実車QA(REL-008)⑥Xcodeで実機アーカイブ&Distribute

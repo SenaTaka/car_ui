@@ -36,6 +36,8 @@ struct AnalysisView: View {
 
 /// マップ セグメント: 走行軌跡をコンター表示(拡大でフル操作)。
 private struct MapAnalysisView: View {
+    @EnvironmentObject private var location: LocationModel
+
     var body: some View {
         NavigationStack {
             ScrollView {
@@ -51,6 +53,9 @@ private struct MapAnalysisView: View {
             .background(Color(.systemGroupedBackground))
             .navigationTitle("走行マップ")
             .navigationBarTitleDisplayMode(.inline)
+            // マップ/リプレイは GPS 軌跡が必要。走行タブを開かなくても
+            // 分析マップを見たときに測位を開始する(そうしないと軌跡が溜まらない)
+            .onAppear { location.start() }
         }
     }
 }
