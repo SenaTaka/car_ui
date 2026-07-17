@@ -45,6 +45,66 @@ struct DashboardWidget: Identifiable, Codable, Equatable {
     var pid: UInt8?
 }
 
+/// ダッシュボードの用途別プリセット(レビュー 5章)
+enum DashboardPreset: String, CaseIterable, Identifiable {
+    case simple   // シンプル: 最小限の運転計器
+    case sport    // スポーツ: 回転・ブースト・油温など走り重視
+    case eco      // エコ: 燃費・スロットル重視
+    case custom   // カスタム: 既定(自由編集)
+
+    var id: String { rawValue }
+
+    var label: LocalizedStringKey {
+        switch self {
+        case .simple: return "シンプル"
+        case .sport: return "スポーツ"
+        case .eco: return "エコ"
+        case .custom: return "カスタム"
+        }
+    }
+
+    var icon: String {
+        switch self {
+        case .simple: return "gauge.with.dots.needle.33percent"
+        case .sport: return "flag.checkered"
+        case .eco: return "leaf"
+        case .custom: return "slider.horizontal.3"
+        }
+    }
+
+    var widgets: [DashboardWidget] {
+        switch self {
+        case .simple:
+            return [
+                DashboardWidget(kind: .gauge, pid: 0x0C),  // 回転数
+                DashboardWidget(kind: .gauge, pid: 0x0D),  // 車速
+                DashboardWidget(kind: .tile, pid: 0x05),   // 冷却水温
+                DashboardWidget(kind: .tile, pid: 0x2F),   // 燃料残量
+            ]
+        case .sport:
+            return [
+                DashboardWidget(kind: .gauge, pid: 0x0C),  // 回転数
+                DashboardWidget(kind: .gauge, pid: 0x0D),  // 車速
+                DashboardWidget(kind: .tile, pid: 0x0B),   // 吸気圧(ブースト)
+                DashboardWidget(kind: .tile, pid: 0x11),   // スロットル
+                DashboardWidget(kind: .tile, pid: 0x5C),   // 油温
+                DashboardWidget(kind: .tile, pid: 0x04),   // 負荷
+                DashboardWidget(kind: .map, pid: nil),
+            ]
+        case .eco:
+            return [
+                DashboardWidget(kind: .tile, pid: 0x5E),   // 燃料流量(瞬間燃費源)
+                DashboardWidget(kind: .tile, pid: 0x2F),   // 燃料残量
+                DashboardWidget(kind: .tile, pid: 0x11),   // スロットル
+                DashboardWidget(kind: .tile, pid: 0x05),   // 冷却水温
+                DashboardWidget(kind: .chart, pid: 0x5E),  // 燃料流量の推移
+            ]
+        case .custom:
+            return DashboardLayoutStore.defaultPIDs.map { DashboardWidget(kind: .tile, pid: $0) }
+        }
+    }
+}
+
 @MainActor
 @Observable
 final class DashboardLayoutStore {
@@ -55,7 +115,7 @@ final class DashboardLayoutStore {
     private static let legacyKey = "dashboardPIDs.v1"
 
     /// 従来ハードコードされていた既定の表示順(デジタルタイルとして採用)
-    static let defaultPIDs: [UInt8] = [
+    nonisolated static let defaultPIDs: [UInt8] = [
         0x05, 0x11, 0x04, 0x0B, 0x10, 0x0F, 0x5C, 0x2F, 0x0E, 0x5E, 0x46, 0x62
     ]
 
@@ -92,6 +152,12 @@ final class DashboardLayoutStore {
 
     func resetToDefault() {
         widgets = Self.defaultLayout()
+        save()
+    }
+
+    /// レビュー 5章: 用途別の表示プリセットを適用する。
+    func apply(preset: DashboardPreset) {
+        widgets = preset.widgets
         save()
     }
 

@@ -521,6 +521,26 @@
         }
       }
     },
+    "GPS 精度が低下しています": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GPS accuracy is low"
+          }
+        }
+      }
+    },
+    "GPS 速度・走行マップには位置情報が必要です。": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Location is required for GPS speed and the track map."
+          }
+        }
+      }
+    },
     "HUD": {
       "localizations": {
         "en": {
@@ -871,6 +891,26 @@
         }
       }
     },
+    "アダプタに接続するか、デモモードで試せます。": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connect an adapter, or try demo mode."
+          }
+        }
+      }
+    },
+    "アダプタに接続できません": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cannot connect to adapter"
+          }
+        }
+      }
+    },
     "アダプタを検索": {
       "localizations": {
         "en": {
@@ -917,6 +957,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "No widgets yet. Add one from the edit button at the top left."
+          }
+        }
+      }
+    },
+    "エコ": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eco"
           }
         }
       }
@@ -1011,6 +1061,16 @@
         }
       }
     },
+    "カスタム": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Custom"
+          }
+        }
+      }
+    },
     "キャンセル": {
       "localizations": {
         "en": {
@@ -1091,6 +1151,16 @@
         }
       }
     },
+    "シンプル": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Simple"
+          }
+        }
+      }
+    },
     "スキャン中": {
       "localizations": {
         "en": {
@@ -1107,6 +1177,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Splits"
+          }
+        }
+      }
+    },
+    "スポーツ": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sport"
           }
         }
       }
@@ -1441,6 +1521,16 @@
         }
       }
     },
+    "プリセットを選ぶと現在のウィジェット構成を置き換えます。": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Selecting a preset replaces your current widget layout."
+          }
+        }
+      }
+    },
     "ベスト": {
       "localizations": {
         "en": {
@@ -1537,6 +1627,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Stop"
+          }
+        }
+      }
+    },
+    "位置情報が使用できません": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Location is unavailable"
           }
         }
       }
@@ -2987,6 +3087,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Track Map"
+          }
+        }
+      }
+    },
+    "走行マップや加速計測の精度が下がる場合があります。": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The track map and acceleration timing may be less accurate."
           }
         }
       }

@@ -36,6 +36,26 @@ struct DashboardBuilderView: View {
                     }
                 }
 
+                Section {
+                    ForEach(DashboardPreset.allCases) { preset in
+                        Button {
+                            store.apply(preset: preset)
+                        } label: {
+                            HStack {
+                                Label(preset.label, systemImage: preset.icon)
+                                Spacer()
+                                Image(systemName: "arrow.right.circle")
+                                    .foregroundStyle(.blue)
+                            }
+                        }
+                        .buttonStyle(.plain)
+                    }
+                } header: {
+                    Text("プリセット")
+                } footer: {
+                    Text("プリセットを選ぶと現在のウィジェット構成を置き換えます。")
+                }
+
                 Section("追加") {
                     ForEach(DashboardWidget.Kind.allCases, id: \.self) { kind in
                         Button {

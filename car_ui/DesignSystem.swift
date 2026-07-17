@@ -58,6 +58,44 @@ enum DS {
     static let staleThreshold: TimeInterval = 5
 }
 
+// MARK: - 数値+単位の共通表示(レビュー 4-3)
+
+/// 数値と単位のベースラインを揃え、単位を数値の 60〜70% サイズにする共通コンポーネント。
+/// 桁は monospacedDigit で安定。欠損値は "--" 表示。
+struct MetricValue: View {
+    let value: Double?
+    let unit: String
+    var digits: Int = 1
+    var valueFont: Font = .title3
+    var color: Color = .primary
+    /// value が String で用意済みの場合はこちらを使う(整数表示など)
+    var text: String? = nil
+
+    var body: some View {
+        HStack(alignment: .firstTextBaseline, spacing: 3) {
+            Text(text ?? metricText(value, digits: digits))
+                .font(valueFont.weight(.bold).monospacedDigit())
+                .foregroundStyle(color)
+            if !unit.isEmpty {
+                Text(unit)
+                    .font(unitFont)
+                    .foregroundStyle(.secondary)
+            }
+        }
+    }
+
+    /// 単位は数値の約 65%(4-3)
+    private var unitFont: Font {
+        switch valueFont {
+        case .largeTitle: return .title3
+        case .title: return .body
+        case .title2: return .subheadline
+        case .title3: return .caption
+        default: return .caption2
+        }
+    }
+}
+
 // MARK: - カードスタイル(Primary / Data / Control の 3 種)
 
 extension View {

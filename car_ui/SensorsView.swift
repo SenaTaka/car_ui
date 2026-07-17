@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UIKit
 
 struct SensorsView: View {
     @EnvironmentObject private var obd: ELM327BluetoothModel
@@ -16,6 +17,9 @@ struct SensorsView: View {
     var body: some View {
         NavigationStack {
             List {
+                // レビュー 13章: 各種状態を明示するバナー
+                bannerSection
+
                 Section {
                     HStack {
                         Label("表示中のチャンネル", systemImage: "square.grid.3x3")
@@ -141,6 +145,53 @@ struct SensorsView: View {
         )
     }
 
+    private struct BannerConfig {
+        let level: StatusBanner.Level
+        let title: LocalizedStringKey
+        let message: LocalizedStringKey?
+        var showSettings = false
+    }
+
+    @ViewBuilder
+    private var bannerSection: some View {
+        if let banner = bannerConfig {
+            let settingsTitle: LocalizedStringKey? = banner.showSettings ? "設定" : nil
+            let settingsAction: (() -> Void)? = banner.showSettings ? { openSettings() } : nil
+            Section {
+                StatusBanner(level: banner.level, title: banner.title,
+                             message: banner.message,
+                             actionTitle: settingsTitle,
+                             action: settingsAction)
+                    .listRowInsets(EdgeInsets())
+                    .listRowBackground(Color.clear)
+            }
+        }
+    }
+
+    /// 現在の状態に応じたバナー(未接続 / BT無効 / 位置情報拒否 / GPS低精度)。
+    private var bannerConfig: BannerConfig? {
+        if case .unavailable(let message) = obd.phase {
+            return BannerConfig(level: .error, title: "アダプタに接続できません",
+                                message: LocalizedStringKey(message), showSettings: true)
+        } else if location.isDenied {
+            return BannerConfig(level: .warning, title: "位置情報が使用できません",
+                                message: "GPS 速度・走行マップには位置情報が必要です。", showSettings: true)
+        } else if location.isActive, location.quality == .low {
+            return BannerConfig(level: .warning, title: "GPS 精度が低下しています",
+                                message: "走行マップや加速計測の精度が下がる場合があります。")
+        } else if !obd.phase.isConnected, !obd.isDemo {
+            return BannerConfig(level: .info, title: "未接続",
+                                message: "アダプタに接続するか、デモモードで試せます。")
+        }
+        return nil
+    }
+
+    private func openSettings() {
+        if let url = URL(string: UIApplication.openSettingsURLString) {
+            UIApplication.shared.open(url)
+        }
+    }
+
     private func sensorRow(
         channelID: String,
         name: String,
@@ -182,14 +233,13 @@ struct SensorsView: View {
             .frame(width: 64, height: 22)
             .id(recorder.revision)
 
-            HStack(alignment: .firstTextBaseline, spacing: 3) {
-                Text(metricText(value, digits: digits))
-                    .font(.subheadline.weight(.bold).monospacedDigit())
-                    .foregroundStyle(hasValue ? (isStale ? Color.secondary : Color.primary) : Color(.tertiaryLabel))
-                Text(unit)
-                    .font(.caption2)
-                    .foregroundStyle(.secondary)
-            }
+            MetricValue(
+                value: value,
+                unit: unit,
+                digits: digits,
+                valueFont: .subheadline,
+                color: hasValue ? (isStale ? Color.secondary : Color.primary) : Color(.tertiaryLabel)
+            )
             .frame(minWidth: 72, alignment: .trailing)
         }
     }

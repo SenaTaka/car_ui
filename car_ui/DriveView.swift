@@ -192,12 +192,8 @@ struct DriveView: View {
             }
 
             HStack(alignment: .firstTextBaseline, spacing: 6) {
-                Text(metricText(accelTest.elapsed, digits: 2))
-                    .font(.system(size: 44, weight: .heavy, design: .rounded))
-                    .monospacedDigit()
-                Text("秒")
-                    .font(.headline)
-                    .foregroundStyle(.secondary)
+                MetricValue(value: accelTest.elapsed, unit: "秒", digits: 2,
+                            valueFont: .system(size: 44, weight: .heavy, design: .rounded))
 
                 Spacer()
 
