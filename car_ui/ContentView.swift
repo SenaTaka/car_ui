@@ -35,6 +35,8 @@ struct ContentView: View {
                 AdBannerView()
             }
         }
+        // iPhone 16 等でタブバーが下端セーフエリアに寄って切れるため少し持ち上げる
+        .padding(.bottom, 10)
         .environmentObject(obd)
         .environmentObject(location)
         .environmentObject(motion)
