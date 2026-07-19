@@ -12,6 +12,9 @@ import SwiftUI
 struct PaywallView: View {
     @Environment(ProStore.self) private var proStore
     @Environment(\.dismiss) private var dismiss
+    // 復元中/成功/対象なしを一定時間視認できるようにするための一時状態
+    @State private var isRestoring = false
+    @State private var restoreMessage: String?
 
     private struct BenefitRow: Identifiable {
         let name: String
@@ -52,10 +55,11 @@ struct PaywallView: View {
                 await proStore.loadProducts()
             }
             .onChange(of: proStore.isPro) { _, isPro in
-                if isPro { dismiss() }
+                // 復元中は performRestore() 側で確認表示後にまとめて dismiss する
+                if isPro && !isRestoring { dismiss() }
             }
             .onChange(of: proStore.isAdFree) { _, isAdFree in
-                if isAdFree { dismiss() }
+                if isAdFree && !isRestoring { dismiss() }
             }
         }
     }
@@ -206,11 +210,19 @@ struct PaywallView: View {
                     .frame(maxWidth: .infinity, alignment: .center)
             }
 
-            Button("購入を復元") {
-                Task { await proStore.restore() }
+            VStack(spacing: 4) {
+                Button("購入を復元") {
+                    Task { await performRestore() }
+                }
+                .font(.subheadline.weight(.semibold))
+                .disabled(proStore.isPurchasing)
+
+                if let restoreMessage {
+                    Text(restoreMessage)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
             }
-            .font(.subheadline.weight(.semibold))
-            .disabled(proStore.isPurchasing)
 
             Text("お支払いは一度だけ。自動更新や定期課金は一切ありません。")
                 .font(.caption2)
@@ -232,6 +244,21 @@ struct PaywallView: View {
             return "広告除去のみ \(product.displayPrice)"
         }
         return proStore.isLoadingProducts ? "読み込み中…" : "広告除去のみ"
+    }
+
+    /// 復元中/成功/対象なしの3状態を最低 0.8 秒視認できる形で表示してから dismiss する。
+    private func performRestore() async {
+        isRestoring = true
+        restoreMessage = "復元中…"
+        await proStore.restore()
+        let succeeded = proStore.isPro || proStore.isAdFree
+        restoreMessage = succeeded ? "購入を復元しました" : "復元できる購入が見つかりませんでした"
+        try? await Task.sleep(nanoseconds: 800_000_000)
+        isRestoring = false
+        restoreMessage = nil
+        if succeeded {
+            dismiss()
+        }
     }
 }
 

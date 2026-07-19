@@ -111,6 +111,7 @@ struct TrackReplayView: View {
                     .font(.title)
                     .foregroundStyle(.blue)
             }
+            .accessibilityLabel(isPlaying ? "一時停止" : "再生")
             .minTapTarget()
 
             Slider(value: $index, in: 0...Double(points.count - 1), step: 1)

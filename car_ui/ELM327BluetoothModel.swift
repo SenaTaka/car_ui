@@ -156,6 +156,12 @@ final class ELM327BluetoothModel: NSObject, ObservableObject {
 
     override init() {
         super.init()
+    }
+
+    /// CBCentralManager の生成(=権限ダイアログの発火)を、ユーザーが接続操作を
+    /// 行った最初のタイミングまで遅延させる。起動直後の onAppear 等では呼ばない。
+    private func ensureCentralManager() {
+        guard centralManager == nil else { return }
         centralManager = CBCentralManager(delegate: self, queue: .main)
     }
 
@@ -173,6 +179,7 @@ final class ELM327BluetoothModel: NSObject, ObservableObject {
     }
 
     func startScan() {
+        ensureCentralManager()
         guard canScan else {
             appendLog("Bluetooth が利用可能になるまで待機しています")
             return

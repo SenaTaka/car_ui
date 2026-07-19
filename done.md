@@ -246,3 +246,11 @@
 - **Release ビルド**: -configuration Release で BUILD SUCCEEDED、ユニット29件パス
 - スクショ撮影の知見: TrackStore はディスク永続(track.json)から復元するため、コンテナに直接 seed して地図付きスクショを確実に生成可能(simctl location は権限ダイアログで不安定)
 - **残(要ユーザー/手動)**: ①ASCへスクショ+メタデータ再アップロード(asc_upload_screenshots.py / asc_update_metadata.py、APIキー要)②ASC App Privacy 回答(Google広告SDK込み)③AdMob GDPRメッセージ作成 ④IAP審査提出(審査用スクショ)⑤実車QA(REL-008)⑥Xcodeで実機アーカイブ&Distribute
+
+## 2026/07/19 (UX監査4件: 権限遅延化・復元導線)
+- **BT/Motion 権限の遅延化**: ELM327BluetoothModel の CBCentralManager 生成を init() から startScan() 冒頭の ensureCentralManager() へ移動(起動直後に権限ダイアログが出なくなる)。ContentView.onAppear の motion.start() を削除(DriveView.onAppear に既存の motion.start() があり重複だったため、実際に使う画面側のみに一本化)
+- **復元確認表示**: PaywallView に isRestoring/restoreMessage を追加、performRestore() で「復元中…」→「購入を復元しました」/「復元できる購入が見つかりませんでした」を最低0.8秒表示してから dismiss(既存 onChange の即時 dismiss は isRestoring 中は抑制)
+- **設定画面に復元導線**: ToolsView の未購入時セクションに「購入を復元」ボタン追加(proStore.restore() 直呼び、シートを開かない)
+- **アクセシビリティラベル**: TrackReplayView 再生/一時停止ボタン、HUDView 閉じるボタンに accessibilityLabel 追加
+- 検証: `xcodebuild ... build` BUILD SUCCEEDED(コンパイル確認のみ、シミュレータ実行未検証)
+- コミット: (このコミット)

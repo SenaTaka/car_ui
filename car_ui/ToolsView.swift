@@ -69,6 +69,12 @@ struct ToolsView: View {
                      : "広告除去・CSV 無制限・記録保存")
                     .font(.caption)
                     .foregroundStyle(.secondary)
+
+                Button("購入を復元") {
+                    Task { await proStore.restore() }
+                }
+                .font(.caption.weight(.semibold))
+                .disabled(proStore.isPurchasing)
             }
         }
         .panelStyle()

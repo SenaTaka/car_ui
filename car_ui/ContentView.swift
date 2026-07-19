@@ -87,7 +87,8 @@ struct ContentView: View {
             updateScreenWake()
         }
         .onAppear {
-            motion.start()
+            // モーション権限は実際に使う画面(走行タブ等)の onAppear で要求する
+            // (起動直後にダイアログを出さないため。DriveView.onAppear 参照)
             updateScreenWake()
             applyUITestLaunchArgumentsIfPresent()
         }

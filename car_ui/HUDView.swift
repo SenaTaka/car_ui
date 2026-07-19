@@ -90,6 +90,7 @@ struct HUDView: View {
                         .padding(12)
                         .background(.white.opacity(0.12), in: Circle())
                 }
+                .accessibilityLabel("閉じる")
 
                 Spacer()
 
