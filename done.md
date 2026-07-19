@@ -278,3 +278,7 @@
 ## 2026/07/20 14:20
 - アイコンに「OBD」文字追加(ab1f2db)→ Xcode Cloud run #25 SUCCEEDED → build 25 を 1.0 に添付(API)。
 - 提出前チェック残: なし(App Privacy / GDPR / 実車QA はユーザー完了報告済み)。あとは審査提出のみ。
+
+## 2026/07/20 14:40
+- 審査設定を API で完了: copyright「© 2026 Sena Takasawa」/ App Review 連絡先(enjine-sim と同一)/ 審査メモ(デモモードで全機能確認可・入り方・IAP/広告説明、日英)。releaseType=AFTER_APPROVAL・build暗号化=False・年齢4+・カテゴリUTILITIESは設定済みを確認。
+- Info.plist に ITSAppUsesNonExemptEncryption=false 追加(次ビルドから質問スキップ)。
