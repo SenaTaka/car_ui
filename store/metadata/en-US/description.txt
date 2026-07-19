@@ -33,4 +33,4 @@ Your vehicle data comes straight from the ELM327 adapter over Bluetooth and is p
 REQUIRES an ELM327-compatible Bluetooth LE (BLE) OBD2 adapter and a vehicle with an OBD2 port (most cars sold since 2008).
 
 SUPPORT
-Questions or ideas? Contact: st0327t@gmail.com
+Questions or ideas? Contact: support@takasawadynamics.com

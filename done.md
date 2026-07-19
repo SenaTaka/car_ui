@@ -268,3 +268,6 @@
 - リリース準備を API で前進: Xcode Cloud が push 起点で自動アーカイブしていると判明(run #22 = 最新コミット = build 22)。
 - build 22 をバージョン 1.0 に添付。IAP の MISSING_METADATA を解消: 価格設定(adfree ¥300 / pro ¥730、基準国JPN)+審査用スクショ(ペイウォール)を両IAPにアップロード → 両方 READY_TO_SUBMIT。
 - 残(ユーザー手動): ASC App Privacy 回答 / AdMob GDPR メッセージ / 実車QA。完了後「審査へ提出」は API で可能。
+
+## 2026/07/20 01:01
+- 個人メール st0327t@… を support@takasawadynamics.com へ置換(公開文言)/伏せ字化(Apple ID 等の事実記述)。ASC の appStoreReviewDetails も更新済み。

@@ -33,4 +33,4 @@ Pro(買い切り・任意)
 【必要なもの】ELM327 互換の Bluetooth LE(BLE)OBD2 アダプタと、OBD2 ポートのある車両(2008 年以降の多くの車)。
 
 サポート
-ご質問・ご要望はこちらまで:st0327t@gmail.com
+ご質問・ご要望はこちらまで:support@takasawadynamics.com
