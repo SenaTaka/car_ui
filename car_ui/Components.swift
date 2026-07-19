@@ -342,6 +342,8 @@ struct ConnectionSheet: View {
                         }
                     }
                 }
+
+                adapterShopSection
             }
             .navigationTitle("接続")
             .navigationBarTitleDisplayMode(.inline)
@@ -352,6 +354,45 @@ struct ConnectionSheet: View {
             }
             .onChange(of: obd.phase.isConnected) { _, isConnected in
                 if isConnected { dismiss() }
+            }
+        }
+    }
+
+    // MARK: - アダプタ購入導線(Amazon アソシエイト)
+
+    /// Amazon アソシエイトのアプリ承認が下りたらトラッキング ID を入れる(例: "xxxx-22")。
+    /// 空の間はセクションごと非表示(未承認でのアフィリエイトリンク掲出は規約違反のため)。
+    private static let amazonAffiliateTag = ""
+
+    /// ELM327 BLE アダプタの Amazon 検索結果(アフィリエイトタグ付き)
+    private var adapterSearchURL: URL? {
+        var components = URLComponents(string: "https://www.amazon.co.jp/s")
+        components?.queryItems = [
+            URLQueryItem(name: "k", value: "ELM327 OBD2 Bluetooth BLE"),
+            URLQueryItem(name: "tag", value: Self.amazonAffiliateTag)
+        ]
+        return components?.url
+    }
+
+    /// アダプタ未所持ユーザー向けの購入リンク。外部 Safari で開く(物理商品のため IAP 対象外)。
+    /// ステマ規制(景品表示法)対応として「PR」を明記する。
+    @ViewBuilder
+    private var adapterShopSection: some View {
+        if !Self.amazonAffiliateTag.isEmpty, !obd.phase.isConnected, let url = adapterSearchURL {
+            Section {
+                Link(destination: url) {
+                    HStack {
+                        Label("対応アダプタを Amazon で見る", systemImage: "cart")
+                        Spacer()
+                        Image(systemName: "arrow.up.forward")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                }
+            } header: {
+                Text("アダプタをお持ちでない方へ")
+            } footer: {
+                Text("PR: リンクは Amazon アソシエイトのアフィリエイトリンクです。「ELM327」「BLE(Bluetooth 4.0/LE)対応」の表記がある製品をお選びください。")
             }
         }
     }

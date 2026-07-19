@@ -741,6 +741,16 @@
         }
       }
     },
+    "PR: リンクは Amazon アソシエイトのアフィリエイトリンクです。「ELM327」「BLE(Bluetooth 4.0/LE)対応」の表記がある製品をお選びください。": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ad: This is an Amazon Associates affiliate link. Choose a product labeled \"ELM327\" with \"BLE (Bluetooth 4.0/LE)\" support."
+          }
+        }
+      }
+    },
     "Pro にアップグレード": {
       "localizations": {
         "en": {
@@ -1037,6 +1047,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Cannot connect to adapter"
+          }
+        }
+      }
+    },
+    "アダプタをお持ちでない方へ": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Don't Have an Adapter?"
           }
         }
       }
@@ -2377,6 +2397,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "%lld PIDs supported"
+          }
+        }
+      }
+    },
+    "対応アダプタを Amazon で見る": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Browse Compatible Adapters on Amazon"
           }
         }
       }
