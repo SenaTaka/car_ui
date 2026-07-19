@@ -24,6 +24,9 @@ struct ContentView: View {
     @AppStorage("display.keepAwakeWhileConnected") private var keepAwakeWhileConnected = true
     @State private var showingIntroPaywall = false
     @State private var suppressIntroOffer = false
+    // 初回起動オンボーディング(完了フラグは永続化、その他タブから再表示可)
+    @AppStorage("onboarding.completed") private var onboardingCompleted = false
+    @State private var showingOnboarding = false
 
     var body: some View {
         VStack(spacing: 0) {
@@ -59,6 +62,17 @@ struct ContentView: View {
             PaywallView()
                 .environment(proStore)
         }
+        // 初回起動オンボーディング。閉じる操作では消せず、選択で完了する
+        .fullScreenCover(isPresented: $showingOnboarding) {
+            OnboardingView(initialStepIndex: uiOnboardingInitialStep) { outcome in
+                completeOnboarding(with: outcome)
+            }
+            .environmentObject(obd)
+        }
+        // その他タブの「はじめかたをもう一度見る」から再表示
+        .onReceive(NotificationCenter.default.publisher(for: .carUIShowOnboarding)) { _ in
+            showingOnboarding = true
+        }
         .onChange(of: obd.phase.isConnected) { _, isConnected in
             updateScreenWake()
             guard isConnected, !introOffered, !suppressIntroOffer,
@@ -91,6 +105,10 @@ struct ContentView: View {
             // (起動直後にダイアログを出さないため。DriveView.onAppear 参照)
             updateScreenWake()
             applyUITestLaunchArgumentsIfPresent()
+            // 初回起動のみオンボーディングを表示(スクショ撮影フックの起動時は出さない)
+            if !onboardingCompleted, !isUITestRun {
+                showingOnboarding = true
+            }
         }
         // 監査 REL-007: 起動ごとに UMP 同意情報を更新し、必要な同意フォームを表示。
         // 同意が確定するまで広告 SDK は開始されない(広告除去購入者には不要)。
@@ -142,8 +160,44 @@ struct ContentView: View {
             keepAwakeWhileConnected && scenePhase == .active && obd.phase.isConnected
     }
 
+    /// オンボーディング終了。選んだ入口に応じてデモ開始/接続シートへ誘導する。
+    private func completeOnboarding(with outcome: OnboardingOutcome) {
+        onboardingCompleted = true
+        showingOnboarding = false
+
+        switch outcome {
+        case .demo:
+            // オンボーディング直後にプラン提案を重ねない(体験を優先)
+            suppressIntroOffer = true
+            selectedTab = 0
+            obd.startDemoMode()
+        case .connect:
+            selectedTab = 0
+            // fullScreenCover が閉じてから接続シートを開く
+            Task {
+                try? await Task.sleep(nanoseconds: 600_000_000)
+                NotificationCenter.default.post(name: .carUIOpenConnectionSheet, object: nil)
+            }
+        case .later:
+            break
+        }
+    }
+
     /// App Store スクショ撮影用フック。起動引数が無ければ何もしない(本番挙動は不変)。
     /// `-uiDemo 1` でデモモード表示、`-uiTab N`(0〜4)で初期表示タブを指定する。
+    /// スクショ撮影フック起動時はオンボーディングを出さない(`-uiOnboarding 1` で強制表示)。
+    private var isUITestRun: Bool {
+        let args = ProcessInfo.processInfo.arguments
+        return args.contains("-uiDemo") || args.contains("-uiTab") || args.contains("-uiIntroOffer")
+    }
+
+    /// `-uiOnboardingStep N` で指定(未指定は 0 = 最初から)
+    private var uiOnboardingInitialStep: Int {
+        let args = ProcessInfo.processInfo.arguments
+        guard let idx = args.firstIndex(of: "-uiOnboardingStep"), idx + 1 < args.count else { return 0 }
+        return Int(args[idx + 1]) ?? 0
+    }
+
     private func applyUITestLaunchArgumentsIfPresent() {
         let args = ProcessInfo.processInfo.arguments
         func value(after flag: String) -> String? {
@@ -162,7 +216,20 @@ struct ContentView: View {
         if value(after: "-uiIntroOffer") == "1" {
             showingIntroPaywall = true
         }
+        // オンボーディングの検証・スクショ用フック
+        if value(after: "-uiOnboarding") == "1" {
+            showingOnboarding = true
+        }
     }
+}
+
+// MARK: - 画面間の軽量な通知(オンボーディング→接続シート等)
+
+extension Notification.Name {
+    /// メータータブの接続シートを開く(オンボーディングの「アダプタに接続する」)
+    static let carUIOpenConnectionSheet = Notification.Name("carUIOpenConnectionSheet")
+    /// オンボーディングを再表示(その他タブの「はじめかたをもう一度見る」)
+    static let carUIShowOnboarding = Notification.Name("carUIShowOnboarding")
 }
 
 #Preview {

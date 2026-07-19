@@ -60,6 +60,10 @@ struct DashboardView: View {
             .sheet(isPresented: $showsConnectionSheet) {
                 ConnectionSheet()
             }
+            // オンボーディングの「アダプタに接続する」から呼ばれる
+            .onReceive(NotificationCenter.default.publisher(for: .carUIOpenConnectionSheet)) { _ in
+                openConnection()
+            }
             .fullScreenCover(isPresented: $showsHUD) {
                 HUDView()
             }

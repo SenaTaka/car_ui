@@ -451,6 +451,16 @@
         }
       }
     },
+    "ELM327 対応の Bluetooth OBD2 アダプタを使います。": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Works with ELM327-compatible Bluetooth OBD2 adapters."
+          }
+        }
+      }
+    },
     "ENGINE": {
       "localizations": {
         "en": {
@@ -477,6 +487,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "G-Force"
+          }
+        }
+      }
+    },
+    "G フォースと 0-100 km/h 加速の計測に使います。": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Used to measure g-force and 0–100 km/h acceleration."
           }
         }
       }
@@ -527,6 +547,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "GPS accuracy is low"
+          }
+        }
+      }
+    },
+    "GPS 速度の計測と、走行ルートの記録に使います。": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Used for GPS speed and recording your route."
           }
         }
       }
@@ -671,6 +701,26 @@
         }
       }
     },
+    "OBD2 アダプタと通信するために使います。": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Used to communicate with the OBD2 adapter."
+          }
+        }
+      }
+    },
+    "OBD2スキャナーへようこそ": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Welcome to OBD2 Scanner"
+          }
+        }
+      }
+    },
     "OK": {
       "localizations": {
         "en": {
@@ -801,6 +851,36 @@
         }
       }
     },
+    "あとで決める": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Decide Later"
+          }
+        }
+      }
+    },
+    "あなたの車を、走るデータに。": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Turn your car into live data."
+          }
+        }
+      }
+    },
+    "いつでも切り替え": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Switch Anytime"
+          }
+        }
+      }
+    },
     "おすすめ": {
       "localizations": {
         "en": {
@@ -851,12 +931,42 @@
         }
       }
     },
+    "すべて端末内で処理され、外部に送信されることはありません。": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Everything is processed on device and never sent anywhere."
+          }
+        }
+      }
+    },
     "その他": {
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "More"
+          }
+        }
+      }
+    },
+    "つなぎかたは 3 ステップ": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connect in 3 Steps"
+          }
+        }
+      }
+    },
+    "はじめかたをもう一度見る": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Show the Intro Again"
           }
         }
       }
@@ -891,6 +1001,26 @@
         }
       }
     },
+    "アダプタがなくても、デモモードで全機能を試せます。": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No adapter? Try every feature in Demo Mode."
+          }
+        }
+      }
+    },
+    "アダプタに接続する": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connect Adapter"
+          }
+        }
+      }
+    },
     "アダプタに接続するか、デモモードで試せます。": {
       "localizations": {
         "en": {
@@ -907,6 +1037,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Cannot connect to adapter"
+          }
+        }
+      }
+    },
+    "アダプタをお持ちならすぐに接続。まずは雰囲気を見たいなら、デモですべての画面を体験できます。": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Have an adapter? Connect right away. Want a feel first? Demo Mode shows every screen in action."
+          }
+        }
+      }
+    },
+    "アダプタを挿す": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plug in the adapter"
           }
         }
       }
@@ -937,6 +1087,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Analog Gauge"
+          }
+        }
+      }
+    },
+    "アプリが自動検出": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The app auto-detects"
+          }
+        }
+      }
+    },
+    "イグニッションを ON にするとアダプタに電源が入ります。": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Turning the ignition on powers up the adapter."
           }
         }
       }
@@ -977,6 +1147,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ethanol %"
+          }
+        }
+      }
+    },
+    "エンジンをかける": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Start the engine"
+          }
+        }
+      }
+    },
+    "エンジンサウンド": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Engine Sound"
           }
         }
       }
@@ -1171,6 +1361,16 @@
         }
       }
     },
+    "ステップ %lld / %lld": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Step %1$lld of %2$lld"
+          }
+        }
+      }
+    },
     "スプリット": {
       "localizations": {
         "en": {
@@ -1357,6 +1557,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Restore Defaults"
+          }
+        }
+      }
+    },
+    "デモではじめる": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Start with Demo"
           }
         }
       }
@@ -1571,12 +1781,42 @@
         }
       }
     },
+    "メーター画面右上の接続ボタンから、本物のアダプタへいつでも移れます。": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Use the connect button at the top right of the Dashboard to switch to a real adapter anytime."
+          }
+        }
+      }
+    },
+    "モーション": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Motion"
+          }
+        }
+      }
+    },
     "ライブ": {
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Live"
+          }
+        }
+      }
+    },
+    "リアルタイム計測": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Real-Time Telemetry"
           }
         }
       }
@@ -1631,6 +1871,16 @@
         }
       }
     },
+    "位置情報": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Location"
+          }
+        }
+      }
+    },
     "位置情報が使用できません": {
       "localizations": {
         "en": {
@@ -1667,6 +1917,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Low"
+          }
+        }
+      }
+    },
+    "使う機能だけ、その場で許可": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Permissions, Only When Needed"
           }
         }
       }
@@ -2091,6 +2351,26 @@
         }
       }
     },
+    "実測の回転数に連動して、往年の名機のサウンドを鳴らせます。": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Legendary engine sounds driven by your real RPM."
+          }
+        }
+      }
+    },
+    "実走行を再現したデータで、メーターからエンジン音まで今すぐ動きます。": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Simulated driving data brings every gauge and engine sound to life instantly."
+          }
+        }
+      }
+    },
     "対応 PID %lld 件": {
       "localizations": {
         "en": {
@@ -2191,6 +2471,26 @@
         }
       }
     },
+    "必要になった画面で、はじめて許可をお願いします。今は何も求めません。": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Each permission is requested the first time you use that feature. Nothing is asked for now."
+          }
+        }
+      }
+    },
+    "戻る": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Back"
+          }
+        }
+      }
+    },
     "拡大": {
       "localizations": {
         "en": {
@@ -2217,6 +2517,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Connect & Scan for Devices"
+          }
+        }
+      }
+    },
+    "接続すると、この車が対応するデータを自動で見つけて表示します。": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Once connected, the app finds and displays the data your car supports."
           }
         }
       }
@@ -2511,6 +2821,16 @@
         }
       }
     },
+    "準備完了": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You're All Set"
+          }
+        }
+      }
+    },
     "点火時期": {
       "localizations": {
         "en": {
@@ -2701,6 +3021,16 @@
         }
       }
     },
+    "続ける": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Continue"
+          }
+        }
+      }
+    },
     "緯度": {
       "localizations": {
         "en": {
@@ -2867,6 +3197,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Catalyst Temp B2S2"
+          }
+        }
+      }
+    },
+    "計測したデータはすべてこの iPhone の中だけに保存されます。": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "All measured data stays on this iPhone."
           }
         }
       }
@@ -3061,6 +3401,16 @@
         }
       }
     },
+    "走ったルートと速度を、あとから地図とチャートで振り返れます。": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Review your route and speed later on a map and charts."
+          }
+        }
+      }
+    },
     "走行": {
       "localizations": {
         "en": {
@@ -3097,6 +3447,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Your route will be drawn as you drive"
+          }
+        }
+      }
+    },
+    "走行の記録と分析": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Record and Analyze Drives"
           }
         }
       }
@@ -3187,6 +3547,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Resets accumulated distance, time, and fuel economy to zero."
+          }
+        }
+      }
+    },
+    "車の OBD2 ポート(多くは運転席の足元)にアダプタを差し込みます。": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Insert the adapter into your car's OBD2 port, usually under the driver-side dashboard."
           }
         }
       }
@@ -3307,6 +3677,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Speed"
+          }
+        }
+      }
+    },
+    "速度・回転数・水温など、車が発する対応データを自動検出して表示します。": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Automatically detects and displays the data your car supports — speed, RPM, coolant temperature, and more."
           }
         }
       }

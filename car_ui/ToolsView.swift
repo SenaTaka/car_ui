@@ -256,6 +256,15 @@ struct ToolsView: View {
             Text("オンの場合、OBD 接続中(デモ含む)だけ画面を常時点灯します。未接続時は通常どおりスリープします。")
                 .font(.caption)
                 .foregroundStyle(.secondary)
+
+            Divider()
+
+            Button {
+                NotificationCenter.default.post(name: .carUIShowOnboarding, object: nil)
+            } label: {
+                Label("はじめかたをもう一度見る", systemImage: "sparkles.rectangle.stack")
+            }
+            .font(.subheadline)
         }
         .panelStyle()
     }
