@@ -263,3 +263,8 @@
 - ハマり: シミュレータのデバイス言語が以前の英語監査の名残で en-US のまま(ja確認は -AppleLanguages "(ja)" で実施)。
 
 - Amazon アフィリエイト仕込み(タグ空で非表示、承認後 Components.swift の amazonAffiliateTag に ID を設定)
+
+## 2026/07/20 12:20
+- リリース準備を API で前進: Xcode Cloud が push 起点で自動アーカイブしていると判明(run #22 = 最新コミット = build 22)。
+- build 22 をバージョン 1.0 に添付。IAP の MISSING_METADATA を解消: 価格設定(adfree ¥300 / pro ¥730、基準国JPN)+審査用スクショ(ペイウォール)を両IAPにアップロード → 両方 READY_TO_SUBMIT。
+- 残(ユーザー手動): ASC App Privacy 回答 / AdMob GDPR メッセージ / 実車QA。完了後「審査へ提出」は API で可能。
