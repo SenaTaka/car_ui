@@ -254,3 +254,12 @@
 - **アクセシビリティラベル**: TrackReplayView 再生/一時停止ボタン、HUDView 閉じるボタンに accessibilityLabel 追加
 - 検証: `xcodebuild ... build` BUILD SUCCEEDED(コンパイル確認のみ、シミュレータ実行未検証)
 - コミット: (このコミット)
+
+## 2026/07/19 21:00
+- 初回オンボーディング実装(c9455ad)。HIG Welcome様式4ページ: 価値提示→つなぎかた3ステップ→権限priming(要求はしない)→デモ/接続/後で の選択。
+- 演出: ページスライド+触覚FB、hero symbolEffect、welcome行のスタガードフェード、Reduce Motion/Dynamic Type/VoiceOver対応。
+- 導線: デモ即開始(プラン提案は抑制)/接続シート直行(NotificationCenter経由)/その他タブから再表示。
+- 検証フック: -uiOnboarding 1 / -uiOnboardingStep N。日英+ダークをスクショ確認、29テストパス。
+- ハマり: シミュレータのデバイス言語が以前の英語監査の名残で en-US のまま(ja確認は -AppleLanguages "(ja)" で実施)。
+
+- Amazon アフィリエイト仕込み(タグ空で非表示、承認後 Components.swift の amazonAffiliateTag に ID を設定)
