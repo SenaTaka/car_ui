@@ -288,3 +288,8 @@
 - 変更: Info.plist から UIBackgroundModes 削除 / EngineSoundController に背面停止+復帰時自動再開(sceneDidEnterBackground/sceneDidBecomeActive)/ ContentView の scenePhase ハンドラ書き換え / ELM327BluetoothModel の駐車検知オートオフ一式を削除(背面実行がなくなりデッドコード化、復元は d761e2f 参照)。
 - 検証: xcodebuild BUILD SUCCEEDED + 産物 Info.plist に UIBackgroundModes なしを plutil で確認。
 - 残置(他レーン、未コミット): RELEASE_QUALITY_AUDIT.md / audit_en_*.png
+
+## 2026/07/31 08:00
+- 審査再提出を API で完遂: Xcode Cloud build 26(VALID)を 1.0 に添付 → 審査メモに 2.5.4 対応(UIBackgroundModes 削除・フォアグラウンド専用化)を日英で追記 → 旧 submission(9282cca3、UNRESOLVED_ISSUES)をキャンセル → 新 submission 801b77fe に appStoreVersion + IAP version 2件(adfree/pro)を追加して提出。
+- 最終状態: app 1.0 / IAP 2件とも WAITING_FOR_REVIEW。Resolution Center への返信は不要(モード削除+再提出で完結)。
+- ハマり: submission キャンセルで IAP version が DEVELOPER_REJECTED になり inAppPurchaseSubmissions が「no pending version」で失敗 → reviewSubmissionItems の関連名 `inAppPurchaseVersion` で直接追加して解決(詳細は ~/ios/AI_AGENT_NOTES.md 2026-07-21 の項を更新済み)。途中で作った submission 8f9c86bf(バージョンのみ)は IAP 同梱のためキャンセルして作り直した。
