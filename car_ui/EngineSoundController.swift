@@ -231,6 +231,23 @@ final class EngineSoundController: ObservableObject {
         }
     }
 
+    // MARK: - 背面遷移
+
+    /// 背面移行で停止した場合に前面復帰で自動再開するためのフラグ
+    /// (UIBackgroundModes なしでは背面サスペンドで音が途切れるため、明示停止が安全)
+    private var wasPlayingBeforeBackground = false
+
+    func sceneDidEnterBackground() {
+        wasPlayingBeforeBackground = isPlaying
+        if isPlaying { stop() }
+    }
+
+    func sceneDidBecomeActive() {
+        guard wasPlayingBeforeBackground else { return }
+        wasPlayingBeforeBackground = false
+        start()
+    }
+
     // MARK: - 制御ループ
 
     private func startDisplayLink() {

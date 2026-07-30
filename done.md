@@ -282,3 +282,9 @@
 ## 2026/07/20 14:40
 - 審査設定を API で完了: copyright「© 2026 Sena Takasawa」/ App Review 連絡先(enjine-sim と同一)/ 審査メモ(デモモードで全機能確認可・入り方・IAP/広告説明、日英)。releaseType=AFTER_APPROVAL・build暗号化=False・年齢4+・カテゴリUTILITIESは設定済みを確認。
 - Info.plist に ITSAppUsesNonExemptEncryption=false 追加(次ビルドから質問スキップ)。
+
+## 2026/07/31 07:15
+- App Review リジェクト対応(Guideline 2.5.4 ×2: audio / bluetooth-central の背景機能を審査員が確認できず)。方針: UIBackgroundModes 両方削除でフォアグラウンド専用化(背面 GPS 非対応で背面記録の価値が限定的なため、デモ動画防衛より確実な削除を選択)。
+- 変更: Info.plist から UIBackgroundModes 削除 / EngineSoundController に背面停止+復帰時自動再開(sceneDidEnterBackground/sceneDidBecomeActive)/ ContentView の scenePhase ハンドラ書き換え / ELM327BluetoothModel の駐車検知オートオフ一式を削除(背面実行がなくなりデッドコード化、復元は d761e2f 参照)。
+- 検証: xcodebuild BUILD SUCCEEDED + 産物 Info.plist に UIBackgroundModes なしを plutil で確認。
+- 残置(他レーン、未コミット): RELEASE_QUALITY_AUDIT.md / audit_en_*.png

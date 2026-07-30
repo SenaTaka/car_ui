@@ -86,15 +86,18 @@ struct ContentView: View {
         .onChange(of: scenePhase) { _, newPhase in
             // 監査 REL-012: スリープ防止は「前面 + OBD 接続中 + 設定オン」のときだけ
             updateScreenWake()
-            // エンジン音は他アプリ表示中もバックグラウンド再生を継続する
-            // (Info.plist の UIBackgroundModes=audio + .playback セッション)。
-            // OBD も背面継続(bluetooth-central)。駐車中の電池消費は
-            // モデル側の駐車検知オートオフで保護する。
-            obd.setBackgrounded(newPhase == .background)
-            // 監査 REL-011: 背面移行時に記録と軌跡をディスクへ退避(強制終了に備える)
-            if newPhase == .background {
+            switch newPhase {
+            case .background:
+                // フォアグラウンド専用(UIBackgroundModes なし)。背面ではサスペンドで
+                // 音が途切れるため明示停止し、復帰時に自動再開する。
+                engineSound.sceneDidEnterBackground()
+                // 監査 REL-011: 背面移行時に記録と軌跡をディスクへ退避(強制終了に備える)
                 recorder.persistToDisk()
                 TrackStore.shared.persistToDisk()
+            case .active:
+                engineSound.sceneDidBecomeActive()
+            default:
+                break
             }
         }
         .onChange(of: keepAwakeWhileConnected) { _, _ in
