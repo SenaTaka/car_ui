@@ -152,6 +152,14 @@ final class ELM327BluetoothModel: NSObject, ObservableObject {
         centralManager = CBCentralManager(delegate: self, queue: .main)
     }
 
+    /// 接続シートを開いた等、ユーザーが接続意思を示した最初のタイミングで
+    /// CBCentralManager を生成する。これを呼ばないと centralManager が nil のままで
+    /// canScan/canConnect が永久に false になり、検索・接続ボタンが押せなくなる。
+    /// (権限ダイアログはこの生成時に初めて発火するため、起動直後には呼ばない。)
+    func prepareForConnection() {
+        ensureCentralManager()
+    }
+
     var canScan: Bool {
         centralManager?.state == .poweredOn
     }

@@ -352,6 +352,11 @@ struct ConnectionSheet: View {
                     Button("閉じる") { dismiss() }
                 }
             }
+            .onAppear {
+                // シート表示 = 接続意思。ここで CBCentralManager を生成しないと
+                // canScan が false のままで「アダプタを検索」ボタンが押せない。
+                obd.prepareForConnection()
+            }
             .onChange(of: obd.phase.isConnected) { _, isConnected in
                 if isConnected { dismiss() }
             }
