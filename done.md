@@ -293,3 +293,8 @@
 - 審査再提出を API で完遂: Xcode Cloud build 26(VALID)を 1.0 に添付 → 審査メモに 2.5.4 対応(UIBackgroundModes 削除・フォアグラウンド専用化)を日英で追記 → 旧 submission(9282cca3、UNRESOLVED_ISSUES)をキャンセル → 新 submission 801b77fe に appStoreVersion + IAP version 2件(adfree/pro)を追加して提出。
 - 最終状態: app 1.0 / IAP 2件とも WAITING_FOR_REVIEW。Resolution Center への返信は不要(モード削除+再提出で完結)。
 - ハマり: submission キャンセルで IAP version が DEVELOPER_REJECTED になり inAppPurchaseSubmissions が「no pending version」で失敗 → reviewSubmissionItems の関連名 `inAppPurchaseVersion` で直接追加して解決(詳細は ~/ios/AI_AGENT_NOTES.md 2026-07-21 の項を更新済み)。途中で作った submission 8f9c86bf(バージョンのみ)は IAP 同梱のためキャンセルして作り直した。
+
+## 2026/07/31 09:10
+- 2度目のリジェクト(2.3.7: スクショ内の価格表現)対応。違反は 04_sound 日英のキャプション「全プリセット無料 / All presets free」のみ(全10枚を目視確認)→「全プリセット搭載 / All presets built in」で store_frame 再生成(raw は store/raw/n_sound.png)。
+- 予防で promotional_text の「無料/free」も機能訴求に書き換え(description は Apple のリジェクト文面が「価格情報は description に書け」と明言しているため残置。store_lint の FAIL は description 分のみで意図的に無視)。
+- ASC 反映: スクショ 5枚×2ロケール再アップロード(全COMPLETE確認)+ metadata 更新 + 審査メモに 2.3.7 対応を追記 → submission 801b77fe をキャンセルし e083fff8 で再提出。app 1.0 / IAP 2件とも WAITING_FOR_REVIEW。build は 26 のまま(バイナリ変更なし)。
