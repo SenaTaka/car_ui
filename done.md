@@ -298,3 +298,9 @@
 - 2度目のリジェクト(2.3.7: スクショ内の価格表現)対応。違反は 04_sound 日英のキャプション「全プリセット無料 / All presets free」のみ(全10枚を目視確認)→「全プリセット搭載 / All presets built in」で store_frame 再生成(raw は store/raw/n_sound.png)。
 - 予防で promotional_text の「無料/free」も機能訴求に書き換え(description は Apple のリジェクト文面が「価格情報は description に書け」と明言しているため残置。store_lint の FAIL は description 分のみで意図的に無視)。
 - ASC 反映: スクショ 5枚×2ロケール再アップロード(全COMPLETE確認)+ metadata 更新 + 審査メモに 2.3.7 対応を追記 → submission 801b77fe をキャンセルし e083fff8 で再提出。app 1.0 / IAP 2件とも WAITING_FOR_REVIEW。build は 26 のまま(バイナリ変更なし)。
+
+## 2026/07/31 10:10
+- 接続バグ修正の続行(クラウドレーンのブランチ claude/connection-button-unresponsive-2kxelx を取り込み)。
+- クラウドレーンの修正(prepareForConnection による鶏卵問題解消)をローカルでビルド検証 → BUILD SUCCEEDED(向こうの環境では未検証だった)。
+- HANDOFF §5 の未着手改善からスキャンタイムアウトを実装: 15秒で自動打ち切り、未発見なら .failed でメッセージ表示・発見済みなら .idle でリスト維持。stopScan/connect/デモ開始/切断経路でタスクをキャンセル。stopScan の centralManager 参照も nil 安全化。
+- ASC の submission(WAITING_FOR_REVIEW)には触っていない。main へのマージ・push は未実施(指示待ち)。

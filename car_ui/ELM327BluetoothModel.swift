@@ -104,6 +104,7 @@ final class ELM327BluetoothModel: NSObject, ObservableObject {
     private var nextCommandID = 0
 
     private var commandTimeoutTask: Task<Void, Never>?
+    private var scanTimeoutTask: Task<Void, Never>?
     private var transportDiscoveryTask: Task<Void, Never>?
     private var startupTask: Task<Void, Never>?
     private var pollingTask: Task<Void, Never>?
@@ -189,10 +190,32 @@ final class ELM327BluetoothModel: NSObject, ObservableObject {
             withServices: nil,
             options: [CBCentralManagerScanOptionAllowDuplicatesKey: false]
         )
+        scheduleScanTimeout()
+    }
+
+    /// スキャンは自動では終わらないため、一定時間で打ち切ってフィードバックを出す。
+    /// これが無いとアダプタ未発見時に .scanning のまま無限スピナーになる。
+    private func scheduleScanTimeout() {
+        scanTimeoutTask?.cancel()
+        scanTimeoutTask = Task { [weak self] in
+            try? await Task.sleep(for: .seconds(15))
+            guard let self, !Task.isCancelled else { return }
+            guard case .scanning = self.phase else { return }
+            self.centralManager?.stopScan()
+            if self.discoveredPeripherals.isEmpty {
+                self.phase = .failed(String(localized: "アダプタが見つかりませんでした。アダプタの電源(車両のイグニッション ON)を確認して再検索してください"))
+                self.appendLog("スキャンタイムアウト: デバイス未発見")
+            } else {
+                self.phase = .idle
+                self.appendLog("スキャンタイムアウト: 検出済みリストから選択してください")
+            }
+        }
     }
 
     func stopScan() {
-        centralManager.stopScan()
+        scanTimeoutTask?.cancel()
+        scanTimeoutTask = nil
+        centralManager?.stopScan()
         if case .scanning = phase {
             phase = .idle
         }
@@ -684,6 +707,8 @@ final class ELM327BluetoothModel: NSObject, ObservableObject {
         startupTask = nil
         commandTimeoutTask?.cancel()
         commandTimeoutTask = nil
+        scanTimeoutTask?.cancel()
+        scanTimeoutTask = nil
         cancelPendingCommands()
 
         connectedPeripheral?.delegate = nil
