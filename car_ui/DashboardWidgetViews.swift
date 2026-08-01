@@ -74,10 +74,15 @@ struct MapWidgetView: View {
     @AppStorage("trackMap.speedMax") private var speedMax = 120.0
     @AppStorage("trackMap.rpmMin") private var rpmMin = 0.0
     @AppStorage("trackMap.rpmMax") private var rpmMax = 8000.0
+    @AppStorage("trackMap.markerStyle") private var markerStyleRaw = TrackMarkerStyle.arrow.rawValue
     @State private var showingExpanded = false
 
     private var colorSource: TrackColorSource {
         TrackColorSource(rawValue: colorSourceRaw) ?? .speed
+    }
+
+    private var markerStyle: TrackMarkerStyle {
+        TrackMarkerStyle(rawValue: markerStyleRaw) ?? .arrow
     }
 
     private var styleOption: TrackMapStyleOption {
@@ -117,7 +122,8 @@ struct MapWidgetView: View {
                 .frame(maxWidth: .infinity, minHeight: 150)
             } else {
                 Map(initialPosition: .automatic, interactionModes: []) {
-                    TrackMapContent(points: track.points, colorSource: colorSource, range: effectiveRange)
+                    TrackMapContent(points: track.points, colorSource: colorSource, range: effectiveRange,
+                                    markerStyle: markerStyle)
                 }
                 .mapStyle(styleOption.mapStyle)
                 .frame(height: 180)

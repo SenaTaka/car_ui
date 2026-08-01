@@ -191,6 +191,15 @@ enum TrackContour {
     }
 }
 
+// MARK: - 現在位置マーカーの種類
+
+enum TrackMarkerStyle: String, CaseIterable, Identifiable {
+    case arrow = "矢印"
+    case dot = "丸"
+
+    var id: String { rawValue }
+}
+
 // MARK: - 共用の地図コンテンツ + 凡例
 
 struct TrackMapContent: MapContent {
@@ -198,6 +207,10 @@ struct TrackMapContent: MapContent {
     let colorSource: TrackColorSource
     let range: ClosedRange<Double>?
     var lineWidth: CGFloat = 8
+    /// 現在位置マーカー(規定は進行方向を向く矢印)
+    var markerStyle: TrackMarkerStyle = .arrow
+    /// 地図が回転している場合(進行方向を上)のカメラ方位。矢印は回転分を差し引いて描く
+    var cameraHeading: Double = 0
 
     var body: some MapContent {
         ForEach(TrackContour.segments(points, source: colorSource, range: range)) { segment in
@@ -210,10 +223,24 @@ struct TrackMapContent: MapContent {
 
         if let last = points.last {
             Annotation(String(localized: "現在"), coordinate: last.coordinate) {
-                Circle()
-                    .fill(.blue)
-                    .stroke(.white, lineWidth: 2)
-                    .frame(width: 14, height: 14)
+                switch markerStyle {
+                case .arrow:
+                    ZStack {
+                        Circle()
+                            .fill(.white)
+                            .frame(width: 27, height: 27)
+                            .shadow(color: .black.opacity(0.25), radius: 2, y: 1)
+                        Image(systemName: "location.north.fill")
+                            .font(.system(size: 15, weight: .bold))
+                            .foregroundStyle(.blue)
+                            .rotationEffect(.degrees((TrackContour.bearingOfTravel(points) ?? cameraHeading) - cameraHeading))
+                    }
+                case .dot:
+                    Circle()
+                        .fill(.blue)
+                        .stroke(.white, lineWidth: 2)
+                        .frame(width: 14, height: 14)
+                }
             }
         }
     }
@@ -292,6 +319,7 @@ struct TrackMapSettingsView: View {
     @AppStorage("trackMap.rpmMin") private var rpmMin = 0.0
     @AppStorage("trackMap.rpmMax") private var rpmMax = 8000.0
     @AppStorage("trackMap.headingUp") private var headingUp = true
+    @AppStorage("trackMap.markerStyle") private var markerStyleRaw = TrackMarkerStyle.arrow.rawValue
 
     var body: some View {
         NavigationStack {
@@ -311,6 +339,19 @@ struct TrackMapSettingsView: View {
                     Text("地図の向き")
                 } footer: {
                     Text("オフにすると常に北が上になります。")
+                }
+
+                Section {
+                    Picker("マーカー", selection: $markerStyleRaw) {
+                        ForEach(TrackMarkerStyle.allCases) { style in
+                            Text(LocalizedStringKey(style.rawValue)).tag(style.rawValue)
+                        }
+                    }
+                    .pickerStyle(.segmented)
+                } header: {
+                    Text("現在位置マーカー")
+                } footer: {
+                    Text("矢印は進行方向を向きます。")
                 }
             }
             .navigationTitle("走行マップ設定")
@@ -361,12 +402,17 @@ struct TrackMapPanel: View {
     @AppStorage("trackMap.speedMax") private var speedMax = 120.0
     @AppStorage("trackMap.rpmMin") private var rpmMin = 0.0
     @AppStorage("trackMap.rpmMax") private var rpmMax = 8000.0
+    @AppStorage("trackMap.markerStyle") private var markerStyleRaw = TrackMarkerStyle.arrow.rawValue
     @State private var showingExpanded = false
     @State private var showingClearConfirmation = false
     @State private var showingSettings = false
 
     private var colorSource: TrackColorSource {
         TrackColorSource(rawValue: colorSourceRaw) ?? .speed
+    }
+
+    private var markerStyle: TrackMarkerStyle {
+        TrackMarkerStyle(rawValue: markerStyleRaw) ?? .arrow
     }
 
     private var styleOption: TrackMapStyleOption {
@@ -449,7 +495,8 @@ struct TrackMapPanel: View {
                 .frame(maxWidth: .infinity, minHeight: 160)
             } else {
                 Map(initialPosition: .automatic, interactionModes: []) {
-                    TrackMapContent(points: track.points, colorSource: colorSource, range: effectiveRange)
+                    TrackMapContent(points: track.points, colorSource: colorSource, range: effectiveRange,
+                                    markerStyle: markerStyle)
                 }
                 .mapStyle(styleOption.mapStyle)
                 .frame(height: 280)
@@ -502,13 +549,20 @@ struct TrackMapExpandedView: View {
     @AppStorage("trackMap.speedMax") private var speedMax = 120.0
     @AppStorage("trackMap.rpmMin") private var rpmMin = 0.0
     @AppStorage("trackMap.rpmMax") private var rpmMax = 8000.0
+    @AppStorage("trackMap.markerStyle") private var markerStyleRaw = TrackMarkerStyle.arrow.rawValue
     @State private var cameraPosition: MapCameraPosition = .automatic
     /// 追従中に維持するズーム距離(ユーザーのピンチ操作を記憶して上書きされないようにする)
     @State private var followDistance: CLLocationDistance = 1200
+    /// 現在のカメラ方位(矢印マーカーの回転補正に使う)
+    @State private var cameraHeading: Double = 0
     @State private var showingSettings = false
 
     private var colorSource: TrackColorSource {
         TrackColorSource(rawValue: colorSourceRaw) ?? .speed
+    }
+
+    private var markerStyle: TrackMarkerStyle {
+        TrackMarkerStyle(rawValue: markerStyleRaw) ?? .arrow
     }
 
     private var styleOption: TrackMapStyleOption {
@@ -525,13 +579,15 @@ struct TrackMapExpandedView: View {
     var body: some View {
         ZStack {
             Map(position: $cameraPosition) {
-                TrackMapContent(points: track.points, colorSource: colorSource, range: effectiveRange, lineWidth: 11)
+                TrackMapContent(points: track.points, colorSource: colorSource, range: effectiveRange,
+                                lineWidth: 11, markerStyle: markerStyle, cameraHeading: cameraHeading)
             }
             .mapStyle(styleOption.mapStyle)
             .ignoresSafeArea()
             // ユーザーのピンチズームを記憶し、追従の再センタリングでズームを保持する
             .onMapCameraChange(frequency: .continuous) { context in
                 followDistance = context.camera.distance
+                cameraHeading = context.camera.heading
             }
 
             controlsOverlay

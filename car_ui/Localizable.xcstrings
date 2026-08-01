@@ -3731,6 +3731,66 @@
         }
       }
     },
+    "マーカー": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Marker"
+          }
+        }
+      }
+    },
+    "矢印": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Arrow"
+          }
+        }
+      }
+    },
+    "丸": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dot"
+          }
+        }
+      }
+    },
+    "現在位置マーカー": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Position marker"
+          }
+        }
+      }
+    },
+    "矢印は進行方向を向きます。": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The arrow points in the direction of travel."
+          }
+        }
+      }
+    },
+    "アダプタが見つかりませんでした。アダプタの電源(車両のイグニッション ON)を確認して再検索してください": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No adapter found. Check the adapter power (vehicle ignition ON) and search again."
+          }
+        }
+      }
+    },
     "選択したチャンネルの直近データがありません": {
       "localizations": {
         "en": {
