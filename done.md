@@ -311,3 +311,12 @@
 - main へマージ+MARKETING_VERSION 1.0.1(42a516b)→ push → Xcode Cloud build 29(VALID)。
 - ASC: 1.0.1 作成(7d4855d8)+ whatsNew 日英設定 → build 29 添付 → submission 519a6ef7 で提出。**1.0.1 WAITING_FOR_REVIEW**。IAP は 1.0 で承認済みのため同梱不要。
 - 監視〜提出はスクリプト化(scratchpad/asc_attach_submit_101.py 相当、ポーリング+添付+提出)。
+
+## 2026/08/01 15:40
+- _car_ui.md のフィードバック 4 件を実装(コミット 6ba5796 / f699891 / 73bb5ec):
+  - 0-100 自動計測開始を規定オフ(手動「計測開始」が既定。トグルで自動に戻せる・UserDefaults 永続化)。
+  - センサー「更新なし」⇔正常の点滅: 原因はスロー PID ラウンドロビン(実測 10〜20 秒周期)×固定 5 秒 stale 閾値 → 閾値を実測更新間隔×2.5 に適応。
+  - 時々重くなる: BLE ログが毎コマンド 2 回 @Published 発行され obd 購読の全 View が毎秒 10〜20 回再描画 → 0.5 秒間引き。samples(since:) を末尾走査化、SensorsView の .id(revision) 除去。
+  - 走行マップ: 現在位置マーカーを矢印(進行方向、白丸背景)に。規定=矢印+追従+進行方向上。設定シートで丸に切替可。拡大表示はカメラ回転分を補正。
+  - 再開時データ保存は既存の REL-011(60 秒毎+背面移行時退避、起動時復元)で担保済みと確認 → 追加実装なし。
+- 検証: BUILD SUCCEEDED + ユニットテスト全パス(iPhone 17 シミュレータ)。push で Xcode Cloud → TestFlight 配信(審査提出はしない。1.0.1 審査中の submission には未接触)。
