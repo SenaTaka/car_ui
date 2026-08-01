@@ -105,9 +105,10 @@ final class AccelTestModel: ObservableObject {
     @Published private(set) var state: State = .idle
     @Published private(set) var splits: [Split] = []
     @Published private(set) var elapsed: Double = 0
-    /// 自動計測モード(レビュー 9-3: 完全停止で自動待機→発進で自動開始)。
-    /// 走行直前のタップを運転者に要求しないための安全機能。
-    @Published var autoStart = true
+    /// 自動計測モード(完全停止で自動待機→発進で自動開始)。
+    /// 渋滞・信号待ちのたびに勝手に計測が始まるため規定はオフ(手動開始)。
+    /// オンにする選択はトグルから可能で、設定は永続化される。
+    @Published var autoStart = UserDefaults.standard.bool(forKey: "accelTest.autoStart")
 
     private let targets = [20, 40, 60, 80, 100]
     /// この速度未満を「停止」とみなす
@@ -126,6 +127,7 @@ final class AccelTestModel: ObservableObject {
 
     func setAutoStart(_ enabled: Bool) {
         autoStart = enabled
+        UserDefaults.standard.set(enabled, forKey: "accelTest.autoStart")
         // 手動へ切り替えたら待機状態はリセット(誤発進を防ぐ)
         if !enabled, state == .armed {
             state = .idle
