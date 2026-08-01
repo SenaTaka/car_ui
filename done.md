@@ -304,3 +304,10 @@
 - クラウドレーンの修正(prepareForConnection による鶏卵問題解消)をローカルでビルド検証 → BUILD SUCCEEDED(向こうの環境では未検証だった)。
 - HANDOFF §5 の未着手改善からスキャンタイムアウトを実装: 15秒で自動打ち切り、未発見なら .failed でメッセージ表示・発見済みなら .idle でリスト維持。stopScan/connect/デモ開始/切断経路でタスクをキャンセル。stopScan の centralManager 参照も nil 安全化。
 - ASC の submission(WAITING_FOR_REVIEW)には触っていない。main へのマージ・push は未実施(指示待ち)。
+
+## 2026/08/01 10:30
+- 接続バグ修正を実機検証: 修正版を iPhone 16 に直接インストール(devicectl)→ ユーザーが接続動作を確認(「できた」)。昨日「できなかった」のは TestFlight build 26(修正前)で試していたため。
+- 1.0 が READY_FOR_SALE(承認・リリース済み)を API で確認 → 1.0.1 アップデートとして申請。
+- main へマージ+MARKETING_VERSION 1.0.1(42a516b)→ push → Xcode Cloud build 29(VALID)。
+- ASC: 1.0.1 作成(7d4855d8)+ whatsNew 日英設定 → build 29 添付 → submission 519a6ef7 で提出。**1.0.1 WAITING_FOR_REVIEW**。IAP は 1.0 で承認済みのため同梱不要。
+- 監視〜提出はスクリプト化(scratchpad/asc_attach_submit_101.py 相当、ポーリング+添付+提出)。
