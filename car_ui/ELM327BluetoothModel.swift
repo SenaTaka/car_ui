@@ -91,6 +91,8 @@ final class ELM327BluetoothModel: NSObject, ObservableObject {
     @Published private(set) var manualCommandResponse = "未送信"
     @Published private(set) var isSendingManualCommand = false
     @Published private(set) var logLines: [String] = []
+    private var logBuffer: [String] = []
+    private var logFlushTask: Task<Void, Never>?
 
     private var centralManager: CBCentralManager!
     private var peripheralsByID: [UUID: CBPeripheral] = [:]
@@ -737,6 +739,7 @@ final class ELM327BluetoothModel: NSObject, ObservableObject {
         isSendingManualCommand = false
 
         if !keepLog {
+            logBuffer = []
             logLines = []
         }
     }
@@ -1086,13 +1089,31 @@ final class ELM327BluetoothModel: NSObject, ObservableObject {
         return String(rawCommand.uppercased().filter { allowedCharacters.contains($0) })
     }
 
-    private func appendLog(_ message: String) {
+    private static let logTimeFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "HH:mm:ss"
-        logLines.append("\(formatter.string(from: Date()))  \(message)")
+        return formatter
+    }()
 
-        if logLines.count > 80 {
-            logLines.removeFirst(logLines.count - 80)
+    /// ログは内部バッファに溜め、@Published への反映は 0.5 秒間隔に間引く。
+    /// ポーリング中はコマンド毎に →/← の 2 行が出るため、毎行 publish すると
+    /// obd を購読する全 View が毎秒 10〜20 回再描画されてアプリ全体が重くなる。
+    private func appendLog(_ message: String) {
+        logBuffer.append("\(Self.logTimeFormatter.string(from: Date()))  \(message)")
+
+        if logBuffer.count > 80 {
+            logBuffer.removeFirst(logBuffer.count - 80)
+        }
+        scheduleLogFlush()
+    }
+
+    private func scheduleLogFlush() {
+        guard logFlushTask == nil else { return }
+        logFlushTask = Task { [weak self] in
+            try? await Task.sleep(nanoseconds: 500_000_000)
+            guard let self else { return }
+            self.logFlushTask = nil
+            self.logLines = self.logBuffer
         }
     }
 

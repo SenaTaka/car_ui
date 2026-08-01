@@ -225,13 +225,13 @@ struct SensorsView: View {
 
             Spacer(minLength: 8)
 
-            // recorder.revision の更新でスパークラインが再描画される
+            // samples の変化で再描画される(.id(revision) での View 再生成は
+            // 全行の Canvas を 0.5 秒ごとに破棄・再構築してしまうため使わない)
             Sparkline(
                 samples: recorder.samples(channelID, since: Date().addingTimeInterval(-120)),
                 tint: isStale ? .secondary : tint
             )
             .frame(width: 64, height: 22)
-            .id(recorder.revision)
 
             MetricValue(
                 value: value,

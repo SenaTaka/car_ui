@@ -160,19 +160,34 @@ final class TelemetryRecorder: ObservableObject {
         storage[channelID]?.last?.time
     }
 
-    /// チャンネルが「古い」か(最終更新から `DS.staleThreshold` 秒超)。未取得は false(= 別途「未取得」扱い)。
+    /// チャンネルが「古い」か。未取得は false(= 別途「未取得」扱い)。
+    /// 閾値はチャンネル自身の実測更新間隔に適応させる: スロー PID はラウンドロビン巡回で
+    /// 更新周期が 10〜20 秒になり、固定 `DS.staleThreshold` では正常なのに
+    /// 「更新なし」⇔ 正常の点滅を繰り返すため。
     func isStale(_ channelID: String, now: Date = Date()) -> Bool {
-        guard let last = storage[channelID]?.last?.time else { return false }
-        return now.timeIntervalSince(last) > DS.staleThreshold
+        guard let samples = storage[channelID], let last = samples.last?.time else { return false }
+        var maxInterval: TimeInterval = 0
+        var previous: Date?
+        for sample in samples.suffix(4) {
+            if let previous {
+                maxInterval = max(maxInterval, sample.time.timeIntervalSince(previous))
+            }
+            previous = sample.time
+        }
+        let threshold = max(DS.staleThreshold, maxInterval * 2.5)
+        return now.timeIntervalSince(last) > threshold
     }
 
     func samples(_ channelID: String, since: Date? = nil) -> [TelemetrySample] {
         guard let all = storage[channelID] else { return [] }
         guard let since else { return all }
-        if let startIndex = all.firstIndex(where: { $0.time >= since }) {
-            return Array(all[startIndex...])
+        // 主用途は直近ウィンドウの取得。時刻昇順なので末尾から探すと O(ウィンドウ長) で済む
+        // (先頭からの走査はバッファ全長 O(n) が再描画のたび全チャンネル分積み重なる)。
+        var start = all.endIndex
+        while start > all.startIndex, all[start - 1].time >= since {
+            start -= 1
         }
-        return []
+        return Array(all[start...])
     }
 
     func clear() {
