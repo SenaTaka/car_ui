@@ -14,6 +14,8 @@ struct SensorsView: View {
     @EnvironmentObject private var motion: MotionModel
     @EnvironmentObject private var recorder: TelemetryRecorder
 
+    @State private var helpChannel: ChannelInfo?
+
     var body: some View {
         NavigationStack {
             List {
@@ -29,6 +31,8 @@ struct SensorsView: View {
                             .font(.subheadline.weight(.bold).monospacedDigit())
                             .foregroundStyle(.blue)
                     }
+                } footer: {
+                    Text("行をタップすると各項目の説明を表示します。")
                 }
 
                 Section("OBD-II") {
@@ -116,6 +120,9 @@ struct SensorsView: View {
                 }
             }
             .navigationTitle("センサー")
+            .sheet(item: $helpChannel) { info in
+                SensorHelpSheet(info: info)
+            }
         }
     }
 
@@ -242,5 +249,67 @@ struct SensorsView: View {
             )
             .frame(minWidth: 72, alignment: .trailing)
         }
+        // タップで説明シートを表示(2026-08-02 フィードバック: 項目がわかりづらい)
+        .contentShape(Rectangle())
+        .onTapGesture {
+            helpChannel = ChannelInfo.info(for: channelID)
+        }
+        .accessibilityAddTraits(.isButton)
+        .accessibilityHint("タップすると説明を表示します")
+    }
+}
+
+// MARK: - 項目の説明シート
+
+private struct SensorHelpSheet: View {
+    let info: ChannelInfo
+    @EnvironmentObject private var recorder: TelemetryRecorder
+    @Environment(\.dismiss) private var dismiss
+
+    var body: some View {
+        NavigationStack {
+            VStack(alignment: .leading, spacing: 16) {
+                HStack(spacing: 12) {
+                    Image(systemName: info.icon)
+                        .font(.title2)
+                        .foregroundStyle(info.tint)
+                        .frame(width: 36)
+
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(LocalizedStringKey(info.name))
+                            .font(.headline)
+                        if !info.unit.isEmpty {
+                            Text(String(localized: "単位: \(info.unit)"))
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+
+                    Spacer()
+
+                    MetricValue(
+                        value: recorder.latest(info.id),
+                        unit: info.unit,
+                        digits: info.fractionDigits,
+                        valueFont: .title3
+                    )
+                }
+
+                Text(ChannelHelp.text(for: info.id) ?? String(localized: "この項目の説明は準備中です。"))
+                    .font(.subheadline)
+                    .foregroundStyle(.primary)
+                    .fixedSize(horizontal: false, vertical: true)
+
+                Spacer()
+            }
+            .padding()
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("閉じる") { dismiss() }
+                }
+            }
+        }
+        .presentationDetents([.height(260), .medium])
     }
 }

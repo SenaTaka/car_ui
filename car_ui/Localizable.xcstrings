@@ -1021,6 +1021,40 @@
         }
       }
     },
+    "2 系統目のスロットルセンサーの開度です(冗長系)。": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Öffnung des zweiten Drosselklappensensors (Redundanzsystem)."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Opening from the second (redundant) throttle sensor."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apertura indicada por el segundo sensor de mariposa (sistema redundante)."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ouverture indiquée par le second capteur de papillon des gaz (système redondant)."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "第二组节气门传感器的开度(冗余系统)。"
+          }
+        }
+      }
+    },
     "Bluetooth がオフです": {
       "localizations": {
         "de": {
@@ -1293,6 +1327,40 @@
         }
       }
     },
+    "ECU がスロットルに指示している目標開度です。": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der von der ECU an die Drosselklappe befohlene Sollöffnungswert."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Target throttle opening commanded by the ECU."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apertura objetivo que la ECU ordena a la mariposa."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ouverture cible commandée par l'ECU au papillon des gaz."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ECU 向节气门下达的目标开度指令。"
+          }
+        }
+      }
+    },
     "ECU が対応する全 PID を自動検出し、設定なしですべて表示・記録します。アダプタがなくてもデモモードで全機能を試せます。": {
       "localizations": {
         "de": {
@@ -1327,6 +1395,108 @@
         }
       }
     },
+    "ECU が目標とする空燃比(λ)です。1.0 が理論空燃比を表します。": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das von der ECU angestrebte Luft-Kraftstoff-Verhältnis (λ). 1,0 entspricht dem stöchiometrischen Verhältnis."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The air–fuel ratio (λ) the ECU is targeting. 1.0 is the stoichiometric ratio."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Relación aire-combustible (λ) objetivo de la ECU. 1,0 representa la relación estequiométrica."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rapport air-carburant (λ) visé par l'ECU. 1,0 représente le rapport stœchiométrique."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ECU 所设定的目标空燃比(λ)。1.0 表示理论空燃比。"
+          }
+        }
+      }
+    },
+    "ECU が認識している車速です。スピードメーターの表示とは数 km/h ずれることがあります。": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die vom ECU erkannte Fahrzeuggeschwindigkeit. Sie kann um einige km/h von der Tachoanzeige abweichen."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vehicle speed as seen by the ECU. May differ from the speedometer by a few km/h."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Velocidad del vehículo tal como la reconoce la ECU. Puede diferir del velocímetro en unos pocos km/h."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vitesse du véhicule telle que perçue par l'ECU. Elle peut différer de quelques km/h par rapport à l'indication du compteur de vitesse."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ECU 识别到的车速。可能与车速表显示相差几 km/h。"
+          }
+        }
+      }
+    },
+    "ECU に供給されている電圧です。エンジン稼働中は約 13.5〜14.5 V が正常の目安です。": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die dem ECU zugeführte Spannung. Bei laufendem Motor sind etwa 13,5–14,5 V normal."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Voltage supplied to the ECU. Around 13.5–14.5 V is normal while the engine is running."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Voltaje suministrado a la ECU. Alrededor de 13,5–14,5 V es normal con el motor en marcha."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tension fournie à l'ECU. Environ 13,5 à 14,5 V est normal lorsque le moteur tourne."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "供给 ECU 的电压。发动机运转中约为 13.5~14.5 V 属于正常范围。"
+          }
+        }
+      }
+    },
     "ECU 電圧": {
       "localizations": {
         "de": {
@@ -1357,6 +1527,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "ECU 电压"
+          }
+        }
+      }
+    },
+    "EGR の指令値と実際の開度との差です。": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Differenz zwischen dem befohlenen und dem tatsächlichen AGR-Öffnungswert."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Difference between the commanded and actual EGR opening."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diferencia entre el valor de apertura ordenado y la apertura real de la EGR."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Écart entre la valeur d'ouverture commandée et l'ouverture réelle de l'EGR."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "EGR 指令值与实际开度之间的差值。"
           }
         }
       }
@@ -1731,6 +1935,142 @@
           "stringUnit": {
             "state": "translated",
             "value": "GPS"
+          }
+        }
+      }
+    },
+    "GPS による標高です。": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Höhe laut GPS."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Altitude from GPS."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Altitud obtenida por GPS."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Altitude déterminée par GPS."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "通过 GPS 获取的海拔高度。"
+          }
+        }
+      }
+    },
+    "GPS による現在の経度です。": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der aktuelle Längengrad laut GPS."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Current longitude from GPS."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Longitud actual obtenida por GPS."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Longitude actuelle déterminée par GPS."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "通过 GPS 获取的当前经度。"
+          }
+        }
+      }
+    },
+    "GPS による現在の緯度です。": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der aktuelle Breitengrad laut GPS."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Current latitude from GPS."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Latitud actual obtenida por GPS."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Latitude actuelle déterminée par GPS."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "通过 GPS 获取的当前纬度。"
+          }
+        }
+      }
+    },
+    "GPS の位置変化から算出した車速です。トンネルなど電波の届かない場所では途切れます。": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die aus den GPS-Positionsänderungen berechnete Fahrzeuggeschwindigkeit. Sie fällt an Orten ohne Empfang aus, etwa in Tunneln."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vehicle speed calculated from GPS position changes. Drops out where there is no signal, such as tunnels."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Velocidad del vehículo calculada a partir de los cambios de posición del GPS. Se interrumpe en lugares sin señal, como los túneles."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vitesse du véhicule calculée à partir des variations de position GPS. Elle est interrompue là où le signal est absent, comme dans les tunnels."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "根据 GPS 位置变化计算出的车速。在隧道等无信号区域会中断。"
           }
         }
       }
@@ -2313,6 +2653,40 @@
         }
       }
     },
+    "O2 センサーの値をもとに ECU が瞬間的に行う燃料量の補正です。±10% 以内が正常の目安です。": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die momentane Kraftstoffmengenkorrektur, die das ECU anhand des O2-Sensorwerts vornimmt. Ein Bereich von ±10 % gilt als normal."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Instantaneous fuel correction the ECU makes based on the O2 sensor. Within ±10% is normal."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Corrección instantánea de la cantidad de combustible que realiza la ECU en función del valor del sensor O2. Un rango de ±10 % es normal."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Correction instantanée de la quantité de carburant effectuée par l'ECU à partir de la valeur du capteur O2. Une plage de ±10 % est normale."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ECU 根据 O2 传感器数值进行的瞬时燃油量修正。±10% 以内属于正常范围。"
+          }
+        }
+      }
+    },
     "OBD と GPS の車速差: %@ km/h(メーター誤差の目安)": {
       "localizations": {
         "de": {
@@ -2343,6 +2717,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "OBD 与 GPS 车速差:%@ km/h(仪表误差参考值)"
+          }
+        }
+      }
+    },
+    "OBD アダプタが測定した車両バッテリーの電圧です。エンジン停止時は約 12.5 V、走行中(充電中)は約 14 V が目安です。": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die vom OBD-Adapter gemessene Fahrzeugbatteriespannung. Bei stehendem Motor etwa 12,5 V, während der Fahrt (beim Laden) etwa 14 V."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vehicle battery voltage measured by the OBD adapter. About 12.5 V with the engine off, and about 14 V while driving (charging)."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Voltaje de la batería del vehículo medido por el adaptador OBD. Es de unos 12,5 V con el motor apagado y de unos 14 V mientras se conduce (en carga)."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tension de la batterie du véhicule mesurée par l'adaptateur OBD. Environ 12,5 V moteur à l'arrêt, environ 14 V en roulant (en charge)."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OBD 适配器测得的车辆电瓶电压。发动机熄火时约为 12.5 V,行驶(充电)中约为 14 V。"
           }
         }
       }
@@ -3095,6 +3503,40 @@
         }
       }
     },
+    "このセッションで GPS が積算した走行距離です。": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die vom GPS in dieser Sitzung aufsummierte gefahrene Strecke."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Distance accumulated from GPS during this session."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Distancia acumulada por el GPS durante esta sesión."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Distance cumulée par le GPS au cours de cette session."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "本次记录中 GPS 累计的行驶距离。"
+          }
+        }
+      }
+    },
     "この端末ではモーションセンサーを利用できません。": {
       "localizations": {
         "de": {
@@ -3193,6 +3635,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "此记录是 0-100 km/h 的最佳成绩"
+          }
+        }
+      }
+    },
+    "この項目の説明は準備中です。": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eine Beschreibung für diesen Eintrag folgt in Kürze."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A description for this item is coming soon."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La descripción de este elemento está en preparación."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La description de cet élément est en cours de préparation."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "该项目的说明正在准备中。"
           }
         }
       }
@@ -3367,6 +3843,40 @@
         }
       }
     },
+    "アイドル位置を 0% とした相対的なスロットル開度です。": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die relative Drosselklappenöffnung, wobei die Leerlaufposition 0 % entspricht."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Throttle opening relative to the idle position (0%)."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apertura relativa del acelerador, tomando la posición de ralentí como 0 %."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ouverture relative du papillon des gaz, la position de ralenti étant considérée comme 0 %."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "以怠速位置为 0% 的相对节气门开度。"
+          }
+        }
+      }
+    },
     "アクセルペダル D": {
       "localizations": {
         "de": {
@@ -3431,6 +3941,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "加速踏板 E"
+          }
+        }
+      }
+    },
+    "アクセルペダルの踏み込み量です。安全のため複数系統(D/E)で二重に検出しています。": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Gaspedalstellung. Aus Sicherheitsgründen wird sie redundant über mehrere Systeme (D/E) erfasst."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Accelerator pedal position. Measured redundantly by multiple sensors (D/E) for safety."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Posición del pedal del acelerador. Por seguridad, se detecta de forma redundante mediante varios sistemas (D/E)."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Position de la pédale d'accélérateur. Pour des raisons de sécurité, elle est détectée en double par plusieurs systèmes (D/E)."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "加速踏板的踩踏量。为确保安全,由多个系统(D/E)进行冗余检测。"
           }
         }
       }
@@ -4047,6 +4591,142 @@
         }
       }
     },
+    "エンジン(クランクシャフト)の毎分回転数です。": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Drehzahl des Motors (Kurbelwelle) pro Minute."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Engine (crankshaft) revolutions per minute."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Revoluciones por minuto del motor (cigüeñal)."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Régime du moteur (vilebrequin) en tours par minute."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "发动机(曲轴)每分钟的转速。"
+          }
+        }
+      }
+    },
+    "エンジンが 1 秒間に吸い込む空気の質量です。負荷とともに増えます。": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Luftmasse, die der Motor pro Sekunde ansaugt. Sie steigt mit der Last."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mass of air the engine draws in per second. Increases with load."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Masa de aire que el motor aspira por segundo. Aumenta con la carga."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Masse d'air aspirée par le moteur chaque seconde. Elle augmente avec la charge."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "发动机每秒吸入的空气质量。会随负荷增加而增大。"
+          }
+        }
+      }
+    },
+    "エンジンが出せる最大出力に対する現在の負荷の割合です。登坂や加速で高くなります。": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die aktuelle Last als Prozentsatz der maximalen Motorleistung. Sie steigt bei Steigungen oder Beschleunigung."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Current load as a percentage of the engine's maximum output. Rises when climbing or accelerating."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Porcentaje de la carga actual respecto a la potencia máxima que puede entregar el motor. Aumenta al subir pendientes o acelerar."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pourcentage de la charge actuelle par rapport à la puissance maximale que le moteur peut fournir. Il augmente en montée ou à l'accélération."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "当前负荷占发动机最大输出的百分比。爬坡或加速时会升高。"
+          }
+        }
+      }
+    },
+    "エンジンに吸い込まれる空気の温度です。高いと出力がやや低下します。": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Temperatur der Luft, die in den Motor angesaugt wird. Bei hohen Werten sinkt die Leistung leicht."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Temperature of the air entering the engine. Higher temperatures slightly reduce power."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Temperatura del aire que entra en el motor. Si es alta, la potencia disminuye ligeramente."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Température de l'air aspiré par le moteur. Une température élevée réduit légèrement la puissance."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "吸入发动机的空气温度。温度较高时输出会略微下降。"
+          }
+        }
+      }
+    },
     "エンジンをかける": {
       "localizations": {
         "de": {
@@ -4077,6 +4757,74 @@
           "stringUnit": {
             "state": "translated",
             "value": "启动发动机"
+          }
+        }
+      }
+    },
+    "エンジンを始動してからの経過時間です。": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die seit dem Motorstart verstrichene Zeit."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Time elapsed since the engine was started."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tiempo transcurrido desde que se arrancó el motor."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Temps écoulé depuis le démarrage du moteur."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "自发动机启动以来经过的时间。"
+          }
+        }
+      }
+    },
+    "エンジンオイルの温度です。水温より暖まるのが遅く、スポーツ走行では高温に注意してください。": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Temperatur des Motoröls. Sie steigt langsamer als die Kühlmitteltemperatur; achten Sie bei sportlicher Fahrweise auf hohe Temperaturen."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Engine oil temperature. Warms up more slowly than coolant; watch for high temperatures during spirited driving."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Temperatura del aceite del motor. Tarda más en calentarse que el refrigerante; preste atención a las temperaturas elevadas en conducción deportiva."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Température de l'huile moteur. Elle monte plus lentement que celle du liquide de refroidissement ; faites attention aux températures élevées lors d'une conduite sportive."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "发动机机油的温度。升温比水温慢,激烈驾驶时请注意高温。"
           }
         }
       }
@@ -4145,6 +4893,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "发动机预设"
+          }
+        }
+      }
+    },
+    "エンジン冷却水の温度です。通常走行では約 80〜100℃ で安定します。低いうちは暖機中です。": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Temperatur des Motorkühlmittels. Bei normaler Fahrt stabilisiert sie sich bei etwa 80–100 °C. Niedrige Werte bedeuten, dass der Motor noch warmläuft."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Engine coolant temperature. Stays around 80–100°C in normal driving; lower values mean the engine is still warming up."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Temperatura del líquido refrigerante del motor. En conducción normal se estabiliza entre 80 y 100 °C aproximadamente. Si es baja, el motor todavía se está calentando."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Température du liquide de refroidissement du moteur. En conduite normale, elle se stabilise entre environ 80 et 100 °C. Une valeur basse signifie que le moteur est encore en phase de chauffe."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "发动机冷却液的温度。正常行驶时会稳定在约 80~100℃。数值较低时说明发动机仍在热车。"
           }
         }
       }
@@ -4863,6 +5645,40 @@
         }
       }
     },
+    "スロットルバルブの開き具合です。": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Öffnungsgrad der Drosselklappe."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "How far the throttle valve is open."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Grado de apertura de la válvula de mariposa."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Degré d'ouverture du papillon des gaz."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "节气门的开度。"
+          }
+        }
+      }
+    },
     "スロットル指令値": {
       "localizations": {
         "de": {
@@ -5033,6 +5849,40 @@
         }
       }
     },
+    "タップすると説明を表示します": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tippen, um die Beschreibung anzuzeigen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tap to show the description"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toque para ver la descripción"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Appuyez pour afficher la description"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "点按即可查看说明"
+          }
+        }
+      }
+    },
     "ダッシュボード": {
       "localizations": {
         "de": {
@@ -5097,6 +5947,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "编辑仪表盘"
+          }
+        }
+      }
+    },
+    "チェックエンジンランプ(MIL)が点灯してから走行した距離です。": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die zurückgelegte Strecke, seit die Motorkontrollleuchte (MIL) aufleuchtet."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Distance driven since the check engine light (MIL) came on."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Distancia recorrida desde que se encendió el testigo de avería (MIL)."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Distance parcourue depuis l'allumage du témoin de panne moteur (MIL)."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "自故障指示灯(MIL)点亮以来行驶的距离。"
           }
         }
       }
@@ -5811,6 +6695,74 @@
           "stringUnit": {
             "state": "translated",
             "value": "要重置行程吗?"
+          }
+        }
+      }
+    },
+    "トルクの % 値の基準となるエンジン固有の基準トルクです。": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das motorspezifische Referenzdrehmoment, auf dem die Drehmoment-Prozentwerte basieren."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The engine-specific reference torque that the torque percentages are based on."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Par de referencia específico del motor en el que se basan los valores de par en porcentaje."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Couple de référence propre au moteur, base des valeurs de couple exprimées en pourcentage."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "作为扭矩百分比基准的发动机专属基准扭矩。"
+          }
+        }
+      }
+    },
+    "ドライバーの操作から算出された要求トルクです(基準トルクに対する割合)。": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das aus der Fahrereingabe berechnete angeforderte Drehmoment (als Prozentsatz des Referenzdrehmoments)."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Torque demanded from driver input, as a percentage of reference torque."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Par motor solicitado, calculado a partir de la acción del conductor (como porcentaje del par de referencia)."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Couple demandé, calculé à partir de l'action du conducteur (en pourcentage du couple de référence)."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "根据驾驶员操作计算出的需求扭矩(占基准扭矩的百分比)。"
           }
         }
       }
@@ -7515,6 +8467,40 @@
         }
       }
     },
+    "加速・減速で前後方向にかかる加速度です。": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Längsbeschleunigung (vor-zurück) beim Beschleunigen und Bremsen."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fore–aft acceleration from speeding up and braking."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aceleración longitudinal (adelante-atrás) al acelerar o frenar."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Accélération longitudinale (avant-arrière) lors de l'accélération ou du freinage."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "加速或减速时施加在前后方向的加速度。"
+          }
+        }
+      }
+    },
     "加速度計": {
       "localizations": {
         "de": {
@@ -7613,6 +8599,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "使用加速度计"
+          }
+        }
+      }
+    },
+    "単位: %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einheit: %@"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unit: %@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unidad: %@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unité : %@"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "单位: %@"
           }
         }
       }
@@ -7817,6 +8837,108 @@
           "stringUnit": {
             "state": "translated",
             "value": "进气流量 (MAF)"
+          }
+        }
+      }
+    },
+    "吸入空気量をもとに計算した負荷率です。": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die aus der angesaugten Luftmenge berechnete Lastrate."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Load ratio calculated from intake air volume."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tasa de carga calculada a partir del volumen de aire aspirado."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Taux de charge calculé à partir du volume d'air admis."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "根据进气量计算出的负荷率。"
+          }
+        }
+      }
+    },
+    "吸気マニホールド内の絶対圧です。アイドリングで低く、アクセルを踏むと大気圧(約 100 kPa)に近づきます。ターボ車は過給時にそれを上回ります。": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der absolute Druck im Ansaugkrümmer. Er ist im Leerlauf niedrig und nähert sich beim Gasgeben dem Luftdruck (ca. 100 kPa) an. Bei Turbofahrzeugen übersteigt er diesen Wert im Ladedruckbetrieb."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Absolute pressure inside the intake manifold. Low at idle, approaching atmospheric pressure (about 100 kPa) under throttle; turbo cars exceed it under boost."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Presión absoluta dentro del colector de admisión. Es baja al ralentí y se acerca a la presión atmosférica (unos 100 kPa) al pisar el acelerador. En los vehículos turboalimentados, la supera durante la sobrealimentación."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pression absolue dans le collecteur d'admission. Elle est faible au ralenti et se rapproche de la pression atmosphérique (environ 100 kPa) lorsque vous accélérez. Sur les véhicules turbocompressés, elle la dépasse pendant la suralimentation."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "进气歧管内的绝对压力。怠速时较低,踩下油门后会接近大气压(约 100 kPa)。涡轮增压车型在增压时会超过该数值。"
+          }
+        }
+      }
+    },
+    "吸気マニホールド圧を基準にした燃料圧力です。": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Kraftstoffdruck bezogen auf den Ansaugkrümmerdruck."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fuel pressure relative to intake manifold pressure."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Presión de combustible referida a la presión del colector de admisión."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pression de carburant référencée à la pression du collecteur d'admission."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "以进气歧管压力为基准的燃油压力。"
           }
         }
       }
@@ -8191,6 +9313,74 @@
           "stringUnit": {
             "state": "translated",
             "value": "大气压力"
+          }
+        }
+      }
+    },
+    "学習した 0 点を基準にしたアクセルの踏み込み量です。": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Gaspedalstellung bezogen auf den erlernten Nullpunkt."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Accelerator pedal position relative to the learned zero point."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Posición del pedal del acelerador respecto al punto cero aprendido."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Position de la pédale d'accélérateur par rapport au point zéro appris."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "以学习到的零点为基准的加速踏板踩踏量。"
+          }
+        }
+      }
+    },
+    "学習により長期的に適用される燃料量の補正です。大きくプラスに振れる場合は吸気漏れや燃圧低下などの兆候の可能性があります。": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die durch Adaption langfristig angewendete Kraftstoffmengenkorrektur. Ein stark positiver Wert kann auf ein Ansaugleck oder einen niedrigen Kraftstoffdruck hindeuten."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Long-term fuel correction applied through learning. A large positive value can indicate an intake leak or low fuel pressure."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Corrección de la cantidad de combustible aplicada a largo plazo mediante aprendizaje. Un valor muy positivo puede indicar una fuga de admisión o una presión de combustible baja."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Correction de la quantité de carburant appliquée à long terme par apprentissage. Une valeur fortement positive peut indiquer une fuite d'admission ou une pression de carburant basse."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "通过学习长期应用的燃油量修正。若大幅偏向正值,可能是进气泄漏或燃油压力下降等迹象。"
           }
         }
       }
@@ -8841,6 +10031,108 @@
         }
       }
     },
+    "排気ガスを浄化する触媒の温度です。走行中は数百 ℃ まで上がります。": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Temperatur des Katalysators, der die Abgase reinigt. Sie steigt während der Fahrt auf mehrere hundert °C."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Temperature of the catalytic converter that cleans the exhaust. Reaches several hundred °C while driving."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Temperatura del catalizador que depura los gases de escape. Alcanza varios cientos de °C durante la conducción."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Température du catalyseur qui dépollue les gaz d'échappement. Elle atteint plusieurs centaines de °C en roulant."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "净化废气的催化器温度。行驶中会升高到数百摄氏度。"
+          }
+        }
+      }
+    },
+    "排気中の酸素濃度を電圧で示します。触媒前(S1)は 0.1〜0.9 V を往復し、触媒後(S2)が安定していれば触媒は正常に働いています。B はバンク(気筒列)です。": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Sauerstoffgehalt im Abgas, angezeigt als Spannung. Der Sensor vor dem Katalysator (S1) pendelt zwischen 0,1 und 0,9 V; ist der Sensor nach dem Katalysator (S2) stabil, arbeitet der Katalysator einwandfrei. B steht für die Zylinderbank."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oxygen level in the exhaust shown as a voltage. Upstream sensors (S1) swing between 0.1–0.9 V; if the downstream sensor (S2) is steady, the catalytic converter is working. B is the cylinder bank."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nivel de oxígeno en el escape indicado como voltaje. El sensor previo al catalizador (S1) oscila entre 0,1 y 0,9 V; si el sensor posterior (S2) se mantiene estable, el catalizador funciona correctamente. B indica el banco de cilindros."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Niveau d'oxygène dans les gaz d'échappement indiqué sous forme de tension. La sonde en amont du catalyseur (S1) oscille entre 0,1 et 0,9 V ; si la sonde en aval (S2) reste stable, le catalyseur fonctionne correctement. B désigne la rangée de cylindres (bank)."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "以电压表示排气中的氧浓度。催化器前(S1)会在 0.1~0.9 V 之间往复变化,若催化器后(S2)稳定,说明催化器工作正常。B 表示气缸列(排气歧管组)。"
+          }
+        }
+      }
+    },
+    "排気再循環(EGR)バルブへの開度指令です。NOx 低減のため排気の一部を吸気へ戻します。": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die befohlene Öffnung des Abgasrückführungsventils (AGR), das einen Teil der Abgase zur Reduzierung von NOx in die Ansaugluft zurückführt."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Commanded opening of the exhaust gas recirculation (EGR) valve, which routes some exhaust back into the intake to reduce NOx."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apertura ordenada a la válvula de recirculación de gases de escape (EGR), que devuelve parte del escape a la admisión para reducir el NOx."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ouverture commandée pour la vanne de recirculation des gaz d'échappement (EGR), qui renvoie une partie des gaz d'échappement vers l'admission pour réduire les NOx."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "发给废气再循环(EGR)阀的开度指令。为降低 NOx 排放,会将部分废气送回进气。"
+          }
+        }
+      }
+    },
     "接続": {
       "localizations": {
         "de": {
@@ -9113,6 +10405,40 @@
         }
       }
     },
+    "故障コード(DTC)を消去してから走行した距離です。": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die zurückgelegte Strecke seit dem Löschen der Fehlercodes (DTC)."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Distance driven since diagnostic trouble codes (DTC) were cleared."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Distancia recorrida desde que se borraron los códigos de diagnóstico (DTC)."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Distance parcourue depuis l'effacement des codes défaut (DTC)."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "自清除故障码(DTC)以来行驶的距离。"
+          }
+        }
+      }
+    },
     "方位": {
       "localizations": {
         "de": {
@@ -9177,6 +10503,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "方位 (GPS)"
+          }
+        }
+      }
+    },
+    "旋回時に横方向へかかる加速度です。端末の取り付け角度によらず水平面で算出します。": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die seitliche Beschleunigung in Kurven. Sie wird unabhängig vom Einbauwinkel des Geräts in der horizontalen Ebene berechnet."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sideways acceleration in corners. Calculated in the horizontal plane regardless of how the device is mounted."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aceleración lateral durante los giros. Se calcula en el plano horizontal, independientemente del ángulo de montaje del dispositivo."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Accélération latérale dans les virages. Elle est calculée dans le plan horizontal, quel que soit l'angle de montage de l'appareil."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "转弯时施加在横向的加速度。无论设备安装角度如何,均按水平面计算。"
           }
         }
       }
@@ -9691,6 +11051,40 @@
         }
       }
     },
+    "横 G と前後 G を合成した加速度の大きさです。": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Betrag der aus seitlicher und längsgerichteter G-Kraft zusammengesetzten Beschleunigung."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Combined magnitude of lateral and longitudinal G."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Magnitud de la aceleración combinada de la G lateral y la G longitudinal."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Amplitude de l'accélération combinant le G latéral et le G longitudinal."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "横向 G 与前后 G 合成后的加速度大小。"
+          }
+        }
+      }
+    },
     "横持ち(1行=1時刻)": {
       "localizations": {
         "de": {
@@ -9997,6 +11391,40 @@
         }
       }
     },
+    "点火プラグが火花を飛ばすタイミング(上死点前の進角)です。負荷や回転数に応じて ECU が調整します。": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Zeitpunkt, zu dem die Zündkerze den Funken auslöst (Frühzündung vor dem oberen Totpunkt). Das ECU passt ihn je nach Last und Drehzahl an."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spark timing (advance before top dead center). The ECU adjusts it with load and RPM."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Momento en que la bujía genera la chispa (avance antes del punto muerto superior). La ECU lo ajusta según la carga y las revoluciones."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Moment auquel la bougie produit l'étincelle (avance avant le point mort haut). L'ECU l'ajuste en fonction de la charge et du régime."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "火花塞点火的时机(上止点前的提前角)。ECU 会根据负荷和转速进行调整。"
+          }
+        }
+      }
+    },
     "点火時期": {
       "localizations": {
         "de": {
@@ -10167,6 +11595,142 @@
         }
       }
     },
+    "燃料に含まれるエタノールの混合率です(フレックス燃料車向け)。": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Ethanolanteil im Kraftstoff (für Flex-Fuel-Fahrzeuge)."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ethanol blend ratio in the fuel (for flex-fuel vehicles)."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Porcentaje de etanol mezclado en el combustible (para vehículos de combustible flexible)."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Proportion d'éthanol dans le carburant (pour les véhicules à carburant modulable)."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "燃油中乙醇的混合比例(适用于灵活燃料车)。"
+          }
+        }
+      }
+    },
+    "燃料タンクの蒸発ガスをキャニスターからエンジンへ吸わせる制御(パージ)の開度です。": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Öffnungsgrad der Tankentlüftungssteuerung (Purge), die Kraftstoffdämpfe vom Aktivkohlebehälter in den Motor leitet."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Opening of the purge control, which draws fuel tank vapors from the canister into the engine."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apertura del control de purga, que hace pasar los vapores del depósito de combustible desde el bote de carbón hasta el motor."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Degré d'ouverture de la commande de purge, qui aspire les vapeurs du réservoir de carburant depuis le canister vers le moteur."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "将燃油箱蒸发气体从炭罐吸入发动机的控制(清污)阀开度。"
+          }
+        }
+      }
+    },
+    "燃料タンク残量の割合です。": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Prozentsatz des verbleibenden Kraftstoffs im Tank."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fuel remaining in the tank as a percentage."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Porcentaje de combustible restante en el depósito."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pourcentage de carburant restant dans le réservoir."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "燃油箱剩余油量的百分比。"
+          }
+        }
+      }
+    },
+    "燃料ポンプが作る燃料ラインの圧力です。": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der von der Kraftstoffpumpe erzeugte Druck in der Kraftstoffleitung."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fuel line pressure produced by the fuel pump."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Presión en la línea de combustible generada por la bomba de combustible."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pression dans la ligne de carburant générée par la pompe à carburant."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "燃油泵产生的燃油管路压力。"
+          }
+        }
+      }
+    },
     "燃料残量": {
       "localizations": {
         "de": {
@@ -10303,6 +11867,74 @@
         }
       }
     },
+    "現在の燃料消費量(1 時間あたりのリットル)です。": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der aktuelle Kraftstoffverbrauch (Liter pro Stunde)."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Current fuel consumption in liters per hour."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Consumo actual de combustible (litros por hora)."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Consommation actuelle de carburant (litres par heure)."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "当前的燃油消耗量(每小时消耗的升数)。"
+          }
+        }
+      }
+    },
+    "現在エンジンが実際に出しているトルクです(基準トルクに対する割合)。": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das Drehmoment, das der Motor derzeit tatsächlich abgibt (als Prozentsatz des Referenzdrehmoments)."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Torque the engine is actually producing, as a percentage of reference torque."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Par motor que el motor está entregando realmente (como porcentaje del par de referencia)."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Couple réellement délivré par le moteur à l'instant présent (en pourcentage du couple de référence)."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "发动机当前实际输出的扭矩(占基准扭矩的百分比)。"
+          }
+        }
+      }
+    },
     "現在位置マーカー": {
       "localizations": {
         "de": {
@@ -10337,6 +11969,40 @@
         }
       }
     },
+    "現在地の大気圧です。海面で約 100 kPa、高地では低くなります。": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Luftdruck am aktuellen Standort. Auf Meereshöhe etwa 100 kPa, in größerer Höhe niedriger."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Atmospheric pressure at your location. About 100 kPa at sea level, lower at altitude."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Presión atmosférica en la ubicación actual. Es de unos 100 kPa a nivel del mar y disminuye con la altitud."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pression atmosphérique à l'emplacement actuel. Environ 100 kPa au niveau de la mer, plus faible en altitude."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "当前所在地的大气压。海平面约为 100 kPa,海拔越高数值越低。"
+          }
+        }
+      }
+    },
     "目標空燃比 (λ)": {
       "localizations": {
         "de": {
@@ -10367,6 +12033,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "目标空燃比 (λ)"
+          }
+        }
+      }
+    },
+    "直噴エンジンの高圧燃料レールの圧力です。": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Druck in der Hochdruck-Kraftstoffleiste bei Direkteinspritzmotoren."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "High-pressure fuel rail pressure on direct-injection engines."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Presión del riel de combustible de alta presión en motores de inyección directa."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pression de la rampe de carburant haute pression sur les moteurs à injection directe."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "直喷发动机高压燃油轨的压力。"
           }
         }
       }
@@ -11149,6 +12849,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "颜色区分"
+          }
+        }
+      }
+    },
+    "行をタップすると各項目の説明を表示します。": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tippen Sie auf eine Zeile, um die Beschreibung des jeweiligen Eintrags anzuzeigen."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tap a row to see what each item means."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toque una fila para ver la descripción de cada elemento."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Appuyez sur une ligne pour afficher la description de chaque élément."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "点按某一行即可查看该项目的说明。"
           }
         }
       }
@@ -12785,6 +14519,40 @@
         }
       }
     },
+    "車両が測定した外気温度です。": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die vom Fahrzeug gemessene Außentemperatur."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Outside air temperature measured by the vehicle."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Temperatura exterior medida por el vehículo."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Température extérieure mesurée par le véhicule."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "车辆测得的外部气温。"
+          }
+        }
+      }
+    },
     "車両に接続してライブデータを表示": {
       "localizations": {
         "de": {
@@ -13223,6 +14991,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "自动检测并显示车辆发出的支持数据,如速度、转速、水温等。"
+          }
+        }
+      }
+    },
+    "進行方向の方位です(0° = 北、時計回り)。": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Fahrtrichtung (0° = Norden, im Uhrzeigersinn)."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Direction of travel (0° = north, clockwise)."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dirección de desplazamiento (0° = norte, en sentido horario)."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Direction de déplacement (0° = nord, sens horaire)."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "行驶方向的方位角(0° = 北,顺时针)。"
           }
         }
       }
