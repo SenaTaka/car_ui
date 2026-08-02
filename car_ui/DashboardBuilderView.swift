@@ -16,26 +16,7 @@ struct DashboardBuilderView: View {
     var body: some View {
         NavigationStack {
             List {
-                Section {
-                    ForEach(store.widgets) { widget in
-                        widgetRow(widget)
-                    }
-                    .onMove { indices, newOffset in
-                        store.move(fromOffsets: indices, toOffset: newOffset)
-                    }
-                    .onDelete { offsets in
-                        store.remove(atOffsets: offsets)
-                    }
-                } header: {
-                    Text("ウィジェット(ドラッグで並べ替え)")
-                } footer: {
-                    if store.widgets.isEmpty {
-                        Text("下の「追加」からウィジェットを置いてください。")
-                    } else {
-                        Text("デジタル/アナログは2列グリッド、チャート/マップは横幅いっぱいに表示されます。")
-                    }
-                }
-
+                // 2026-08-02 フィードバック: プリセットを最上段へ(まず構成を選び、次に微調整の流れ)
                 Section {
                     ForEach(DashboardPreset.allCases) { preset in
                         Button {
@@ -54,6 +35,26 @@ struct DashboardBuilderView: View {
                     Text("プリセット")
                 } footer: {
                     Text("プリセットを選ぶと現在のウィジェット構成を置き換えます。")
+                }
+
+                Section {
+                    ForEach(store.widgets) { widget in
+                        widgetRow(widget)
+                    }
+                    .onMove { indices, newOffset in
+                        store.move(fromOffsets: indices, toOffset: newOffset)
+                    }
+                    .onDelete { offsets in
+                        store.remove(atOffsets: offsets)
+                    }
+                } header: {
+                    Text("ウィジェット(ドラッグで並べ替え)")
+                } footer: {
+                    if store.widgets.isEmpty {
+                        Text("下の「追加」からウィジェットを置いてください。")
+                    } else {
+                        Text("デジタル/アナログは2列グリッド、チャート/マップは横幅いっぱいに表示されます。")
+                    }
                 }
 
                 Section("追加") {

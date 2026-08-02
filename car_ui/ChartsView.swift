@@ -95,6 +95,24 @@ struct ChartsView: View {
                 .controlSize(.small)
             }
 
+            // プリセット(2026-08-02 フィードバック: 下部のエクスポート欄から上部へ移動)
+            HStack(spacing: 8) {
+                Text("プリセット")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+
+                ForEach(exportPresets, id: \.name) { preset in
+                    Button(preset.name) {
+                        selectedChannels = Set(preset.channels.filter { recorder.channelIDs.contains($0) })
+                    }
+                    .font(.caption.weight(.semibold))
+                    .buttonStyle(.bordered)
+                    .controlSize(.small)
+                }
+
+                Spacer()
+            }
+
             // 選択中チャンネルを色チップで一覧(タップでピッカーを開く)
             if selectedChannels.isEmpty {
                 Text("チャンネルが選択されていません")
@@ -249,23 +267,6 @@ struct ChartsView: View {
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
-            }
-
-            HStack(spacing: 8) {
-                Text("プリセット")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-
-                ForEach(exportPresets, id: \.name) { preset in
-                    Button(preset.name) {
-                        selectedChannels = Set(preset.channels.filter { recorder.channelIDs.contains($0) })
-                    }
-                    .font(.caption.weight(.semibold))
-                    .buttonStyle(.bordered)
-                    .controlSize(.small)
-                }
-
-                Spacer()
             }
 
             Picker("CSV 形式", selection: $exportWideFormat) {

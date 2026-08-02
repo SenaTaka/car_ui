@@ -282,14 +282,18 @@ struct ToolsView: View {
 
             Divider()
 
-            Picker(selection: $restoreWindowMinutes) {
-                Text("読み込まない").tag(0)
-                Text("直近30分").tag(30)
-                Text("直近2時間").tag(120)
-                Text("すべて").tag(-1)
-            } label: {
+            // ラベルが見えるよう HStack で明記(メニュー式ピッカーは選択値しか表示されない)
+            HStack {
                 Label("起動時に読み込む保存データ", systemImage: "internaldrive")
                     .font(.subheadline)
+                Spacer()
+                Picker("起動時に読み込む保存データ", selection: $restoreWindowMinutes) {
+                    Text("読み込まない").tag(0)
+                    Text("直近30分").tag(30)
+                    Text("直近2時間").tag(120)
+                    Text("すべて").tag(-1)
+                }
+                .labelsHidden()
             }
 
             Text("記録・軌跡の復元範囲。少ないほど起動後の動作が軽くなります(次回起動から反映)。")
@@ -298,17 +302,20 @@ struct ToolsView: View {
 
             Divider()
 
-            Picker(selection: $languageOverride) {
-                Text(verbatim: "システムに従う / System").tag("")
-                Text(verbatim: "日本語").tag("ja")
-                Text(verbatim: "English").tag("en")
-                Text(verbatim: "简体中文").tag("zh-Hans")
-                Text(verbatim: "Español").tag("es")
-                Text(verbatim: "Deutsch").tag("de")
-                Text(verbatim: "Français").tag("fr")
-            } label: {
-                Label("言語", systemImage: "globe")
+            HStack {
+                Label("言語設定", systemImage: "globe")
                     .font(.subheadline)
+                Spacer()
+                Picker("言語設定", selection: $languageOverride) {
+                    Text(verbatim: "システムに従う / System").tag("")
+                    Text(verbatim: "日本語").tag("ja")
+                    Text(verbatim: "English").tag("en")
+                    Text(verbatim: "简体中文").tag("zh-Hans")
+                    Text(verbatim: "Español").tag("es")
+                    Text(verbatim: "Deutsch").tag("de")
+                    Text(verbatim: "Français").tag("fr")
+                }
+                .labelsHidden()
             }
             .onChange(of: languageOverride) { _, code in
                 applyLanguageOverride(code)
