@@ -329,3 +329,8 @@
   - 言語ピッカー追加(AppleLanguages 上書き、再起動で反映、キー app.languageOverride)。
   - 多言語対応: zh-Hans/es/de/fr を Sonnet サブエージェント 4 体で並列翻訳(400 キー×4、指定子検証付きマージ)。fr 作業中に既存 en の不正指定子「Recorded %1 %2」を発見し修正。
 - 検証: BUILD SUCCEEDED / テスト全パス(復元ウィンドウのテスト追加込み)/ 産物に 6 言語の lproj を確認。
+
+## 2026/08/02 20:00
+- データタブ: 行タップで説明シート(ChannelHelp.swift 新設、全チャンネル 45 種の解説、6 言語)。
+- ASC 通知(ITMS-90186/90062)対応: 1.0.1 が承認済みでトレイン閉鎖 → build 30-32 は TestFlight 未達だった。MARKETING_VERSION を 1.0.2 に更新(今日の修正は 1.0.2 ビルドで TestFlight へ)。
+- TelemetryRecorder の persist テストが負荷時に不安定(固定 500ms 待ち)→ ファイル出現ポーリングに変更、2 回連続パス確認。
