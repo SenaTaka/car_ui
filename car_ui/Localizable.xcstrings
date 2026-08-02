@@ -941,6 +941,16 @@
         }
       }
     },
+    "すべて": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "All"
+          }
+        }
+      }
+    },
     "すべて端末内で処理され、外部に送信されることはありません。": {
       "localizations": {
         "en": {
@@ -1017,6 +1027,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "No adapter? Try every feature in Demo Mode."
+          }
+        }
+      }
+    },
+    "アダプタが見つかりませんでした。アダプタの電源(車両のイグニッション ON)を確認して再検索してください": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No adapter found. Check the adapter power (vehicle ignition ON) and search again."
           }
         }
       }
@@ -1611,6 +1631,26 @@
         }
       }
     },
+    "デモモードを終了": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stop demo mode"
+          }
+        }
+      }
+    },
+    "デモモードを開始(アダプタ不要)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Start demo mode (no adapter needed)"
+          }
+        }
+      }
+    },
     "デモモード終了": {
       "localizations": {
         "en": {
@@ -1781,6 +1821,16 @@
         }
       }
     },
+    "マーカー": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Marker"
+          }
+        }
+      }
+    },
     "ミラー反転": {
       "localizations": {
         "en": {
@@ -1887,6 +1937,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Stop"
+          }
+        }
+      }
+    },
+    "丸": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dot"
           }
         }
       }
@@ -2321,6 +2381,16 @@
         }
       }
     },
+    "変更はアプリの再起動後に反映されます。": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Changes take effect after restarting the app."
+          }
+        }
+      }
+    },
     "外気温": {
       "localizations": {
         "en": {
@@ -2597,6 +2667,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Connected"
+          }
+        }
+      }
+    },
+    "擬似データで全機能を試せます。": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Try every feature with simulated data."
           }
         }
       }
@@ -2951,12 +3031,42 @@
         }
       }
     },
+    "現在位置マーカー": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Position marker"
+          }
+        }
+      }
+    },
     "目標空燃比 (λ)": {
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Commanded AFR (λ)"
+          }
+        }
+      }
+    },
+    "直近2時間": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Last 2 hours"
+          }
+        }
+      }
+    },
+    "直近30分": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Last 30 minutes"
           }
         }
       }
@@ -2987,6 +3097,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Instant Economy"
+          }
+        }
+      }
+    },
+    "矢印": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Arrow"
+          }
+        }
+      }
+    },
+    "矢印は進行方向を向きます。": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The arrow points in the direction of travel."
           }
         }
       }
@@ -3231,6 +3361,16 @@
         }
       }
     },
+    "言語": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Language"
+          }
+        }
+      }
+    },
     "計測したデータはすべてこの iPhone の中だけに保存されます。": {
       "localizations": {
         "en": {
@@ -3391,6 +3531,16 @@
         }
       }
     },
+    "記録・軌跡の復元範囲。少ないほど起動後の動作が軽くなります(次回起動から反映)。": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "How much recorded data and track history to restore. Less keeps the app faster (applies from next launch)."
+          }
+        }
+      }
+    },
     "記録中": {
       "localizations": {
         "en": {
@@ -3407,6 +3557,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Settings"
+          }
+        }
+      }
+    },
+    "読み込まない": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Don't load"
           }
         }
       }
@@ -3557,6 +3717,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Distance (GPS)"
+          }
+        }
+      }
+    },
+    "起動時に読み込む保存データ": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Saved data loaded at launch"
           }
         }
       }
@@ -3727,66 +3897,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Heading up"
-          }
-        }
-      }
-    },
-    "マーカー": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Marker"
-          }
-        }
-      }
-    },
-    "矢印": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Arrow"
-          }
-        }
-      }
-    },
-    "丸": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Dot"
-          }
-        }
-      }
-    },
-    "現在位置マーカー": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Position marker"
-          }
-        }
-      }
-    },
-    "矢印は進行方向を向きます。": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "The arrow points in the direction of travel."
-          }
-        }
-      }
-    },
-    "アダプタが見つかりませんでした。アダプタの電源(車両のイグニッション ON)を確認して再検索してください": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No adapter found. Check the adapter power (vehicle ignition ON) and search again."
           }
         }
       }

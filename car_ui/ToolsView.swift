@@ -244,6 +244,10 @@ struct ToolsView: View {
 
     // 監査 REL-012: スリープ防止のユーザー制御
     @AppStorage("display.keepAwakeWhileConnected") private var keepAwakeWhileConnected = true
+    /// 起動時に復元する保存データの範囲(分)。0 = 読み込まない / -1 = すべて
+    @AppStorage("data.restoreWindowMinutes") private var restoreWindowMinutes = 30
+    /// アプリ内の言語上書き("" = システムに従う)。AppleLanguages 経由で次回起動時に反映
+    @AppStorage("app.languageOverride") private var languageOverride = ""
 
     private var settingsPanel: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -259,6 +263,63 @@ struct ToolsView: View {
 
             Divider()
 
+            // 2026-08-02 フィードバック: デモモードの入口を接続シートからここへ移動
+            Button {
+                if obd.isDemo {
+                    obd.disconnect()
+                } else {
+                    obd.startDemoMode()
+                }
+            } label: {
+                Label(obd.isDemo ? "デモモードを終了" : "デモモードを開始(アダプタ不要)",
+                      systemImage: obd.isDemo ? "stop.rectangle" : "play.rectangle")
+            }
+            .font(.subheadline)
+
+            Text("擬似データで全機能を試せます。")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+
+            Divider()
+
+            Picker(selection: $restoreWindowMinutes) {
+                Text("読み込まない").tag(0)
+                Text("直近30分").tag(30)
+                Text("直近2時間").tag(120)
+                Text("すべて").tag(-1)
+            } label: {
+                Label("起動時に読み込む保存データ", systemImage: "internaldrive")
+                    .font(.subheadline)
+            }
+
+            Text("記録・軌跡の復元範囲。少ないほど起動後の動作が軽くなります(次回起動から反映)。")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+
+            Divider()
+
+            Picker(selection: $languageOverride) {
+                Text(verbatim: "システムに従う / System").tag("")
+                Text(verbatim: "日本語").tag("ja")
+                Text(verbatim: "English").tag("en")
+                Text(verbatim: "简体中文").tag("zh-Hans")
+                Text(verbatim: "Español").tag("es")
+                Text(verbatim: "Deutsch").tag("de")
+                Text(verbatim: "Français").tag("fr")
+            } label: {
+                Label("言語", systemImage: "globe")
+                    .font(.subheadline)
+            }
+            .onChange(of: languageOverride) { _, code in
+                applyLanguageOverride(code)
+            }
+
+            Text("変更はアプリの再起動後に反映されます。")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+
+            Divider()
+
             Button {
                 NotificationCenter.default.post(name: .carUIShowOnboarding, object: nil)
             } label: {
@@ -267,6 +328,16 @@ struct ToolsView: View {
             .font(.subheadline)
         }
         .panelStyle()
+    }
+
+    /// AppleLanguages を上書きしてアプリ内言語を切り替える(反映は次回起動時)。
+    /// 空文字はシステム設定に戻す。
+    private func applyLanguageOverride(_ code: String) {
+        if code.isEmpty {
+            UserDefaults.standard.removeObject(forKey: "AppleLanguages")
+        } else {
+            UserDefaults.standard.set([code], forKey: "AppleLanguages")
+        }
     }
 
     /// 監査 REL-007: UMP プライバシーオプション(広告同意の再設定)入口。

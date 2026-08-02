@@ -314,12 +314,7 @@ struct ConnectionSheet: View {
                                 Label("検索を停止", systemImage: "stop.fill")
                             }
                         }
-
-                        Button {
-                            obd.startDemoMode()
-                        } label: {
-                            Label("デモモードで試す(アダプタ不要)", systemImage: "play.rectangle")
-                        }
+                        // デモモードの入口は設定(その他タブ)へ移動(2026-08-02 フィードバック)
                     }
                 }
 

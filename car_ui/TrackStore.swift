@@ -129,11 +129,20 @@ final class TrackStore: ObservableObject {
     }
 
     private func restoreFromDisk() {
+        // 復元範囲は記録と共通の設定(0 = 読み込まない / -1 = すべて / 正 = 分)。
+        // 長い軌跡の全量復元はコンター計算・地図描画をずっと重くする。
+        let window = TelemetryRecorder.restoreWindowMinutes
+        guard window != 0 else { return }
         guard let data = try? Data(contentsOf: Self.persistURL) else { return }
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .secondsSince1970
-        guard let restored = try? decoder.decode([TrackPoint].self, from: data),
+        guard var restored = try? decoder.decode([TrackPoint].self, from: data),
               !restored.isEmpty else { return }
+        if window > 0 {
+            let cutoff = Date().addingTimeInterval(-Double(window) * 60)
+            restored = restored.filter { $0.time >= cutoff }
+        }
+        guard !restored.isEmpty else { return }
         points = restored
         nextID = restored.map(\.id).max() ?? 0
     }

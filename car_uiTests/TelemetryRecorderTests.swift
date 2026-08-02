@@ -81,7 +81,8 @@ final class TelemetryRecorderTests: XCTestCase {
 
     func testPersistRoundTrip() async throws {
         let recorder = makeRecorder()
-        let t0 = Date(timeIntervalSince1970: 1_000_000)
+        // 復元は既定で直近 30 分に限定されるため、現在時刻で記録する
+        let t0 = Date()
         recorder.record("obd.0C", value: 800, at: t0)
         recorder.record("gps.speed", value: 42.5, at: t0)
 
@@ -93,5 +94,20 @@ final class TelemetryRecorderTests: XCTestCase {
         XCTAssertEqual(restored.latest("obd.0C"), 800)
         XCTAssertEqual(restored.latest("gps.speed"), 42.5)
         XCTAssertEqual(restored.channelIDs, ["gps.speed", "obd.0C"])
+    }
+
+    func testRestoreDropsSamplesOutsideDefaultWindow() async throws {
+        let recorder = makeRecorder()
+        // 既定の復元範囲(30 分)より古いサンプルは起動時に読み込まれない
+        recorder.record("obd.0C", value: 1, at: Date(timeIntervalSinceNow: -3600))
+        recorder.record("obd.0D", value: 2, at: Date())
+
+        recorder.persistToDisk()
+        try await Task.sleep(nanoseconds: 500_000_000)
+
+        let restored = TestRetention.retain(TelemetryRecorder())
+        XCTAssertNil(restored.latest("obd.0C"))
+        XCTAssertEqual(restored.latest("obd.0D"), 2)
+        XCTAssertEqual(restored.channelIDs, ["obd.0D"])
     }
 }

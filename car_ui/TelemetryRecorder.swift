@@ -140,12 +140,29 @@ final class TelemetryRecorder: ObservableObject {
         }
     }
 
+    /// 起動時に復元する保存データの範囲(分)。0 = 読み込まない / -1 = すべて。
+    /// 既定 30 分: 全量復元は起動直後のデコードとその後の地図・チャート描画を重くするため。
+    nonisolated static var restoreWindowMinutes: Int {
+        UserDefaults.standard.object(forKey: "data.restoreWindowMinutes") == nil
+            ? 30
+            : UserDefaults.standard.integer(forKey: "data.restoreWindowMinutes")
+    }
+
     private func restoreFromDisk() {
+        let window = Self.restoreWindowMinutes
+        guard window != 0 else { return }
         guard let data = try? Data(contentsOf: Self.persistURL) else { return }
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .secondsSince1970
-        guard let restored = try? decoder.decode([String: [TelemetrySample]].self, from: data),
+        guard var restored = try? decoder.decode([String: [TelemetrySample]].self, from: data),
               !restored.isEmpty else { return }
+        if window > 0 {
+            let cutoff = Date().addingTimeInterval(-Double(window) * 60)
+            restored = restored
+                .mapValues { $0.filter { $0.time >= cutoff } }
+                .filter { !$0.value.isEmpty }
+        }
+        guard !restored.isEmpty else { return }
         storage = restored
         channelIDs = restored.keys.sorted()
         revision += 1
