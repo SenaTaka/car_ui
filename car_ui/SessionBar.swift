@@ -60,6 +60,7 @@ struct SessionBar: View {
             .buttonStyle(.bordered)
             .controlSize(.small)
             .tint(DS.Role.danger)
+            .minTapTarget()
         }
     }
 
@@ -79,6 +80,7 @@ struct SessionBar: View {
             }
             .buttonStyle(.borderedProminent)
             .controlSize(.small)
+            .minTapTarget()
         }
     }
 

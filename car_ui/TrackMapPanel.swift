@@ -483,6 +483,7 @@ struct TrackMapPanel: View {
                 .font(.caption)
                 .buttonStyle(.bordered)
                 .controlSize(.small)
+                .accessibilityLabel("設定")
 
                 Button {
                     showingExpanded = true
@@ -643,14 +644,14 @@ struct TrackMapExpandedView: View {
     private var controlsOverlay: some View {
         VStack(spacing: 10) {
             HStack(spacing: 10) {
-                circleButton("xmark") { dismiss() }
+                circleButton("xmark", label: "閉じる") { dismiss() }
 
                 Spacer()
 
-                circleButton("gearshape") { showingSettings = true }
+                circleButton("gearshape", label: "設定") { showingSettings = true }
 
                 // 北向き / 進行方向の即時トグル
-                circleButton(headingUp ? "location.north.line.fill" : "safari") {
+                circleButton(headingUp ? "location.north.line.fill" : "safari", label: "地図の向き") {
                     headingUp.toggle()
                 }
             }
@@ -720,13 +721,15 @@ struct TrackMapExpandedView: View {
         .padding()
     }
 
-    private func circleButton(_ systemName: String, action: @escaping () -> Void) -> some View {
+    private func circleButton(_ systemName: String, label: LocalizedStringKey,
+                              action: @escaping () -> Void) -> some View {
         Button(action: action) {
             Image(systemName: systemName)
                 .font(.title3)
                 .frame(width: 44, height: 44)
                 .background(.regularMaterial, in: Circle())
         }
+        .accessibilityLabel(label)
     }
 
     private func followLatestPoint(animated: Bool) {

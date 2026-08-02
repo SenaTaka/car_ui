@@ -279,7 +279,7 @@ struct OnboardingView: View {
                 } label: {
                     Label("デモではじめる", systemImage: "play.fill")
                         .font(.body.weight(.semibold))
-                        .frame(maxWidth: .infinity, minHeight: 40)
+                        .frame(maxWidth: .infinity, minHeight: DS.minTapTarget)
                 }
                 .buttonStyle(.borderedProminent)
 
@@ -288,7 +288,7 @@ struct OnboardingView: View {
                 } label: {
                     Label("アダプタに接続する", systemImage: "antenna.radiowaves.left.and.right")
                         .font(.body.weight(.semibold))
-                        .frame(maxWidth: .infinity, minHeight: 40)
+                        .frame(maxWidth: .infinity, minHeight: DS.minTapTarget)
                 }
                 .buttonStyle(.bordered)
 
@@ -304,7 +304,7 @@ struct OnboardingView: View {
                 } label: {
                     Text("続ける")
                         .font(.body.weight(.semibold))
-                        .frame(maxWidth: .infinity, minHeight: 40)
+                        .frame(maxWidth: .infinity, minHeight: DS.minTapTarget)
                 }
                 .buttonStyle(.borderedProminent)
             }

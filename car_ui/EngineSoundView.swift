@@ -154,11 +154,13 @@ struct EngineSoundView: View {
                 Text("未接続 — アイドル音を試聴できます")
                     .font(.system(size: 12))
                     .foregroundColor(.white.opacity(0.55))
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.75)
             }
             Spacer()
         }
         .padding(.horizontal, 14)
-        .frame(height: 38)
+        .frame(minHeight: DS.minTapTarget)
         .background(Color.white.opacity(0.04))
         .clipShape(RoundedRectangle(cornerRadius: 12))
     }
@@ -181,8 +183,7 @@ struct EngineSoundView: View {
                         .font(.system(size: 15, weight: .semibold))
                 }
                 .foregroundColor(.white)
-                .frame(maxWidth: .infinity)
-                .frame(height: 46)
+                .frame(maxWidth: .infinity, minHeight: DS.minTapTarget)
                 .background(sound.isPlaying ? Color.red : Color.green)
                 .clipShape(RoundedRectangle(cornerRadius: 14))
             }
@@ -198,7 +199,7 @@ struct EngineSoundView: View {
                         .font(.system(size: 10, weight: .bold))
                 }
                 .foregroundColor(.white)
-                .frame(width: 62, height: 46)
+                .frame(minWidth: 62, minHeight: DS.minTapTarget)
                 .background(Color.white.opacity(0.08))
                 .clipShape(RoundedRectangle(cornerRadius: 14))
             }
@@ -223,7 +224,7 @@ struct EngineSoundView: View {
                 .foregroundColor(.white.opacity(0.6))
         }
         .padding(.horizontal, 14)
-        .frame(height: 38)
+        .frame(minHeight: DS.minTapTarget)
         .background(Color.white.opacity(0.04))
         .clipShape(RoundedRectangle(cornerRadius: 12))
     }
@@ -246,7 +247,7 @@ struct EngineSoundView: View {
                 .toggleStyle(SwitchToggleStyle(tint: .orange))
         }
         .padding(.horizontal, 14)
-        .frame(height: 38)
+        .frame(minHeight: DS.minTapTarget)
         .background(Color.white.opacity(0.04))
         .clipShape(RoundedRectangle(cornerRadius: 12))
     }

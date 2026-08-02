@@ -251,6 +251,7 @@ struct SensorsView: View {
         }
         // タップで説明シートを表示(2026-08-02 フィードバック: 項目がわかりづらい)
         .contentShape(Rectangle())
+        .frame(minHeight: DS.minTapTarget)
         .onTapGesture {
             helpChannel = ChannelInfo.info(for: channelID)
         }

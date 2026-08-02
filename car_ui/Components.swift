@@ -167,6 +167,7 @@ struct DeviceRow: View {
                     .foregroundStyle(.secondary)
             }
             .contentShape(Rectangle())
+            .frame(minHeight: DS.minTapTarget)
         }
         .buttonStyle(.plain)
     }

@@ -135,6 +135,9 @@ struct MapWidgetView: View {
         .background(Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 10))
         .contentShape(Rectangle())
         .onTapGesture { showingExpanded = true }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("走行マップ")
+        .accessibilityAddTraits(.isButton)
         .fullScreenCover(isPresented: $showingExpanded) {
             TrackMapExpandedView()
         }
