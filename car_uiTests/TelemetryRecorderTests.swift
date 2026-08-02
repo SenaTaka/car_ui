@@ -11,9 +11,21 @@ import XCTest
 final class TelemetryRecorderTests: XCTestCase {
 
     private func makeRecorder() -> TelemetryRecorder {
+        // 前のテスト・過去実行の永続化ファイルを消して決定的にする
+        try? FileManager.default.removeItem(at: TelemetryRecorder.persistURL)
         let recorder = TestRetention.retain(TelemetryRecorder())
         recorder.clear() // ディスク復元分を排除して決定的にする
         return recorder
+    }
+
+    /// persistToDisk はバックグラウンド書き込みのため、ファイルが現れるまで待つ
+    /// (固定スリープはマシン負荷が高いときに書き込みへ追い越されて不安定だった)。
+    private func waitForPersistFile() async throws {
+        for _ in 0..<40 {
+            if FileManager.default.fileExists(atPath: TelemetryRecorder.persistURL.path) { return }
+            try await Task.sleep(nanoseconds: 100_000_000)
+        }
+        XCTFail("永続化ファイルが時間内に書き込まれなかった")
     }
 
     func testRecordAndLatest() {
@@ -87,8 +99,7 @@ final class TelemetryRecorderTests: XCTestCase {
         recorder.record("gps.speed", value: 42.5, at: t0)
 
         recorder.persistToDisk()
-        // persistToDisk はバックグラウンド書き込みのため完了を待つ
-        try await Task.sleep(nanoseconds: 500_000_000)
+        try await waitForPersistFile()
 
         let restored = TestRetention.retain(TelemetryRecorder())
         XCTAssertEqual(restored.latest("obd.0C"), 800)
@@ -103,7 +114,7 @@ final class TelemetryRecorderTests: XCTestCase {
         recorder.record("obd.0D", value: 2, at: Date())
 
         recorder.persistToDisk()
-        try await Task.sleep(nanoseconds: 500_000_000)
+        try await waitForPersistFile()
 
         let restored = TestRetention.retain(TelemetryRecorder())
         XCTAssertNil(restored.latest("obd.0C"))
