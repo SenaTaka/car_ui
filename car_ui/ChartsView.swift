@@ -362,6 +362,14 @@ struct ChartsView: View {
             let info = ChannelInfo.info(for: channelID)
             var points = recorder.samples(channelID, since: since)
 
+            // Swift Charts は点数に比例して重くなり、記録が長いと 0.5 秒ごとの
+            // 再描画で UI が固まる。画面幅より細かい点は等間隔に間引く。
+            let maxPoints = 240
+            if points.count > maxPoints {
+                let strideStep = Double(points.count - 1) / Double(maxPoints - 1)
+                points = (0..<maxPoints).map { points[Int((Double($0) * strideStep).rounded())] }
+            }
+
             if normalized, let minValue = points.map(\.value).min(), let maxValue = points.map(\.value).max() {
                 let span = max(maxValue - minValue, 0.0001)
                 points = points.map { TelemetrySample(time: $0.time, value: ($0.value - minValue) / span) }

@@ -86,9 +86,36 @@ enum TrackContour {
         return minValue...max(maxValue, minValue + 0.001)
     }
 
+    /// 直近結果のメモ化キー。軌跡は追記のみ(または全消去)なので
+    /// 点数+末尾 ID +設定が一致すれば結果は同一。
+    private struct SegmentsKey: Equatable {
+        let count: Int
+        let lastID: Int?
+        let source: TrackColorSource
+        let range: ClosedRange<Double>?
+    }
+
+    private static var lastKey: SegmentsKey?
+    private static var lastSegments: [ColoredSegment] = []
+
     /// 連続する点を色バケット単位でまとめ、Polyline の本数を抑える。
     /// `range` は呼び出し側で確定した実効レンジ(自動 or 手動)を渡す。
+    /// ミニマップ・パネル・拡大表示が同じ計算を毎再描画で繰り返すため、直近結果をメモ化する
+    /// (長い軌跡では 1 回 O(数千点) の計算が毎秒複数回積み重なり重かった)。
     static func segments(
+        _ points: [TrackPoint],
+        source: TrackColorSource,
+        range: ClosedRange<Double>?
+    ) -> [ColoredSegment] {
+        let key = SegmentsKey(count: points.count, lastID: points.last?.id, source: source, range: range)
+        if key == lastKey { return lastSegments }
+        let result = computeSegments(points, source: source, range: range)
+        lastKey = key
+        lastSegments = result
+        return result
+    }
+
+    private static func computeSegments(
         _ points: [TrackPoint],
         source: TrackColorSource,
         range: ClosedRange<Double>?
@@ -527,9 +554,10 @@ struct TrackMapPanel: View {
         }
     }
 
-    // プレビュー地図の再構築は点数の増分で間引く(全体表示のカメラを追従させるため)
+    // プレビュー地図の再構築は点数の増分で間引く(全体表示のカメラを追従させるため)。
+    // Map の作り直しはタイル再取得を伴い重いので約 1 分ごとに抑える
     private var mapRefreshKey: Int {
-        track.points.count / 10
+        track.points.count / 60
     }
 }
 

@@ -93,6 +93,8 @@ final class ELM327BluetoothModel: NSObject, ObservableObject {
     @Published private(set) var logLines: [String] = []
     private var logBuffer: [String] = []
     private var logFlushTask: Task<Void, Never>?
+    /// ポーリング 1 サイクル分の値を溜め、liveValues へ一括反映するためのバッファ
+    private var pendingLiveUpdates: [UInt8: Double] = [:]
 
     private var centralManager: CBCentralManager!
     private var peripheralsByID: [UUID: CBPeripheral] = [:]
@@ -321,34 +323,47 @@ final class ELM327BluetoothModel: NSObject, ObservableObject {
         let rpm = 900 + throttle * 52 + 180 * sin(t / 2)
         let speed = max(0, 55 + 50 * sin(t / 9))
 
-        applyDemoValue(0x0C, rpm)
-        applyDemoValue(0x0D, speed)
-        applyDemoValue(0x11, throttle)
-        applyDemoValue(0x04, max(5, min(95, throttle * 0.9 + 8 * sin(t / 4))))
-        applyDemoValue(0x05, min(96, 62 + t * 0.4))
-        applyDemoValue(0x06, 3.5 * sin(t / 6))
-        applyDemoValue(0x07, 1.8 + 0.7 * sin(t / 30))
-        applyDemoValue(0x0B, 28 + throttle * 0.7)
-        applyDemoValue(0x0E, 12 + 8 * sin(t / 7))
-        applyDemoValue(0x0F, 28 + 4 * sin(t / 40))
-        applyDemoValue(0x10, 2 + throttle * 0.5)
-        applyDemoValue(0x1F, t)
-        applyDemoValue(0x2F, max(3, 68 - t * 0.01))
-        applyDemoValue(0x33, 101)
-        applyDemoValue(0x42, 13.8 + 0.3 * sin(t / 3))
-        applyDemoValue(0x46, 31)
-        applyDemoValue(0x5C, min(104, 55 + t * 0.35))
-        applyDemoValue(0x5E, 0.7 + throttle * 0.11)
-        applyDemoValue(0x62, max(0, min(100, throttle * 0.92)))
+        // @Published への反映はティックごとに 1 回にまとめる。PID ごとに個別代入すると
+        // 19 PID × 4 Hz = 毎秒 80 回近く objectWillChange が発火し、obd を購読する
+        // 全タブが再描画されてアプリ全体が重くなる(実測の「重すぎる」の主因)。
+        var values = liveValues
+        func set(_ pid: UInt8, _ value: Double) {
+            values[pid] = value
+            if let definition = PIDCatalog.byPID[pid] {
+                TelemetryRecorder.shared.record(definition.channelID, value: value)
+            }
+        }
 
-        adapterVoltage = 13.8 + 0.3 * sin(t / 3)
-        lastUpdated = Date()
-    }
+        set(0x0C, rpm)
+        set(0x0D, speed)
+        set(0x11, throttle)
+        set(0x04, max(5, min(95, throttle * 0.9 + 8 * sin(t / 4))))
+        set(0x05, min(96, 62 + t * 0.4))
+        set(0x06, 3.5 * sin(t / 6))
+        set(0x07, 1.8 + 0.7 * sin(t / 30))
+        set(0x0B, 28 + throttle * 0.7)
+        set(0x0E, 12 + 8 * sin(t / 7))
+        set(0x0F, 28 + 4 * sin(t / 40))
+        set(0x10, 2 + throttle * 0.5)
+        set(0x1F, t)
+        set(0x2F, max(3, 68 - t * 0.01))
+        set(0x33, 101)
+        set(0x42, 13.8 + 0.3 * sin(t / 3))
+        set(0x46, 31)
+        set(0x5C, min(104, 55 + t * 0.35))
+        set(0x5E, 0.7 + throttle * 0.11)
+        set(0x62, max(0, min(100, throttle * 0.92)))
 
-    private func applyDemoValue(_ pid: UInt8, _ value: Double) {
-        liveValues[pid] = value
-        if let definition = PIDCatalog.byPID[pid] {
-            TelemetryRecorder.shared.record(definition.channelID, value: value)
+        liveValues = values
+
+        // 電圧は 0.1V 刻みに丸め、変化したときだけ発行する
+        let voltage = ((13.8 + 0.3 * sin(t / 3)) * 10).rounded() / 10
+        if adapterVoltage != voltage {
+            adapterVoltage = voltage
+        }
+        // 鮮度表示用の時刻は 1 秒に 1 回で十分
+        if Int(t * 4) % 4 == 0 {
+            lastUpdated = Date()
         }
     }
 
@@ -548,6 +563,7 @@ final class ELM327BluetoothModel: NSObject, ObservableObject {
         for pid in PIDCatalog.fastPIDs {
             await pollMode01(pid)
         }
+        flushPendingLiveUpdates()
 
         let slowPIDs = slowPollTargets()
         if !slowPIDs.isEmpty {
@@ -556,6 +572,7 @@ final class ELM327BluetoothModel: NSObject, ObservableObject {
                 slowPIDRotationIndex += 1
                 await pollMode01(pid)
             }
+            flushPendingLiveUpdates()
         }
 
         pollCycle += 1
@@ -566,6 +583,15 @@ final class ELM327BluetoothModel: NSObject, ObservableObject {
                 TelemetryRecorder.shared.record("meta.voltage", value: voltage)
             }
         }
+    }
+
+    /// pollMode01 が溜めた値を liveValues へ一括反映する。PID ごとの個別代入は
+    /// その都度 objectWillChange を発火させ、全 View の再描画が積み重なるため。
+    private func flushPendingLiveUpdates() {
+        guard !pendingLiveUpdates.isEmpty else { return }
+        liveValues.merge(pendingLiveUpdates) { _, new in new }
+        pendingLiveUpdates = [:]
+        lastUpdated = Date()
     }
 
     private func slowPollTargets() -> [UInt8] {
@@ -587,8 +613,7 @@ final class ELM327BluetoothModel: NSObject, ObservableObject {
             return
         }
 
-        liveValues[pid] = value
-        lastUpdated = Date()
+        pendingLiveUpdates[pid] = value
         TelemetryRecorder.shared.record(definition.channelID, value: value)
     }
 
@@ -722,6 +747,7 @@ final class ELM327BluetoothModel: NSObject, ObservableObject {
         adapterInfo = "未取得"
         protocolDescription = "未取得"
         liveValues = [:]
+        pendingLiveUpdates = [:]
         adapterVoltage = nil
         lastUpdated = nil
         diagnosticCodes = []

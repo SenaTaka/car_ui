@@ -128,7 +128,7 @@ struct MapWidgetView: View {
                 .mapStyle(styleOption.mapStyle)
                 .frame(height: 180)
                 .clipShape(RoundedRectangle(cornerRadius: 8))
-                .id(track.points.count / 10)
+                .id(track.points.count / 60)
             }
         }
         .padding(12)
