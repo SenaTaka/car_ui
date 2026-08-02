@@ -343,3 +343,8 @@
 - codex に UI 総点検を委任(観点: 多言語見切れ/Dynamic Type/ダーク固定色/44pt/一貫性)。7 ファイルの安全な改善を取り込み: タップ領域 44pt 保証(固定 height 撤廃)+画像のみボタンの VoiceOver ラベル。
 - codex 側はビルド不可(SwiftPM キャッシュ権限)のためローカルで検収: ビルド+テスト全パス。
 - codex が保留した指摘(要判断): ペイウォールの固定幅プラン列 / SessionBar の横一列(独仏で窮屈) / エンジン音・HUD の暗色専用固定色(意図的)。必要なら次回対応。
+
+## 2026/08/03 09:30
+- 外部 TestFlight のベータ審査エラー対応: 原因はユーザー操作で承認済みトレイン(1.0.1 以前)のビルドを選択したこと。実際は build 33(1.0.2)のベータ審査提出が成功済みで WAITING_FOR_REVIEW だった。
+- API で実施: build 35(最新)に What to Test(en-US)設定+外部グループ tomodachi へ追加。33 の審査完了を 10 分間隔で監視し、APPROVED になり次第 35 を自動提出するモニタをバックグラウンド起動(最大 10 時間)。
+- 知見: 同一トレインでベータ審査中のビルドがあると POST /v1/betaAppReviewSubmissions は 422 ANOTHER_BUILD_IN_REVIEW。App Store 承認済みトレインはベータ審査に出せない(closed for beta review)。
