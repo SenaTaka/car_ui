@@ -348,3 +348,6 @@
 - 外部 TestFlight のベータ審査エラー対応: 原因はユーザー操作で承認済みトレイン(1.0.1 以前)のビルドを選択したこと。実際は build 33(1.0.2)のベータ審査提出が成功済みで WAITING_FOR_REVIEW だった。
 - API で実施: build 35(最新)に What to Test(en-US)設定+外部グループ tomodachi へ追加。33 の審査完了を 10 分間隔で監視し、APPROVED になり次第 35 を自動提出するモニタをバックグラウンド起動(最大 10 時間)。
 - 知見: 同一トレインでベータ審査中のビルドがあると POST /v1/betaAppReviewSubmissions は 422 ANOTHER_BUILD_IN_REVIEW。App Store 承認済みトレインはベータ審査に出せない(closed for beta review)。
+
+## 2026/08/03 12:00
+- build 33(1.0.2)のベータ審査 APPROVED → 監視スクリプトが build 35 を自動でベータ審査へ提出(WAITING_FOR_REVIEW)。35 の承認監視を継続中。35 は tomodachi(外部)グループ追加済み・What to Test 設定済みなので、承認され次第テスターに配信される。
