@@ -20,3 +20,5 @@ xcodebuild -project car_ui.xcodeproj -scheme car_ui \
 - 2026-07-12: SWIFT_DEFAULT_ACTOR_ISOLATION=MainActor のため、オーディオスレッド等 main 外から呼ぶ型は `nonisolated` 宣言が必須(HarmonicGenerator/EngineSoundState/EngineParameters で対応済み)。
 - 2026-07-12: AdMob ID はルート `Info.plist`(アプリ ID)と `AdBannerView.swift` の AdConfig(ユニット ID)の 2 箇所。
 - 2026-07-13: `PrivacyInfo.xcprivacy` の `NSPrivacyAccessedAPITypes` に UserDefaults(理由 `CA92.1`)を宣言済み。新たに file timestamp/system boot time/disk space API を使うコードを追加したら追記が必要。
+- 2026-08-06: AdMob ID ねじれ(コンソール登録先と実装が別ID)で公開以来バナー未配信の疑い→ App ID `~9182984317`・バナー `/2711542365` に修正(旧 `~8945778220`・`/1160611372` は破棄)。リワードユニットIDはコード上に存在しない(2026-07-13 の Pro課金統合でリワード解放機能が StoreKit 買い切りに置き換わり未使用化した形跡、`straightPipe` フラグのみ残存)。
+- 2026-08-06: `AdBannerView` が広告未ロード時にコンテナ高さを 0 に畳む実装は、`banner.load()` 呼び出し時点でビュー高さが 0 になり SDK が「Invalid ad width or height」でクライアント側失敗する原因だった(2026-07-16 に「高さ0 collapse で隙間も出ない」と記録したのは逆効果だったので撤回)。修正: `AdLoadState`(pending/loaded/failed)を導入し、結果が判明するまでは 50pt を確保、失敗確定時のみ 0 に畳む。

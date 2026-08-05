@@ -9,14 +9,21 @@ import UIKit
 /// physical development device as a test device in AdMob before tapping ads.
 enum AdConfig {
     /// Production banner unit (bottom, shared across all tabs).
-    static let bannerUnitID = "ca-app-pub-3848493291218445/1160611372"
+    static let bannerUnitID = "ca-app-pub-3848493291218445/2711542365"
+}
+
+private enum AdLoadState: Equatable {
+    case pending  // load() 発行済み・結果待ち — レイアウトスペースは確保しておく
+    case loaded
+    case failed
 }
 
 /// Bottom banner slot: a standard 320x50 AdMob banner.
-/// 広告がロードされるまでは高さ 0 に畳む(未ロード時にタブバーの下へ
-/// 白い空白帯が出るのを防ぐ)。ロード完了時のみ 50pt を確保する。
+/// `load()` 呼び出し時点で高さが 0 だと SDK が "Invalid ad width or height" で
+/// クライアント側失敗するため、結果が判明するまでは 50pt を確保しておく。
+/// 失敗が確定した場合のみ高さ 0 に畳んで空白帯を消す。
 struct AdBannerView: View {
-    @State private var isLoaded = false
+    @State private var state: AdLoadState = .pending
 
     var body: some View {
         // 起動引数 -uiFakeBanner: 広告ロードに依存せずバナー込みレイアウトを検証する
@@ -25,9 +32,9 @@ struct AdBannerView: View {
             Color.orange.frame(maxWidth: .infinity).frame(height: 50)
         } else if AdConsentManager.shared.canShowAds {
             // 監査 REL-007: UMP 同意が確定(canRequestAds)するまで広告をリクエストしない
-            BannerAdRepresentable(isLoaded: $isLoaded)
+            BannerAdRepresentable(state: $state)
                 .frame(maxWidth: .infinity)
-                .frame(height: isLoaded ? 50 : 0)
+                .frame(height: state == .failed ? 0 : 50)
                 .clipped()
                 .background(Color(.systemBackground))
         }
@@ -35,10 +42,10 @@ struct AdBannerView: View {
 }
 
 private struct BannerAdRepresentable: UIViewRepresentable {
-    @Binding var isLoaded: Bool
+    @Binding var state: AdLoadState
 
     func makeCoordinator() -> Coordinator {
-        Coordinator(isLoaded: $isLoaded)
+        Coordinator(state: $state)
     }
 
     func makeUIView(context: Context) -> BannerView {
@@ -55,18 +62,18 @@ private struct BannerAdRepresentable: UIViewRepresentable {
     func updateUIView(_ uiView: BannerView, context: Context) {}
 
     final class Coordinator: NSObject, BannerViewDelegate {
-        @Binding var isLoaded: Bool
+        @Binding var state: AdLoadState
 
-        init(isLoaded: Binding<Bool>) {
-            _isLoaded = isLoaded
+        init(state: Binding<AdLoadState>) {
+            _state = state
         }
 
         func bannerViewDidReceiveAd(_ bannerView: BannerView) {
-            isLoaded = true
+            state = .loaded
         }
 
         func bannerView(_ bannerView: BannerView, didFailToReceiveAdWithError error: Error) {
-            isLoaded = false
+            state = .failed
         }
     }
 }

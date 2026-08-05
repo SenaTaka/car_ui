@@ -354,3 +354,8 @@
 
 ## 2026/08/03 12:40
 - build 35(1.0.2)のベータ審査も APPROVED。外部グループ tomodachi へ配信開始(全修正入り: 接続修正・軽量化・説明シート・多言語・プリセット位置・codex UI 改善)。外部 TestFlight の一連の対応完了。
+
+## 2026/08/06 (AdMob ID ねじれ解消 + バナー高さ0バグ修正)
+- AdMob コンソール上で car_ui のストア掲載にリンクされたエントリ(`~9182984317`)とコード側の実装(`~8945778220`)が別 ID だった「ねじれ」を解消。App ID・バナーユニット ID をコンソール側に合わせて置換(Info.plist の GADApplicationIdentifier、AdBannerView.swift の bannerUnitID)。リワードユニット ID はコード内に存在せず(Pro課金統合で未使用化済み)対応不要と判断。
+- 収益ゼロの根本原因だったバナー高さ0バグを修正: `AdBannerView` が広告未ロード時にコンテナ高さを 0 に畳んでいたため `banner.load()` 時点でビュー高さ0→SDK が「Invalid ad width or height」でクライアント側失敗していた。`AdLoadState`(pending/loaded/failed)を導入し、結果判明まで 50pt 確保・失敗確定時のみ 0 に畳む方式に変更。
+- 検証: xcodebuild SUCCEEDED。シミュレータ(iPhone 17 Pro, iOS 26.0)実機起動で googleads.g.doubleclick.net への正常なネットワーク要求(format=402x50_mb)+WebKit でのバナー描画完了(post-load memory/CPU 計測ログ)を確認。修正前に発生していた同期的な size エラーが解消されたことを裏付け。
