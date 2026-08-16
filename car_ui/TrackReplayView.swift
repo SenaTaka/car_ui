@@ -40,7 +40,7 @@ struct TrackReplayView: View {
                 currentReadout
             }
         }
-        .dataCard()
+        .panelStyle()
         .onReceive(ticker) { _ in advanceIfPlaying() }
         .onAppear { index = Double(points.count - 1) }
     }

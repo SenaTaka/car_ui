@@ -66,6 +66,22 @@ enum OBDConnectionPhase: Equatable {
         }
         return false
     }
+
+    /// 失敗・切断・利用不可。接続シートで復旧導線を出すかの判定に使う(監査 B-1)。
+    var isProblem: Bool {
+        switch self {
+        case .failed, .unavailable, .disconnected: return true
+        default: return false
+        }
+    }
+
+    /// 検索・接続の進行中(スピナーを出す状態)
+    var isBusy: Bool {
+        switch self {
+        case .scanning, .connecting, .discovering, .initializing: return true
+        default: return false
+        }
+    }
 }
 
 @MainActor
@@ -167,6 +183,18 @@ final class ELM327BluetoothModel: NSObject, ObservableObject {
 
     var canScan: Bool {
         centralManager?.state == .poweredOn
+    }
+
+    /// 接続シートの復旧導線で使う Bluetooth 本体の状態(監査 B-1)。
+    /// `.unavailable` のメッセージ文字列で分岐すると翻訳で壊れるので、状態そのものを見る。
+    var bluetoothState: CBManagerState? { centralManager?.state }
+
+    /// 設定アプリを開くべき状態か(オフ / 権限なし)
+    var needsBluetoothSettings: Bool {
+        switch centralManager?.state {
+        case .poweredOff, .unauthorized: return true
+        default: return false
+        }
     }
 
     var canConnect: Bool {

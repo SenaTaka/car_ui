@@ -10,6 +10,8 @@ import SwiftUI
 struct DashboardView: View {
     @EnvironmentObject private var obd: ELM327BluetoothModel
     @EnvironmentObject private var location: LocationModel
+    /// 監査 B-3: タイルの鮮度判定に使う
+    @EnvironmentObject private var recorder: TelemetryRecorder
     @State private var showsConnectionSheet = false
     @State private var showsCustomizeSheet = false
     @State private var showsHUD = false
@@ -18,29 +20,42 @@ struct DashboardView: View {
 
     private let tileColumns = [GridItem(.adaptive(minimum: 150), spacing: 12)]
 
+    // 監査 E-2: 主要な数字が固定 pt で Dynamic Type に追従していなかった。
+    // 巨大表示の意図は保ちつつ、文字サイズ設定に合わせて拡縮させる。
+    @ScaledMetric(relativeTo: .largeTitle) private var heroValueSize: CGFloat = 64
+    @ScaledMetric(relativeTo: .title) private var dialValueSize: CGFloat = 30
+    @ScaledMetric(relativeTo: .title) private var dialDiameter: CGFloat = 108
+
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 14) {
-                    statusHeader
-
                     if obd.phase.isConnected {
+                        // 監査 C-4: 接続状態は上部セッションバーとツールバーのボタンが
+                        // 既に示している。ここは重複しない情報(取得状況)だけに絞る。
+                        statusDetailLine
                         heroPanel
                         widgetSections
                     } else {
+                        // 未接続時は emptyState が状態と次の一手を説明するので見出しは出さない
                         emptyState
                     }
                 }
                 .padding()
+                // 監査 F-3: 他タブにはあった下端の逃げがここだけ無く、
+                // 最後のタイルがタブバーとバナーの下に潜り込んでいた
+                .padding(.bottom, DS.Space.tabBarClearance)
             }
             .background(Color(.systemGroupedBackground))
-            .navigationTitle("ダッシュボード")
+            // 監査 C-1: タブ名と画面タイトルを一致させる(旧: タブ「メーター」→タイトル「ダッシュボード」)
+            .navigationTitle("メーター")
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button {
                         showsCustomizeSheet = true
                     } label: {
-                        Label("タイルを編集", systemImage: "slider.horizontal.3")
+                        // 監査 C-5: シート側のタイトルと語を揃える(旧: ボタン「タイルを編集」→シート「ダッシュボード編集」)
+                        Label("表示項目を編集", systemImage: "slider.horizontal.3")
                     }
                 }
 
@@ -83,21 +98,16 @@ struct DashboardView: View {
         showsConnectionSheet = true
     }
 
-    private var statusHeader: some View {
-        HStack(spacing: 12) {
-            VStack(alignment: .leading, spacing: 3) {
-                Text(obd.phase.title)
-                    .font(.subheadline.weight(.semibold))
-                Text(statusDetail)
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-            }
-
-            Spacer()
-
-            StatusPill(phase: obd.phase)
-        }
-        .panelStyle()
+    /// 接続中の取得状況だけを 1 行で出す(監査 C-4)。
+    /// 以前はここにパネル + 状態名 + StatusPill が乗っていて、ツールバーの接続ボタンと
+    /// 合わせて同じ情報が 3 重になり、画面最上部の一等地を状態表示が占有していた。
+    private var statusDetailLine: some View {
+        Text(statusDetail)
+            .font(.caption)
+            .foregroundStyle(.secondary)
+            .lineLimit(1)
+            .minimumScaleFactor(0.8)
+            .frame(maxWidth: .infinity, alignment: .leading)
     }
 
     private var statusDetail: String {
@@ -141,7 +151,7 @@ struct DashboardView: View {
 
                     HStack(alignment: .firstTextBaseline, spacing: 6) {
                         Text(unitText(currentSpeed, kind: .speed, digits: 0))
-                            .font(.system(size: 64, weight: .heavy, design: .rounded))
+                            .font(.system(size: heroValueSize, weight: .heavy, design: .rounded))
                             .monospacedDigit()
                             .lineLimit(1)
                             .minimumScaleFactor(0.5)
@@ -176,7 +186,7 @@ struct DashboardView: View {
 
         return VStack(spacing: 2) {
             Text(metricText(rpm, digits: 0))
-                .font(.system(size: 30, weight: .bold, design: .rounded))
+                .font(.system(size: dialValueSize, weight: .bold, design: .rounded))
                 .monospacedDigit()
                 .lineLimit(1)
                 .minimumScaleFactor(0.6)
@@ -185,7 +195,7 @@ struct DashboardView: View {
                 .font(.caption.weight(.semibold))
                 .foregroundStyle(.secondary)
         }
-        .frame(width: 108, height: 108)
+        .frame(width: dialDiameter, height: dialDiameter)
         .background {
             Circle()
                 .stroke(Color(.systemFill), lineWidth: 10)
@@ -285,7 +295,7 @@ struct DashboardView: View {
             }
 
             if layout.widgets.isEmpty {
-                Text("ウィジェットがありません。左上の編集ボタンから追加できます。")
+                Text("表示項目がありません。左上の編集ボタンから追加できます。")
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .frame(maxWidth: .infinity)
@@ -302,13 +312,17 @@ struct DashboardView: View {
                 GaugeWidgetView(pid: pid)
             default:
                 let value = obd.liveValues[pid]
+                // 監査 B-3: 凍った値を生きた値と同じ見た目にしない
+                let _ = recorder.revision  // 鮮度の再評価トリガ
+                let isStale = value != nil && recorder.isStale(definition.channelID)
                 MetricTile(
                     title: definition.name,
                     value: definition.displayText(value),
                     unit: definition.displayUnit,
                     systemImage: definition.icon,
                     tint: definition.tint,
-                    progress: value.map { progress($0, in: definition.gaugeRange) }
+                    progress: value.map { progress($0, in: definition.gaugeRange) },
+                    isStale: isStale
                 )
             }
         }

@@ -30,6 +30,10 @@ struct ContentView: View {
 
     var body: some View {
         VStack(spacing: 0) {
+            // 監査 B-2: 以前は走行タブにしか無く、Pro の中核価値である記録の
+            // 開始・停止・実行状態がメーター/分析タブから見えも触れもしなかった。
+            SessionBar()
+
             tabs
             // 全タブ共通の最下部バナー(タブバーの下)。Pro / 広告除去購入者は非表示。
             // safeAreaInset だと iOS 26 のフローティングタブバーにバナーが被さるため
@@ -158,9 +162,19 @@ struct ContentView: View {
     }
 
     /// 監査 REL-012: 画面スリープ防止は「前面 + OBD 接続中(デモ含む)+ 設定オン」に限定。
+    /// 監査 B-4: ただし HUD 表示中は例外。HUD は GPS 速度だけでも動くため、
+    /// OBD 未接続でも点灯を維持しないと走行中に画面が消える。
     private func updateScreenWake() {
+        guard scenePhase == .active else {
+            UIApplication.shared.isIdleTimerDisabled = false
+            return
+        }
+        if ScreenWakeCoordinator.shared.hudIsPresented {
+            UIApplication.shared.isIdleTimerDisabled = true
+            return
+        }
         UIApplication.shared.isIdleTimerDisabled =
-            keepAwakeWhileConnected && scenePhase == .active && obd.phase.isConnected
+            keepAwakeWhileConnected && obd.phase.isConnected
     }
 
     /// オンボーディング終了。選んだ入口に応じてデモ開始/接続シートへ誘導する。
@@ -191,7 +205,8 @@ struct ContentView: View {
     /// スクショ撮影フック起動時はオンボーディングを出さない(`-uiOnboarding 1` で強制表示)。
     private var isUITestRun: Bool {
         let args = ProcessInfo.processInfo.arguments
-        return args.contains("-uiDemo") || args.contains("-uiTab") || args.contains("-uiIntroOffer")
+        return args.contains("-uiDemo") || args.contains("-uiTab")
+            || args.contains("-uiIntroOffer") || args.contains("-uiConnect")
     }
 
     /// `-uiOnboardingStep N` で指定(未指定は 0 = 最初から)
@@ -222,6 +237,14 @@ struct ContentView: View {
         // オンボーディングの検証・スクショ用フック
         if value(after: "-uiOnboarding") == "1" {
             showingOnboarding = true
+        }
+        // 接続シートの検証用フック。シートを開く操作はタップでしか行えず、
+        // simctl にタップ機能が無いため接続失敗時の表示を確認できなかった。
+        if value(after: "-uiConnect") == "1" {
+            Task {
+                try? await Task.sleep(nanoseconds: 600_000_000)
+                NotificationCenter.default.post(name: .carUIOpenConnectionSheet, object: nil)
+            }
         }
     }
 }

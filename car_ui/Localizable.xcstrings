@@ -885,6 +885,108 @@
         }
       }
     },
+    "0-%1$@: %2$@ 秒": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "0-%1$@: %2$@ s"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "0-%1$@: %2$@ s"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "0-%1$@: %2$@ s"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "0-%1$@ : %2$@ s"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "0-%1$@: %2$@ 秒"
+          }
+        }
+      }
+    },
+    "0-%@ 加速計測": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "0-%@ Zeitmessung"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "0-%@ Timer"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cronómetro 0-%@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chrono 0-%@"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "0-%@ 加速测量"
+          }
+        }
+      }
+    },
+    "0-%@ 計測の完了後に「記録を保存」(Pro)で追加されます。": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nach Abschluss eines 0-%@-Laufs wird er über „Lauf speichern“ (Pro) hinzugefügt."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Finish a 0-%@ run and tap “Save Run” (Pro) to add one."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Se añadirá al terminar una prueba de 0-%@ y pulsar «Guardar registro» (Pro)."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Terminez un chrono 0-%@ et appuyez sur « Enregistrer » (Pro) pour l’ajouter."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "完成 0-%@ 测量后，点击「保存记录」(Pro)即可添加。"
+          }
+        }
+      }
+    },
     "0-%lld km/h": {
       "localizations": {
         "de": {
@@ -1735,6 +1837,40 @@
         }
       }
     },
+    "ELM327 ではないかもしれません": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vermutlich kein ELM327"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "May not be an ELM327"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Puede que no sea un ELM327"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ce n’est peut-être pas un ELM327"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "可能不是 ELM327"
+          }
+        }
+      }
+    },
     "ELM327 の BLE 通信特性が見つかりません": {
       "localizations": {
         "de": {
@@ -1765,6 +1901,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "找不到 ELM327 的 BLE 通信特性"
+          }
+        }
+      }
+    },
+    "ELM327 アダプタの可能性が高い": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wahrscheinlich ein ELM327-Adapter"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Likely an ELM327 adapter"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Probablemente un adaptador ELM327"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Probablement un adaptateur ELM327"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "很可能是 ELM327 适配器"
           }
         }
       }
@@ -2721,6 +2891,40 @@
         }
       }
     },
+    "OBD と GPS の車速差: %1$@ %2$@(メーター誤差の目安)": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geschwindigkeitsdifferenz OBD/GPS: %1$@ %2$@ (Richtwert für Tachoabweichung)"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OBD vs GPS speed difference: %1$@ %2$@ (speedometer error estimate)"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diferencia de velocidad OBD/GPS: %1$@ %2$@ (estimación del error del velocímetro)"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Écart de vitesse OBD/GPS : %1$@ %2$@ (estimation de l’erreur du compteur)"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OBD 与 GPS 车速差：%1$@ %2$@（仪表误差参考值）"
+          }
+        }
+      }
+    },
     "OBD と GPS の車速差: %@ km/h(メーター誤差の目安)": {
       "localizations": {
         "de": {
@@ -2959,6 +3163,40 @@
         }
       }
     },
+    "PR: リンクは Amazon アソシエイトのアフィリエイトリンクです。": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Werbung: Der Link ist ein Amazon-Partnerlink."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ad: the link is an Amazon Associates affiliate link."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Publicidad: el enlace es un enlace de afiliado de Amazon Associates."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Publicité : ce lien est un lien affilié Amazon Partenaires."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "广告：该链接为亚马逊联盟推广链接。"
+          }
+        }
+      }
+    },
     "PR: リンクは Amazon アソシエイトのアフィリエイトリンクです。「ELM327」「BLE(Bluetooth 4.0/LE)対応」の表記がある製品をお選びください。": {
       "localizations": {
         "de": {
@@ -3159,6 +3397,108 @@
           "stringUnit": {
             "state": "translated",
             "value": "car_ui Pro"
+          }
+        }
+      }
+    },
+    "car_ui Pro にアップグレード": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auf car_ui Pro upgraden"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Upgrade to car_ui Pro"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Actualizar a car_ui Pro"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Passer à car_ui Pro"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "升级到 car_ui Pro"
+          }
+        }
+      }
+    },
+    "iOS の設定アプリが開きます。「言語」から日本語・English・简体中文・Español・Deutsch・Français を選べます。": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dies öffnet die iOS-Einstellungen; unter „Sprache“ kannst du 日本語, English, 简体中文, Español, Deutsch oder Français wählen."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This opens the iOS Settings app, where “Language” lets you pick 日本語, English, 简体中文, Español, Deutsch or Français."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Se abrirá Ajustes de iOS; en “Idioma” puedes elegir 日本語, English, 简体中文, Español, Deutsch o Français."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Les Réglages iOS s’ouvrent ; sous « Langue », choisissez 日本語, English, 简体中文, Español, Deutsch ou Français."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "将打开 iOS“设置”，在“语言”中可选择 日本語、English、简体中文、Español、Deutsch 或 Français。"
+          }
+        }
+      }
+    },
+    "iOS の設定アプリ側で「ペアリング」する必要はありません。このアプリの検索から直接つなぎます。": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eine Kopplung in den iOS-Einstellungen ist nicht nötig. Verbinde direkt über die Suche in dieser App."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "There is no need to pair in iOS Settings. Connect directly from the search in this app."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No hace falta emparejarlo en los Ajustes de iOS. Conéctalo directamente desde la búsqueda de esta app."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucun appairage n’est nécessaire dans les Réglages iOS. Connectez-vous directement depuis la recherche de cette app."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "无需在 iOS“设置”中配对。请直接在本 App 的搜索中连接。"
           }
         }
       }
@@ -3367,6 +3707,74 @@
         }
       }
     },
+    "「Bluetooth Classic」「SPP」「Wi-Fi 接続」の製品は iPhone では使えません": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adapter mit „Bluetooth Classic“, „SPP“ oder „WLAN“ funktionieren nicht mit dem iPhone"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "“Bluetooth Classic”, “SPP” and “Wi-Fi” adapters do not work with iPhone"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Los adaptadores “Bluetooth Classic”, “SPP” y “Wi-Fi” no funcionan con el iPhone"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Les adaptateurs « Bluetooth Classic », « SPP » et « Wi-Fi » ne fonctionnent pas avec l’iPhone"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "“Bluetooth Classic”“SPP”“Wi-Fi”型号无法在 iPhone 上使用"
+          }
+        }
+      }
+    },
+    "「ELM327」かつ「BLE / Bluetooth 4.0 / Bluetooth LE」対応と明記された製品": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Produkte, die sowohl „ELM327“ als auch „BLE / Bluetooth 4.0 / Bluetooth LE“ angeben"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Products labeled both “ELM327” and “BLE / Bluetooth 4.0 / Bluetooth LE”"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Productos que indiquen “ELM327” y “BLE / Bluetooth 4.0 / Bluetooth LE”"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Produits portant les mentions « ELM327 » et « BLE / Bluetooth 4.0 / Bluetooth LE »"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "同时标注“ELM327”和“BLE / 蓝牙 4.0 / 低功耗蓝牙”的产品"
+          }
+        }
+      }
+    },
     "あとで決める": {
       "localizations": {
         "de": {
@@ -3465,6 +3873,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "随时切换"
+          }
+        }
+      }
+    },
+    "うまく動かないときは「接続とアダプタの情報」の内容をお問い合わせに添えてください。": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wenn etwas nicht funktioniert, füge den Inhalt von „Verbindungs- und Adapterinfos“ deiner Anfrage bei."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "If something is not working, include the contents of “Connection & adapter info” when you contact us."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Si algo no funciona, adjunta el contenido de “Información de conexión y adaptador” al contactarnos."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Si quelque chose ne fonctionne pas, joignez le contenu de « Infos de connexion et d’adaptateur » à votre message."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "如遇问题，请在联系我们时附上“连接与适配器信息”的内容。"
           }
         }
       }
@@ -3605,6 +4047,40 @@
         }
       }
     },
+    "この端末は Bluetooth LE に対応していないため、ELM327 アダプタは使用できません。": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dieses Gerät unterstützt kein Bluetooth LE, daher können ELM327-Adapter nicht verwendet werden."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This device does not support Bluetooth LE, so ELM327 adapters cannot be used."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Este dispositivo no admite Bluetooth LE, por lo que no se pueden usar adaptadores ELM327."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cet appareil ne prend pas en charge le Bluetooth LE ; les adaptateurs ELM327 ne peuvent pas être utilisés."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "本设备不支持低功耗蓝牙，因此无法使用 ELM327 适配器。"
+          }
+        }
+      }
+    },
     "この端末は Bluetooth LE に対応していません": {
       "localizations": {
         "de": {
@@ -3635,6 +4111,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "此设备不支持 Bluetooth LE"
+          }
+        }
+      }
+    },
+    "この記録が 0-%@ のベストタイムです": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dieser Lauf ist Ihre beste 0-%@-Zeit"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This run is your 0-%@ best time"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Este es tu mejor tiempo de 0-%@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ce run est votre meilleur temps 0-%@"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "此记录是 0-%@ 的最佳成绩"
           }
         }
       }
@@ -3877,6 +4387,40 @@
         }
       }
     },
+    "もう一度検索する": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erneut suchen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Search again"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Buscar de nuevo"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rechercher à nouveau"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "重新搜索"
+          }
+        }
+      }
+    },
     "アイドル位置を 0% とした相対的なスロットル開度です。": {
       "localizations": {
         "de": {
@@ -4047,6 +4591,40 @@
         }
       }
     },
+    "アダプタが「ELM327」かつ「BLE(Bluetooth 4.0 / LE)対応」と明記された製品か確認してください。Bluetooth Classic (SPP) 型は iOS では接続できません。": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prüfe, ob der Adapter sowohl als „ELM327“ als auch als „BLE (Bluetooth 4.0 / LE)“ gekennzeichnet ist. Bluetooth-Classic-Adapter (SPP) lassen sich unter iOS nicht verbinden."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Check that the adapter is labeled both “ELM327” and “BLE (Bluetooth 4.0 / LE)”. Bluetooth Classic (SPP) adapters cannot connect on iOS."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Comprueba que el adaptador indique “ELM327” y “BLE (Bluetooth 4.0 / LE)”. Los adaptadores Bluetooth Classic (SPP) no se pueden conectar en iOS."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vérifiez que l’adaptateur porte les mentions « ELM327 » et « BLE (Bluetooth 4.0 / LE) ». Les adaptateurs Bluetooth Classic (SPP) ne peuvent pas se connecter sous iOS."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "请确认适配器同时标注“ELM327”和“BLE（蓝牙 4.0 / LE）”。Bluetooth Classic（SPP）型号在 iOS 上无法连接。"
+          }
+        }
+      }
+    },
     "アダプタがなくても、デモモードで全機能を試せます。": {
       "localizations": {
         "de": {
@@ -4077,6 +4655,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "没有适配器也可以在演示模式下体验全部功能。"
+          }
+        }
+      }
+    },
+    "アダプタが無くても、その他タブのデモモードで全機能を試せます。": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kein Adapter? Im Tab „Weitere“ kannst du im Demomodus alle Funktionen ausprobieren."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No adapter? You can try every feature with Demo Mode in the More tab."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Sin adaptador? Puedes probar todas las funciones con el modo demo en la pestaña Más."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pas d’adaptateur ? Essayez toutes les fonctions avec le mode démo dans l’onglet Plus."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "没有适配器也可以：在“更多”标签的演示模式中体验全部功能。"
           }
         }
       }
@@ -4213,6 +4825,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "无法连接适配器"
+          }
+        }
+      }
+    },
+    "アダプタを OBD2 ポートから抜き差しして、LED が点灯することを確認してください。": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ziehe den Adapter aus dem OBD2-Anschluss, stecke ihn wieder ein und prüfe, ob die LED leuchtet."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unplug and replug the adapter in the OBD2 port, and check that its LED lights up."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desconecta y vuelve a conectar el adaptador en el puerto OBD2 y comprueba que se enciende su LED."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Débranchez puis rebranchez l’adaptateur sur le port OBD2 et vérifiez que sa LED s’allume."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "请将适配器从 OBD2 接口拔下再插回，并确认其指示灯亮起。"
           }
         }
       }
@@ -4451,6 +5097,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "应用自动检测"
+          }
+        }
+      }
+    },
+    "アプリの言語を変更": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App-Sprache ändern"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Change app language"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cambiar el idioma de la app"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Changer la langue de l’app"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "更改 App 语言"
           }
         }
       }
@@ -6563,6 +7243,40 @@
         }
       }
     },
+    "デモモードは擬似データで全機能を試せます。保存データの復元範囲は少ないほど起動後の動作が軽くなります(次回起動から反映)。": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Im Demomodus kannst du alle Funktionen mit simulierten Daten ausprobieren. Ein kleinerer Wiederherstellungsbereich beschleunigt den Start (gilt ab dem nächsten Start)."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Demo Mode lets you try every feature with simulated data. A smaller restore range makes startup lighter (applies from the next launch)."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El modo demo permite probar todas las funciones con datos simulados. Un rango de restauración menor hace el arranque más ligero (se aplica en el próximo inicio)."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le mode démo permet d’essayer toutes les fonctions avec des données simulées. Une plage de restauration plus courte allège le démarrage (appliqué au prochain lancement)."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "演示模式可用模拟数据体验全部功能。恢复范围越小，启动越轻快（下次启动生效）。"
+          }
+        }
+      }
+    },
     "デモモードを終了": {
       "localizations": {
         "de": {
@@ -6695,6 +7409,74 @@
           "stringUnit": {
             "state": "translated",
             "value": "数据"
+          }
+        }
+      }
+    },
+    "データ取得を一時停止": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Datenabfrage pausieren"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pause data polling"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pausar la lectura de datos"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Suspendre la lecture des données"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "暂停数据采集"
+          }
+        }
+      }
+    },
+    "データ取得を再開": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Datenabfrage fortsetzen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Resume data polling"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reanudar la lectura de datos"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reprendre la lecture des données"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "恢复数据采集"
           }
         }
       }
@@ -7205,6 +7987,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "选择预设将替换当前的组件布局。"
+          }
+        }
+      }
+    },
+    "ヘルプとサポート": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hilfe & Support"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Help & Support"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ayuda y soporte"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aide et assistance"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "帮助与支持"
           }
         }
       }
@@ -7783,6 +8599,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "请通过下方的「添加」放置组件。"
+          }
+        }
+      }
+    },
+    "中": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mittel"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Medium"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Media"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Moyen"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "中"
           }
         }
       }
@@ -8875,6 +9725,40 @@
         }
       }
     },
+    "加速度計が停止しています(分析タブの「ライブ」で有効化)": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beschleunigungssensor ist gestoppt (in Analyse › Live aktivieren)"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Accelerometer is stopped (enable it in Analysis › Live)"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El acelerómetro está detenido (actívalo en Análisis › En vivo)"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L’accéléromètre est arrêté (activez-le dans Analyse › Direct)"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "加速度计已停止（可在“分析”›“实时”中启用）"
+          }
+        }
+      }
+    },
     "加速度計を使用": {
       "localizations": {
         "de": {
@@ -9657,6 +10541,40 @@
         }
       }
     },
+    "失敗": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fehlgeschlagen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Failed"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Error"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Échec"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "失败"
+          }
+        }
+      }
+    },
     "学習した 0 点を基準にしたアクセルの踏み込み量です。": {
       "localizations": {
         "de": {
@@ -9925,6 +10843,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "支持 %lld 项 PID"
+          }
+        }
+      }
+    },
+    "対応している項目": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unterstützte Werte"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Supported items"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elementos compatibles"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Éléments pris en charge"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "支持的项目"
           }
         }
       }
@@ -10231,6 +11183,74 @@
           "stringUnit": {
             "state": "translated",
             "value": "去除广告、无限 CSV、记录保存"
+          }
+        }
+      }
+    },
+    "弱": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schwach"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Weak"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Débil"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Faible"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "弱"
+          }
+        }
+      }
+    },
+    "強": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stark"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Strong"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fuerte"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fort"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "强"
           }
         }
       }
@@ -10575,6 +11595,74 @@
         }
       }
     },
+    "接続できないとき": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wenn keine Verbindung zustande kommt"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "If it won’t connect"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Si no se conecta"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Si la connexion échoue"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "无法连接时"
+          }
+        }
+      }
+    },
+    "接続とアダプタの情報": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verbindungs- und Adapterinfos"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connection & adapter info"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Información de conexión y adaptador"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Infos de connexion et d’adaptateur"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "连接与适配器信息"
+          }
+        }
+      }
+    },
     "接続に失敗しました": {
       "localizations": {
         "de": {
@@ -10639,6 +11727,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "开始连接或演示模式后,将自动记录所有通道的时间序列数据。"
+          }
+        }
+      }
+    },
+    "接続中": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verbinden"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connecting"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conectando"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connexion"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "连接中"
           }
         }
       }
@@ -10775,6 +11897,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "自清除故障码(DTC)以来行驶的距离。"
+          }
+        }
+      }
+    },
+    "新しいものが上に並びます。長押しでコピーできます。": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neueste zuerst. Zum Kopieren gedrückt halten."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Newest first. Touch and hold to copy."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lo más reciente primero. Mantén pulsado para copiar."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Les plus récents en premier. Touchez et maintenez pour copier."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "最新的排在上方。长按可复制。"
           }
         }
       }
@@ -10983,6 +12139,40 @@
         }
       }
     },
+    "更新なし": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Aktualisierung"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No updates"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sin actualizar"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucune mise à jour"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "无更新"
+          }
+        }
+      }
+    },
     "最大 (%@)": {
       "localizations": {
         "de": {
@@ -11047,6 +12237,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "最小 (%@)"
+          }
+        }
+      }
+    },
+    "有効": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aktiv"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Active"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Activo"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Actif"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已启用"
           }
         }
       }
@@ -11285,6 +12509,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "停止搜索"
+          }
+        }
+      }
+    },
+    "検索中": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Suche läuft"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Searching"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Buscando"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recherche"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "搜索中"
           }
         }
       }
@@ -12169,6 +13427,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "燃油流量"
+          }
+        }
+      }
+    },
+    "状態": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Status"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Status"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Estado"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "État"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "状态"
           }
         }
       }
@@ -13397,6 +14689,74 @@
         }
       }
     },
+    "表示項目がありません。左上の編集ボタンから追加できます。": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Noch keine Elemente. Füge sie über die Bearbeiten-Taste oben links hinzu."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No items yet. Add them with the edit button at the top left."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aún no hay elementos. Añádelos con el botón de edición de arriba a la izquierda."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucun élément pour l’instant. Ajoutez-en avec le bouton de modification en haut à gauche."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "暂无显示项。可用左上角的编辑按钮添加。"
+          }
+        }
+      }
+    },
+    "表示項目を編集": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elemente bearbeiten"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Edit items"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Editar elementos"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modifier les éléments"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "编辑显示项"
+          }
+        }
+      }
+    },
     "要求トルク": {
       "localizations": {
         "de": {
@@ -14247,6 +15607,40 @@
         }
       }
     },
+    "記録済みのデータ": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aufgezeichnete Daten"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recorded data"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Datos registrados"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Données enregistrées"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已记录的数据"
+          }
+        }
+      }
+    },
     "設定": {
       "localizations": {
         "de": {
@@ -14277,6 +15671,108 @@
           "stringUnit": {
             "state": "translated",
             "value": "设置"
+          }
+        }
+      }
+    },
+    "設定アプリ > プライバシーとセキュリティ > Bluetooth で、このアプリに許可を与えてください。": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erlaube dieser App den Zugriff unter Einstellungen > Datenschutz & Sicherheit > Bluetooth."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow this app in Settings > Privacy & Security > Bluetooth."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Concede permiso a esta app en Ajustes > Privacidad y seguridad > Bluetooth."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Autorisez cette app dans Réglages > Confidentialité et sécurité > Bluetooth."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "请在“设置”>“隐私与安全性”>“蓝牙”中允许本 App。"
+          }
+        }
+      }
+    },
+    "設定アプリで Bluetooth をオンにしてください。": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aktiviere Bluetooth in der Einstellungen-App."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Turn on Bluetooth in the Settings app."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Activa el Bluetooth en la app Ajustes."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Activez le Bluetooth dans l’app Réglages."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "请在“设置”中打开蓝牙。"
+          }
+        }
+      }
+    },
+    "設定アプリを開く": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einstellungen öffnen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open Settings"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abrir Ajustes"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ouvrir Réglages"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "打开“设置”"
           }
         }
       }
@@ -14961,6 +16457,40 @@
         }
       }
     },
+    "車両": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fahrzeug"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vehicle"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vehículo"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Véhicule"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "车辆"
+          }
+        }
+      }
+    },
     "車両が測定した外気温度です。": {
       "localizations": {
         "de": {
@@ -15025,6 +16555,74 @@
           "stringUnit": {
             "state": "translated",
             "value": "连接车辆以显示实时数据"
+          }
+        }
+      }
+    },
+    "車両のイグニッションを ON にしてください。アダプタは車両から給電されるため、電源が入っていないと検出されません。": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schalte die Zündung ein. Der Adapter wird vom Fahrzeug mit Strom versorgt und ist bei ausgeschalteter Zündung nicht auffindbar."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Turn the vehicle’s ignition on. The adapter is powered by the car, so it will not be found while the ignition is off."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pon el contacto del vehículo. El adaptador se alimenta del coche, así que no se detectará con el contacto apagado."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mettez le contact du véhicule. L’adaptateur est alimenté par la voiture ; il reste introuvable contact coupé."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "请打开车辆点火开关。适配器由车辆供电，未通电时无法被检测到。"
+          }
+        }
+      }
+    },
+    "車速": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geschwindigkeit"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Speed"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Velocidad"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vitesse"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "车速"
           }
         }
       }
@@ -15297,6 +16895,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "跟随中"
+          }
+        }
+      }
+    },
+    "通信プロトコル": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Protokoll"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Protocol"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Protocolo"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Protocole"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "通信协议"
           }
         }
       }
@@ -15739,6 +17371,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "关闭"
+          }
+        }
+      }
+    },
+    "電波強度": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Signalstärke"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Signal strength"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Intensidad de la señal"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Force du signal"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "信号强度"
           }
         }
       }

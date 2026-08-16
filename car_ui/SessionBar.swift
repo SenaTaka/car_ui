@@ -19,12 +19,11 @@ struct SessionBar: View {
     private let ticker = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
 
     var body: some View {
-        HStack(spacing: 10) {
-            if session.isRecording {
-                recordingContent
-            } else {
-                idleContent
-            }
+        // 監査 E-3: 独仏の長い語や大きな文字サイズでは 1 行に収まらないため、
+        // 収まるときだけ 1 行、収まらなければ 2 行に折り返す。
+        ViewThatFits(in: .horizontal) {
+            singleRow
+            twoRows
         }
         .font(.caption)
         .padding(.horizontal, DS.Space.screenH)
@@ -34,24 +33,54 @@ struct SessionBar: View {
         .onReceive(ticker) { now = $0 }
     }
 
-    private var recordingContent: some View {
+    private var singleRow: some View {
         HStack(spacing: 12) {
-            HStack(spacing: 5) {
-                Circle().fill(DS.Role.danger).frame(width: 8, height: 8)
-                Text("記録中").fontWeight(.semibold)
-            }
-            .foregroundStyle(DS.Role.danger)
-
-            Text(session.elapsedText(now: now))
-                .monospacedDigit()
-            Text("\(unitText(session.sessionDistanceKm, kind: .distance, digits: 1)) \(UnitKind.distance.symbol(UnitSettings.shared.system))")
-                .monospacedDigit()
-                .foregroundStyle(.secondary)
-
+            summary
             Spacer(minLength: 4)
-
             statusChips
+            actionButton
+        }
+    }
 
+    private var twoRows: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            HStack(spacing: 12) {
+                summary
+                Spacer(minLength: 4)
+                actionButton
+            }
+            statusChips
+        }
+    }
+
+    /// 記録中は「記録中・経過・距離」、待機中は「記録していません」
+    @ViewBuilder
+    private var summary: some View {
+        if session.isRecording {
+            HStack(spacing: 12) {
+                HStack(spacing: 5) {
+                    Circle().fill(DS.Role.danger).frame(width: 8, height: 8)
+                    Text("記録中").fontWeight(.semibold)
+                }
+                .foregroundStyle(DS.Role.danger)
+
+                Text(session.elapsedText(now: now))
+                    .monospacedDigit()
+                Text("\(unitText(session.sessionDistanceKm, kind: .distance, digits: 1)) \(UnitKind.distance.symbol(UnitSettings.shared.system))")
+                    .monospacedDigit()
+                    .foregroundStyle(.secondary)
+            }
+            .lineLimit(1)
+        } else {
+            Text("記録していません")
+                .foregroundStyle(.secondary)
+                .lineLimit(1)
+        }
+    }
+
+    @ViewBuilder
+    private var actionButton: some View {
+        if session.isRecording {
             Button {
                 session.stop()
             } label: {
@@ -61,18 +90,7 @@ struct SessionBar: View {
             .controlSize(.small)
             .tint(DS.Role.danger)
             .minTapTarget()
-        }
-    }
-
-    private var idleContent: some View {
-        HStack(spacing: 12) {
-            Text("記録していません")
-                .foregroundStyle(.secondary)
-
-            Spacer(minLength: 4)
-
-            statusChips
-
+        } else {
             Button {
                 session.start(distanceKm: location.totalDistanceKm)
             } label: {

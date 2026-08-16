@@ -16,115 +16,116 @@ struct SensorsView: View {
 
     @State private var helpChannel: ChannelInfo?
 
+    // 監査 C-1/D-5: NavigationStack と独自タイトル「センサー」は AnalysisView 側へ集約した
+    // (タブ「分析」→セグメント「ライブ」→タイトル「センサー」と名前が 3 回変わっていた)
     var body: some View {
-        NavigationStack {
-            List {
-                // レビュー 13章: 各種状態を明示するバナー
-                bannerSection
+        List {
+            // レビュー 13章: 各種状態を明示するバナー
+            bannerSection
 
-                Section {
-                    HStack {
-                        Label("表示中のチャンネル", systemImage: "square.grid.3x3")
-                            .font(.subheadline)
-                        Spacer()
-                        Text("\(channelCount) ch")
-                            .font(.subheadline.weight(.bold).monospacedDigit())
-                            .foregroundStyle(.blue)
-                    }
-                } footer: {
-                    Text("行をタップすると各項目の説明を表示します。")
+            Section {
+                HStack {
+                    Label("表示中のチャンネル", systemImage: "square.grid.3x3")
+                        .font(.subheadline)
+                    Spacer()
+                    Text("\(channelCount) ch")
+                        .font(.subheadline.weight(.bold).monospacedDigit())
+                        .foregroundStyle(.blue)
                 }
+            } footer: {
+                Text("行をタップすると各項目の説明を表示します。")
+            }
 
-                Section("OBD-II") {
-                    if sortedOBDPIDs.isEmpty {
-                        Text(obd.phase.isConnected ? "データ受信待ち" : "未接続(接続すると対応 PID が自動で並びます)")
-                            .font(.subheadline)
-                            .foregroundStyle(.secondary)
-                    } else {
-                        ForEach(sortedOBDPIDs, id: \.self) { pid in
-                            if let definition = PIDCatalog.byPID[pid] {
-                                sensorRow(
-                                    channelID: definition.channelID,
-                                    name: definition.name,
-                                    icon: definition.icon,
-                                    tint: definition.tint,
-                                    value: obd.liveValues[pid],
-                                    unit: definition.unit,
-                                    digits: definition.fractionDigits
-                                )
-                            }
-                        }
-
-                        if let voltage = obd.adapterVoltage {
+            Section("OBD-II") {
+                if sortedOBDPIDs.isEmpty {
+                    Text(obd.phase.isConnected ? "データ受信待ち" : "未接続(接続すると対応 PID が自動で並びます)")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                } else {
+                    ForEach(sortedOBDPIDs, id: \.self) { pid in
+                        if let definition = PIDCatalog.byPID[pid] {
                             sensorRow(
-                                channelID: "meta.voltage",
-                                name: "アダプタ電圧",
-                                icon: "bolt.fill",
-                                tint: .yellow,
-                                value: voltage,
-                                unit: "V",
-                                digits: 2
+                                channelID: definition.channelID,
+                                name: definition.name,
+                                icon: definition.icon,
+                                tint: definition.tint,
+                                value: obd.liveValues[pid],
+                                unit: definition.unit,
+                                digits: definition.fractionDigits
                             )
                         }
                     }
-                }
 
-                Section {
-                    Toggle(isOn: gpsBinding) {
-                        Label("GPS を使用", systemImage: "location")
+                    if let voltage = obd.adapterVoltage {
+                        sensorRow(
+                            channelID: "meta.voltage",
+                            name: "アダプタ電圧",
+                            icon: "bolt.fill",
+                            tint: .yellow,
+                            value: voltage,
+                            unit: "V",
+                            digits: 2
+                        )
                     }
-
-                    if location.isDenied {
-                        Text("位置情報が拒否されています。設定アプリから許可してください。")
-                            .font(.caption)
-                            .foregroundStyle(.red)
-                    }
-
-                    if location.isActive {
-                        sensorRow(channelID: "gps.speed", name: "車速 (GPS)", icon: "location.fill", tint: .blue, value: location.speedKPH, unit: "km/h", digits: 1)
-                        sensorRow(channelID: "gps.altitude", name: "高度", icon: "mountain.2", tint: .brown, value: location.altitudeM, unit: "m", digits: 1)
-                        sensorRow(channelID: "gps.course", name: "方位", icon: "safari", tint: .cyan, value: location.courseDegrees, unit: "°", digits: 0)
-                        sensorRow(channelID: "gps.distance", name: "走行距離", icon: "road.lanes", tint: .green, value: location.totalDistanceKm, unit: "km", digits: 2)
-
-                        HStack {
-                            Label("水平精度", systemImage: "scope")
-                                .font(.subheadline)
-                            Spacer()
-                            Text(location.horizontalAccuracyM.map {
-                                "±\(unitText($0, kind: .length, digits: 0)) \(UnitKind.length.symbol(UnitSettings.shared.system))"
-                            } ?? "--")
-                                .font(.subheadline.monospacedDigit())
-                                .foregroundStyle(.secondary)
-                        }
-                    }
-                } header: {
-                    Text("GPS")
-                }
-
-                Section {
-                    Toggle(isOn: motionBinding) {
-                        Label("加速度計を使用", systemImage: "gyroscope")
-                    }
-
-                    if !motion.isAvailable {
-                        Text("この端末ではモーションセンサーを利用できません。")
-                            .font(.caption)
-                            .foregroundStyle(.red)
-                    }
-
-                    if motion.isActive {
-                        sensorRow(channelID: "motion.gx", name: "横 G", icon: "arrow.left.and.right", tint: .pink, value: motion.lateralG, unit: "G", digits: 2)
-                        sensorRow(channelID: "motion.gy", name: "前後 G", icon: "arrow.up.and.down", tint: .orange, value: motion.longitudinalG, unit: "G", digits: 2)
-                        sensorRow(channelID: "motion.gmag", name: "合成 G", icon: "circle.dotted.circle", tint: .purple, value: motion.magnitudeG, unit: "G", digits: 2)
-                    }
-                } header: {
-                    Text("加速度計")
                 }
             }
-            .navigationTitle("センサー")
-            .sheet(item: $helpChannel) { info in
-                SensorHelpSheet(info: info)
+
+            Section {
+                Toggle(isOn: gpsBinding) {
+                    Label("GPS を使用", systemImage: "location")
+                }
+
+                if location.isDenied {
+                    Text("位置情報が拒否されています。設定アプリから許可してください。")
+                        .font(.caption)
+                        .foregroundStyle(.red)
+                }
+
+                if location.isActive {
+                    sensorRow(channelID: "gps.speed", name: "車速 (GPS)", icon: "location.fill", tint: .blue, value: location.speedKPH, unit: "km/h", digits: 1)
+                    sensorRow(channelID: "gps.altitude", name: "高度", icon: "mountain.2", tint: .brown, value: location.altitudeM, unit: "m", digits: 1)
+                    sensorRow(channelID: "gps.course", name: "方位", icon: "safari", tint: .cyan, value: location.courseDegrees, unit: "°", digits: 0)
+                    sensorRow(channelID: "gps.distance", name: "走行距離", icon: "road.lanes", tint: .green, value: location.totalDistanceKm, unit: "km", digits: 2)
+
+                    HStack {
+                        Label("水平精度", systemImage: "scope")
+                            .font(.subheadline)
+                        Spacer()
+                        Text(location.horizontalAccuracyM.map {
+                            "±\(unitText($0, kind: .length, digits: 0)) \(UnitKind.length.symbol(UnitSettings.shared.system))"
+                        } ?? "--")
+                            .font(.subheadline.monospacedDigit())
+                            .foregroundStyle(.secondary)
+                    }
+                }
+            } header: {
+                Text("GPS")
             }
+
+            Section {
+                Toggle(isOn: motionBinding) {
+                    Label("加速度計を使用", systemImage: "gyroscope")
+                }
+
+                if !motion.isAvailable {
+                    Text("この端末ではモーションセンサーを利用できません。")
+                        .font(.caption)
+                        .foregroundStyle(.red)
+                }
+
+                if motion.isActive {
+                    sensorRow(channelID: "motion.gx", name: "横 G", icon: "arrow.left.and.right", tint: .pink, value: motion.lateralG, unit: "G", digits: 2)
+                    sensorRow(channelID: "motion.gy", name: "前後 G", icon: "arrow.up.and.down", tint: .orange, value: motion.longitudinalG, unit: "G", digits: 2)
+                    sensorRow(channelID: "motion.gmag", name: "合成 G", icon: "circle.dotted.circle", tint: .purple, value: motion.magnitudeG, unit: "G", digits: 2)
+                }
+            } header: {
+                Text("加速度計")
+            }
+        }
+        // 監査 F-3: タブバーとバナーの下に最後の行が潜り込まないようにする
+        .contentMargins(.bottom, DS.Space.tabBarClearance, for: .scrollContent)
+        .sheet(item: $helpChannel) { info in
+            SensorHelpSheet(info: info)
         }
     }
 

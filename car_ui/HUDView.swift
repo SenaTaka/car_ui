@@ -7,6 +7,21 @@
 //
 
 import SwiftUI
+import UIKit
+
+/// 画面スリープ防止の調停役(監査 B-4)。
+///
+/// ContentView は「前面 + OBD 接続中 + 設定オン」でしかスリープを止めない。
+/// ところが HUD は GPS 速度だけでも動くので、アダプタ無しで HUD を使うと
+/// 走行中に画面が消えていた。HUD 表示中はこのフラグで無条件に点灯を維持する。
+@Observable
+final class ScreenWakeCoordinator {
+    static let shared = ScreenWakeCoordinator()
+    private init() {}
+
+    /// HUD 表示中か。ContentView の updateScreenWake がこれを見る。
+    var hudIsPresented = false
+}
 
 struct HUDView: View {
     @EnvironmentObject private var obd: ELM327BluetoothModel
@@ -14,6 +29,8 @@ struct HUDView: View {
     @Environment(\.dismiss) private var dismiss
     @AppStorage("hud.mirrored") private var mirrored = false
     @State private var showsControls = true
+    /// HUD を出る時に戻すための元の画面輝度
+    @State private var previousBrightness: CGFloat?
 
     private let hudColor = Color(red: 0.35, green: 1.0, blue: 0.45)
 
@@ -39,6 +56,20 @@ struct HUDView: View {
         .preferredColorScheme(.dark)
         .statusBarHidden()
         .persistentSystemOverlays(.hidden)
+        // 監査 B-4: HUD は GPS 速度だけでも動くので、OBD 接続の有無に関係なく点灯を維持する
+        .onAppear {
+            ScreenWakeCoordinator.shared.hudIsPresented = true
+            UIApplication.shared.isIdleTimerDisabled = true
+            // フロントガラスへの反射で読むため、表示中だけ輝度を上げて離脱時に戻す
+            previousBrightness = UIScreen.main.brightness
+            UIScreen.main.brightness = 1.0
+        }
+        .onDisappear {
+            ScreenWakeCoordinator.shared.hudIsPresented = false
+            if let previousBrightness {
+                UIScreen.main.brightness = previousBrightness
+            }
+        }
     }
 
     private var hudContent: some View {

@@ -19,21 +19,17 @@ struct DriveView: View {
 
     var body: some View {
         NavigationStack {
-            VStack(spacing: 0) {
-                // レビュー 1-3: 走行タブ上部に常設のセッションバー
-                SessionBar()
-
-                ScrollView {
-                    VStack(alignment: .leading, spacing: DS.Space.cardGap) {
-                        TripPanel()
-                        gForcePanel
-                        accelTestPanel
-                        gpsPanel
-                    }
-                    .padding()
-                    // タブバー被り回避(レビュー 2-2)
-                    .padding(.bottom, 72)
+            // セッションバーは全タブ共通として ContentView へ移動(監査 B-2)
+            ScrollView {
+                VStack(alignment: .leading, spacing: DS.Space.cardGap) {
+                    TripPanel()
+                    gForcePanel
+                    accelTestPanel
+                    gpsPanel
                 }
+                .padding()
+                // タブバー被り回避(レビュー 2-2)
+                .padding(.bottom, DS.Space.tabBarClearance)
             }
             .background(Color(.systemGroupedBackground))
             .navigationTitle("走行")
@@ -51,7 +47,7 @@ struct DriveView: View {
             // 監査 REL-012: ドライブセッション(OBD 接続)中でなければ、タブを離れた時点で
             // GPS を停止する(以前はタブを一度開くと他タブでも最高精度 GPS が回り続けた)。
             // 接続中は走行マップ・トリップの記録を継続するため止めない。
-            // データタブのセンサートグルからいつでも手動で制御できる。
+            // 分析タブ「ライブ」のセンサートグルからいつでも手動で制御できる。
             .onDisappear {
                 if !obd.phase.isConnected {
                     location.stop()
@@ -113,7 +109,9 @@ struct DriveView: View {
             }
 
             if !motion.isActive {
-                Text("加速度計が停止しています(センサータブで有効化)")
+                // 監査 C-3: 旧文言は「センサータブ」を案内していたが、
+                // タブ再編でセンサータブは存在しない(現在は 分析 > ライブ)
+                Text("加速度計が停止しています(分析タブの「ライブ」で有効化)")
                     .font(.caption)
                     .foregroundStyle(.orange)
             } else {
@@ -181,7 +179,7 @@ struct DriveView: View {
     private var accelTestPanel: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
-                Label("0-100 km/h 加速計測", systemImage: "flag.checkered")
+                Label(String(localized: "0-\(speedTargetText(100)) 加速計測"), systemImage: "flag.checkered")
                     .font(.headline)
 
                 Spacer()
@@ -192,7 +190,7 @@ struct DriveView: View {
             }
 
             HStack(alignment: .firstTextBaseline, spacing: 6) {
-                MetricValue(value: accelTest.elapsed, unit: "秒", digits: 2,
+                MetricValue(value: accelTest.elapsed, unit: String(localized: "秒"), digits: 2,
                             valueFont: .system(size: 44, weight: .heavy, design: .rounded))
 
                 Spacer()
@@ -248,7 +246,7 @@ struct DriveView: View {
                 VStack(spacing: 6) {
                     ForEach(accelTest.splits) { split in
                         HStack {
-                            Text("0-\(split.targetKPH) km/h")
+                            Text(verbatim: "0-" + speedTargetText(split.targetKPH))
                                 .font(.subheadline.monospacedDigit())
                                 .foregroundStyle(.secondary)
                             Spacer()
@@ -349,7 +347,7 @@ struct DriveView: View {
             }
 
             LazyVGrid(columns: [GridItem(.adaptive(minimum: 130), spacing: 12)], spacing: 12) {
-                InfoItem(title: "車速 (GPS)", value: location.speedKPH.map { "\(metricText($0, digits: 1)) km/h" } ?? "--", systemImage: "location.fill")
+                InfoItem(title: "車速 (GPS)", value: location.speedKPH.map { "\(unitText($0, kind: .speed, digits: 1)) \(UnitKind.speed.symbol(UnitSettings.shared.system))" } ?? "--", systemImage: "location.fill")
                 InfoItem(title: "高度", value: location.altitudeM.map { "\(metricText($0, digits: 1)) m" } ?? "--", systemImage: "mountain.2")
                 InfoItem(title: "方位", value: location.courseDegrees.map { "\(metricText($0, digits: 0))°" } ?? "--", systemImage: "safari")
                 InfoItem(title: "走行距離", value: "\(metricText(location.totalDistanceKm, digits: 2)) km", systemImage: "road.lanes")
@@ -368,7 +366,7 @@ struct DriveView: View {
 
             if let obdSpeed = obd.liveValues[0x0D], let gpsSpeed = location.speedKPH {
                 let diff = obdSpeed - gpsSpeed
-                Text("OBD と GPS の車速差: \(metricText(diff, digits: 1)) km/h(メーター誤差の目安)")
+                Text("OBD と GPS の車速差: \(unitText(diff, kind: .speed, digits: 1)) \(UnitKind.speed.symbol(UnitSettings.shared.system))(メーター誤差の目安)")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }

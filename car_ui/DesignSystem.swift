@@ -46,6 +46,11 @@ enum DS {
         static let cardPadding: CGFloat = 16
         static let section: CGFloat = 24
         static let tight: CGFloat = 8
+
+        /// スクロール内容の下端に足す余白。iOS 26 のフローティングタブバーと
+        /// 最下部バナーの下に最後の要素が潜り込まないようにする(監査 F-3)。
+        /// 以前は 72 が 3 ファイルに直書きで、ダッシュボードにだけ無く不揃いだった。
+        static let tabBarClearance: CGFloat = 72
     }
 
     // MARK: - 最小タップ領域(HIG 44pt)
@@ -99,13 +104,8 @@ struct MetricValue: View {
 // MARK: - カードスタイル(Primary / Data / Control の 3 種)
 
 extension View {
-    /// データ表示カード(標準)。既存 panelStyle と同義でトークン参照に統一。
-    func dataCard() -> some View {
-        self
-            .padding(DS.Space.cardPadding)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .background(Color(uiColor: .secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: DS.Radius.card))
-    }
+    // 監査 F-1: 同じ見た目のカードが `panelStyle()`(22 箇所)と `dataCard()`(1 箇所)の
+    // 2 系統で併存していた。実体は Components.swift の `panelStyle()` に一本化した。
 
     /// 最小タップ領域を保証する(小さいアイコンボタン等に付与)
     func minTapTarget() -> some View {

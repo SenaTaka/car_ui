@@ -207,6 +207,13 @@ func metricText(_ value: Double?, digits: Int) -> String {
     return formatNumber(value, digits: digits)
 }
 
+/// 「0-100 km/h」のような速度のしきい値を表示単位で書く(例: 0-62 mph)。
+/// 計測そのものは canonical(km/h)のまま行い、表記だけを合わせる。
+func speedTargetText(_ kph: Int, system: ResolvedUnitSystem = UnitSettings.shared.system) -> String {
+    let converted = UnitKind.speed.convert(Double(kph), to: system)
+    return "\(Int(converted.rounded())) \(UnitKind.speed.symbol(system))"
+}
+
 /// canonical 値を「換算 → 整形」までまとめて行う。
 func unitText(_ value: Double?, kind: UnitKind, digits: Int,
               system: ResolvedUnitSystem = UnitSettings.shared.system) -> String {

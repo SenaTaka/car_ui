@@ -383,3 +383,33 @@
 - 文字列カタログに 13 キーを 5 言語ぶん手で追加(CLI ビルドでは `.xcstrings` は更新されない。Xcode IDE でしか自動反映されない)。
 - **検証**: iPhone 17 Pro / iOS 26.0 実機起動。地域 US → `60 mph` / `150 °F` / `10.7 psi`(kPa→psi は小数 1 桁に補正)。地域 Germany → `56,8 %` の小数点カンマを確認。ビルド SUCCEEDED。CSV の単位追従はコンパイル確認のみで、書き出しの実測は Phase 3 の記録フロー検証と合わせて行う(未検証)。
 - 罠: `simctl launch` の `-AppleLocale en_US` は**言語しか変わらず** `Locale.current.measurementSystem` に効かない(→ `_AI_AGENT_NOTES/simulator-device.md` に追記)。
+
+## 2026/08/17 (1.0.2 Phase 2〜6: 接続体験・記録の可視化・語彙統一・設定画面刷新)
+**Phase 2(接続体験 / 監査 B-1・A-4)**
+- 接続シートに失敗時の復旧セクションを新設。以前は成功時に自動で閉じるだけで、失敗しても理由も再試行導線も出なかった(OBD アプリ最大の離脱点)。状態別の対処手順 + 再試行 / 設定アプリ導線を出す。Bluetooth の状態判定は `.unavailable` のメッセージ文字列ではなく `CBManagerState` を見る(翻訳で壊れないように)。BLE 非対応端末では「もう一度検索」を出さない。
+- アダプタの選び方ガイドを常設化。以前は Amazon アフィリエイトタグが空だとセクションごと消え、アダプタ未所持ユーザー(特に海外)は何を買えばいいか知る術がなかった。購入リンクは日本ストアフロントのみ。
+- `DeviceRow` の生 serviceUUID と dBm を、判定文言と電波強度バーに置換。
+- 検証用に起動フック `-uiConnect 1` を追加(接続シートはタップでしか開けず、simctl にタップ機能が無いため)。
+
+**Phase 3(記録の可視化 / 監査 B-2〜B-4)**
+- `SessionBar` を `ContentView` へ移して全タブ共通に昇格。以前は走行タブにしか無く、Pro の中核価値である記録の開始・停止・状態がメーター/分析タブから見えも触れもしなかった。
+- `MetricTile` に鮮度状態を追加(ダッシュボードのタイルが凍った値と生きた値を同じ見た目で出していた)。VoiceOver 用の label/value も付与。
+- HUD 表示中は OBD 接続の有無に関わらずスリープ防止(`ScreenWakeCoordinator`)。HUD は GPS 速度だけでも動くのに、点灯維持は「OBD 接続中」が条件で、アダプタ無しだと走行中に画面が消えていた。あわせて表示中だけ輝度を上げ、離脱時に戻す。
+
+**Phase 4(語彙統一・設定画面 / 監査 C-1〜C-5・D-1〜D-5)**
+- タブ名と画面タイトルを一致(`ダッシュボード`→`メーター`)。分析タブは内側の NavigationStack を廃してセグメントをナビバーの principal へ(以前はセグメントがナビバーの**上**に積まれ、タブ「分析」→セグメント「ライブ」→タイトル「センサー」と名前が 3 回変わっていた)。
+- `StatusPill` を状態語に(`接続`→`接続済み` / `注意`→`失敗` 等)。同じ画面のツールバーの「接続」ボタン(動作)と同じ語が逆の意味で並んでいた。
+- 存在しない「センサータブ」への誘導を修正(`DriveView`)。
+- ダッシュボード上部の状態 3 重表示を 1 行に集約。
+- `ToolsView` を `Form` + `Section` に全面作り直し(Pro / 車両 / 表示 / データ / 言語 / ヘルプとサポート / プライバシー)。生の通信ログとアダプタ技術情報は `AdapterDetailView` へ退避。英語のままだった `Adapter` / `Protocol` / `Mode 01` を翻訳。
+- 言語ピッカー(`AppleLanguages` 直書き + 再起動待ちの行き止まり)を廃止し iOS の App 別言語設定へ誘導。旧設定は `car_uiApp.migrateLegacyLanguageOverride()` が一度だけ消す(消さないと UI から変えられない言語に固定される)。
+
+**Phase 5〜6(アクセシビリティ・一貫性 / 監査 E-2・E-3・F-1・F-3)**
+- `SessionBar` を `ViewThatFits` で 1 行/2 行に切り替え(独仏の長い語で窮屈になる問題)。
+- ダッシュボードの 64pt / 30pt / 108pt を `@ScaledMetric` 化して Dynamic Type に追従。
+- カードスタイルを `panelStyle()` に一本化(`dataCard()` を廃止)。`.padding(.bottom, 72)` を `DS.Space.tabBarClearance` に集約し、抜けていたダッシュボードと Form 系にも適用。
+- A-1 の取りこぼしを回収: 0-100 km/h 表記(`speedTargetText`)・GPS 車速・OBD/GPS 車速差・保存記録のスプリット・「秒」。
+
+**検証**: ビルド SUCCEEDED / `xcodebuild test` 30 件全パス。iPhone 17 Pro (iOS 26.0) で メーター・分析・その他・接続シートをスクショ確認。文字列カタログは 454→516 キー(全キー 5 言語そろい)。
+- **未検証**: ①タイルの「更新なし」表示(デモが即再開して古い状態を捕捉できず。ロジックは SensorsView と共通) ②CSV の単位追従(実書き出し未確認) ③Dynamic Type 最大・VoiceOver 一巡 ④独仏での SessionBar 折り返し。
+- **見送り(F-4)**: 無効化済み診断機能(ReadinessPanel / FreezeFramePanel / commandPanel)の削除。実車検証の可否がユーザー判断のため現状維持。カタログ未登録の日本語リテラル 14 件も再有効化時まで保留。

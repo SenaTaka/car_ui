@@ -78,7 +78,7 @@ struct DashboardBuilderView: View {
                 }
             }
             .environment(\.editMode, .constant(.active))
-            .navigationTitle("ダッシュボード編集")
+            .navigationTitle("表示項目を編集")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {

@@ -10,6 +10,23 @@ import XCTest
 
 final class TelemetryRecorderTests: XCTestCase {
 
+    /// CSV は表示中の単位系に追従する(監査 A-1)。テストホストの地域が US だと
+    /// 値が mph に換算されて期待値と食い違うため、単位系を明示的に固定する。
+    private var savedUnitPreference: UnitSystemPreference = .automatic
+
+    @MainActor
+    override func setUp() {
+        super.setUp()
+        savedUnitPreference = UnitSettings.shared.preference
+        UnitSettings.shared.preference = .metric
+    }
+
+    @MainActor
+    override func tearDown() {
+        UnitSettings.shared.preference = savedUnitPreference
+        super.tearDown()
+    }
+
     private func makeRecorder() -> TelemetryRecorder {
         // 前のテスト・過去実行の永続化ファイルを消して決定的にする
         try? FileManager.default.removeItem(at: TelemetryRecorder.persistURL)

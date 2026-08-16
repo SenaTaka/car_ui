@@ -29,34 +29,32 @@ struct ChartsView: View {
         ("燃費", ["obd.0D", "obd.0C", "obd.10", "obd.5E", "obd.2F", "gps.distance"])
     ]
 
+    // 監査 C-1/D-5: NavigationStack と独自タイトルは AnalysisView 側へ集約した
     var body: some View {
-        NavigationStack {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 14) {
-                    if recorder.channelIDs.isEmpty {
-                        emptyState
-                    } else {
-                        channelPicker
-                        chartPanel
-                        controlPanel
-                    }
+        ScrollView {
+            VStack(alignment: .leading, spacing: 14) {
+                if recorder.channelIDs.isEmpty {
+                    emptyState
+                } else {
+                    channelPicker
+                    chartPanel
+                    controlPanel
                 }
-                .padding()
             }
-            .background(Color(.systemGroupedBackground))
-            .navigationTitle("チャート")
-            .sheet(isPresented: $showingPaywall) {
-                PaywallView()
-            }
-            .onAppear(perform: selectDefaultChannels)
-            // 起動直後にこのタブを開くと記録がまだ空でデフォルト選択が効かないため、
-            // チャンネルが現れたタイミングでも選択し直す
-            .onChange(of: recorder.channelIDs.count) { _, _ in
-                selectDefaultChannels()
-            }
-            .sheet(isPresented: $showingChannelPicker) {
-                ChannelPickerView(channelIDs: recorder.channelIDs, selected: $selectedChannels)
-            }
+            .padding()
+        }
+        .background(Color(.systemGroupedBackground))
+        .sheet(isPresented: $showingPaywall) {
+            PaywallView()
+        }
+        .onAppear(perform: selectDefaultChannels)
+        // 起動直後にこのタブを開くと記録がまだ空でデフォルト選択が効かないため、
+        // チャンネルが現れたタイミングでも選択し直す
+        .onChange(of: recorder.channelIDs.count) { _, _ in
+            selectDefaultChannels()
+        }
+        .sheet(isPresented: $showingChannelPicker) {
+            ChannelPickerView(channelIDs: recorder.channelIDs, selected: $selectedChannels)
         }
     }
 

@@ -17,7 +17,7 @@ struct DriveRecordsView: View {
                 ContentUnavailableView(
                     "保存済み記録はありません",
                     systemImage: "flag.checkered",
-                    description: Text("0-100 km/h 計測の完了後に「記録を保存」(Pro)で追加されます。")
+                    description: Text("0-\(speedTargetText(100)) 計測の完了後に「記録を保存」(Pro)で追加されます。")
                 )
             } else {
                 List {
@@ -69,7 +69,7 @@ struct DriveRecordsView: View {
 
             HStack(spacing: 12) {
                 if let time = record.splits.first(where: { $0.targetKPH == 100 })?.seconds {
-                    Label("0-100: \(metricText(time, digits: 2)) 秒", systemImage: "flag.checkered")
+                    Label(String(localized: "0-\(speedTargetText(100)): \(metricText(time, digits: 2)) 秒"), systemImage: "flag.checkered")
                 } else if let last = record.splits.last {
                     Label("0-\(last.targetKPH): \(metricText(last.seconds, digits: 2)) 秒", systemImage: "flag")
                 }
@@ -91,7 +91,7 @@ struct DriveRecordDetailView: View {
             Section("スプリット") {
                 ForEach(record.splits, id: \.targetKPH) { split in
                     HStack {
-                        Text("0-\(split.targetKPH) km/h")
+                        Text(verbatim: "0-" + speedTargetText(split.targetKPH))
                             .font(.subheadline.monospacedDigit())
                             .foregroundStyle(.secondary)
                         Spacer()
@@ -114,7 +114,7 @@ struct DriveRecordDetailView: View {
 
             if isBest {
                 Section {
-                    Label("この記録が 0-100 km/h のベストタイムです", systemImage: "trophy")
+                    Label(String(localized: "この記録が 0-\(speedTargetText(100)) のベストタイムです"), systemImage: "trophy")
                         .font(.subheadline)
                         .foregroundStyle(.green)
                 }
@@ -131,7 +131,7 @@ struct DriveRecordDetailView: View {
 
     private var shareText: String {
         var lines = ["car_ui 加速計測 \(record.date.formatted(.dateTime.year().month().day().hour().minute()))"]
-        lines += record.splits.map { "0-\($0.targetKPH) km/h: \(metricText($0.seconds, digits: 2)) 秒" }
+        lines += record.splits.map { "0-\(speedTargetText($0.targetKPH)): \(metricText($0.seconds, digits: 2)) \(String(localized: "秒"))" }
         lines.append("ピーク G: \(metricText(record.peakG, digits: 2)) G")
         return lines.joined(separator: "\n")
     }

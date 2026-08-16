@@ -5,7 +5,9 @@
 //  タブ間で共有する UI 部品。
 //
 
+import CoreBluetooth
 import SwiftUI
+import UIKit
 
 // MARK: - 接続状態ピル
 
@@ -26,18 +28,22 @@ struct StatusPill: View {
         .foregroundStyle(color)
     }
 
+    /// 監査 C-2: すべて「今どうなっているか」を表す状態語にする。
+    /// 以前は接続済みを「接続」と表示していて、同じ画面のツールバーにある
+    /// 「接続」ボタン(未接続時に押す**動作**)と同じ語が逆の意味で並んでいた。
+    /// 「注意」も何が起きたか分からないので「失敗」に改めた。
     private var label: String {
         switch phase {
         case .connected:
-            return "接続"
+            return "接続済み"
         case .scanning:
-            return "検索"
+            return "検索中"
         case .connecting, .discovering, .initializing, .waitingForBluetooth:
-            return "処理中"
+            return "接続中"
         case .failed, .unavailable:
-            return "注意"
+            return "失敗"
         case .idle, .disconnected:
-            return "待機"
+            return "未接続"
         }
     }
 
@@ -64,6 +70,10 @@ struct MetricTile: View {
     let systemImage: String
     let tint: Color
     var progress: Double?
+    /// 監査 B-3: 値が更新されなくなった状態。以前はダッシュボードのタイルに
+    /// この概念が無く、凍った値と生きた値が同じ見た目だった(センサー一覧だけが
+    /// 区別していた)。ライブ計器としての信頼性に直結するので全面で揃える。
+    var isStale: Bool = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -83,6 +93,7 @@ struct MetricTile: View {
                     .monospacedDigit()
                     .lineLimit(1)
                     .minimumScaleFactor(0.55)
+                    .foregroundStyle(isStale ? Color.secondary : Color.primary)
 
                 Text(unit)
                     .font(.caption.weight(.semibold))
@@ -91,7 +102,14 @@ struct MetricTile: View {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
-            if let progress {
+            if isStale {
+                // 止まった値の進捗バーは誤解を生むので、代わりに理由を出す
+                Label("更新なし", systemImage: "clock.badge.exclamationmark")
+                    .font(.caption2.weight(.semibold))
+                    .foregroundStyle(DS.Role.warn)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.8)
+            } else if let progress {
                 ProgressView(value: min(max(progress, 0), 1))
                     .progressViewStyle(.linear)
                     .tint(tint)
@@ -102,6 +120,12 @@ struct MetricTile: View {
         .frame(maxWidth: .infinity, minHeight: 104, alignment: .leading)
         // レビュー 3-5: 意味を持たない装飾半透明円を削除(データUIのノイズ)
         .background(Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: DS.Radius.control))
+        // 監査 E-1: タイルは 1 要素として値ごと読み上げる
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(Text(LocalizedStringKey(title)))
+        .accessibilityValue(isStale
+                            ? Text("\(value) \(unit)、") + Text("更新なし")
+                            : Text("\(value) \(unit)"))
     }
 }
 
@@ -162,9 +186,10 @@ struct DeviceRow: View {
 
                 Spacer()
 
-                Text("\(device.rssi) dBm")
-                    .font(.caption.monospacedDigit())
-                    .foregroundStyle(.secondary)
+                // 監査 B-1: 生の dBm は一般ユーザーに読めないので電波強度のバーで示す
+                signalBars
+                    .accessibilityLabel("電波強度")
+                    .accessibilityValue(signalText)
             }
             .contentShape(Rectangle())
             .frame(minHeight: DS.minTapTarget)
@@ -172,16 +197,40 @@ struct DeviceRow: View {
         .buttonStyle(.plain)
     }
 
+    /// 監査 B-1: 生の serviceUUID を並べても意味が伝わらないため、
+    /// 「使えそうかどうか」だけを言葉で示す。
     private var serviceText: String {
-        if device.isLikelyAdapter {
-            return "ELM327 候補"
-        }
+        device.isLikelyAdapter
+            ? String(localized: "ELM327 アダプタの可能性が高い")
+            : String(localized: "ELM327 ではないかもしれません")
+    }
 
-        if device.serviceUUIDs.isEmpty {
-            return "BLE デバイス"
+    /// RSSI の目安: -60 以上=強、-75 以上=中、それ未満=弱
+    private var signalLevel: Int {
+        switch device.rssi {
+        case (-60)...: return 3
+        case (-75)..<(-60): return 2
+        default: return 1
         }
+    }
 
-        return device.serviceUUIDs.prefix(2).joined(separator: ", ")
+    private var signalText: String {
+        switch signalLevel {
+        case 3: return String(localized: "強")
+        case 2: return String(localized: "中")
+        default: return String(localized: "弱")
+        }
+    }
+
+    private var signalBars: some View {
+        HStack(alignment: .bottom, spacing: 2) {
+            ForEach(1...3, id: \.self) { level in
+                Capsule()
+                    .fill(level <= signalLevel ? AnyShapeStyle(DS.Role.ok) : AnyShapeStyle(.quaternary))
+                    .frame(width: 3, height: CGFloat(4 + level * 3))
+            }
+        }
+        .accessibilityElement(children: .ignore)
     }
 }
 
@@ -286,6 +335,9 @@ struct ConnectionSheet: View {
                         .foregroundStyle(.secondary)
                 }
 
+                // 監査 B-1: 失敗したまま何も出ない状態を無くす(OBD アプリ最大の離脱点)
+                troubleshootingSection
+
                 Section {
                     if obd.phase.isConnected {
                         Button(role: .destructive) {
@@ -352,11 +404,94 @@ struct ConnectionSheet: View {
         }
     }
 
+    // MARK: - 失敗時の復旧導線(監査 B-1)
+
+    /// 接続が失敗・切断・利用不可のときだけ出す。理由 → 対処 → 再試行 の順に並べる。
+    /// 以前はシートが成功時に自動で閉じるだけで、失敗しても何の説明も出なかった。
+    @ViewBuilder
+    private var troubleshootingSection: some View {
+        if obd.phase.isProblem {
+            Section {
+                Label {
+                    Text(obd.phase.title)
+                        .font(.subheadline.weight(.semibold))
+                        .foregroundStyle(.primary)
+                } icon: {
+                    Image(systemName: "exclamationmark.triangle.fill")
+                        .foregroundStyle(DS.Role.warn)
+                }
+
+                ForEach(recoverySteps, id: \.self) { step in
+                    Label {
+                        Text(step)
+                            .font(.footnote)
+                            .foregroundStyle(.secondary)
+                    } icon: {
+                        Image(systemName: "circle.fill")
+                            .font(.system(size: 5))
+                            .foregroundStyle(.tertiary)
+                    }
+                }
+
+                if obd.needsBluetoothSettings {
+                    Button {
+                        openSystemSettings()
+                    } label: {
+                        Label("設定アプリを開く", systemImage: "gear")
+                    }
+                } else if obd.bluetoothState != .unsupported {
+                    // BLE 非対応端末では再検索しても永久に見つからないのでボタンを出さない
+                    Button {
+                        obd.startScan()
+                    } label: {
+                        Label("もう一度検索する", systemImage: "arrow.clockwise")
+                    }
+                    .disabled(!obd.canScan)
+                }
+            } header: {
+                Text("接続できないとき")
+            }
+        }
+    }
+
+    /// 状態に応じた対処手順。Bluetooth 側の問題と、アダプタ側の問題を混ぜない。
+    /// 見出し行(`phase.title`)が理由を述べるので、ここには**取るべき行動だけ**を書く
+    /// (理由を繰り返すと同じ文が 2 度並ぶ)。
+    private var recoverySteps: [String] {
+        switch obd.bluetoothState {
+        case .poweredOff:
+            return [String(localized: "設定アプリで Bluetooth をオンにしてください。")]
+        case .unauthorized:
+            return [String(localized: "設定アプリ > プライバシーとセキュリティ > Bluetooth で、このアプリに許可を与えてください。")]
+        case .unsupported:
+            // 打てる手が無い状態。見出しの理由だけで十分なので何も足さない
+            return []
+        default:
+            return [
+                String(localized: "アダプタが「ELM327」かつ「BLE(Bluetooth 4.0 / LE)対応」と明記された製品か確認してください。Bluetooth Classic (SPP) 型は iOS では接続できません。"),
+                String(localized: "車両のイグニッションを ON にしてください。アダプタは車両から給電されるため、電源が入っていないと検出されません。"),
+                String(localized: "アダプタを OBD2 ポートから抜き差しして、LED が点灯することを確認してください。"),
+                String(localized: "iOS の設定アプリ側で「ペアリング」する必要はありません。このアプリの検索から直接つなぎます。")
+            ]
+        }
+    }
+
+    private func openSystemSettings() {
+        guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
+        UIApplication.shared.open(url)
+    }
+
     // MARK: - アダプタ購入導線(Amazon アソシエイト)
 
     /// Amazon アソシエイトのアプリ承認が下りたらトラッキング ID を入れる(例: "xxxx-22")。
     /// 空の間はセクションごと非表示(未承認でのアフィリエイトリンク掲出は規約違反のため)。
     private static let amazonAffiliateTag = ""
+
+    /// アフィリエイトリンクは日本の Amazon アソシエイト前提。
+    /// 他ストアフロントのユーザーには出さない(タグが無効なうえ、案内先として不適切)。
+    private var showsAffiliateLink: Bool {
+        !Self.amazonAffiliateTag.isEmpty && Locale.current.region?.identifier == "JP"
+    }
 
     /// ELM327 BLE アダプタの Amazon 検索結果(アフィリエイトタグ付き)
     private var adapterSearchURL: URL? {
@@ -368,25 +503,49 @@ struct ConnectionSheet: View {
         return components?.url
     }
 
-    /// アダプタ未所持ユーザー向けの購入リンク。外部 Safari で開く(物理商品のため IAP 対象外)。
-    /// ステマ規制(景品表示法)対応として「PR」を明記する。
+    /// 監査 A-4: 以前はアフィリエイトタグが空だとセクションごと消えていたため、
+    /// アダプタを持たないユーザー(特に海外)は「何を買えばいいか」をどこからも知れなかった。
+    /// 購入リンクの有無に関わらず、選び方のガイドは常に出す。
     @ViewBuilder
     private var adapterShopSection: some View {
-        if !Self.amazonAffiliateTag.isEmpty, !obd.phase.isConnected, let url = adapterSearchURL {
+        if !obd.phase.isConnected {
             Section {
-                Link(destination: url) {
-                    HStack {
-                        Label("対応アダプタを Amazon で見る", systemImage: "cart")
-                        Spacer()
-                        Image(systemName: "arrow.up.forward")
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
+                Label {
+                    Text("「ELM327」かつ「BLE / Bluetooth 4.0 / Bluetooth LE」対応と明記された製品")
+                        .font(.footnote)
+                } icon: {
+                    Image(systemName: "checkmark.circle.fill")
+                        .foregroundStyle(DS.Role.ok)
+                }
+
+                Label {
+                    Text("「Bluetooth Classic」「SPP」「Wi-Fi 接続」の製品は iPhone では使えません")
+                        .font(.footnote)
+                } icon: {
+                    Image(systemName: "xmark.circle.fill")
+                        .foregroundStyle(DS.Role.danger)
+                }
+
+                if showsAffiliateLink, let url = adapterSearchURL {
+                    Link(destination: url) {
+                        HStack {
+                            Label("対応アダプタを Amazon で見る", systemImage: "cart")
+                            Spacer()
+                            Image(systemName: "arrow.up.forward")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
                     }
                 }
             } header: {
                 Text("アダプタをお持ちでない方へ")
             } footer: {
-                Text("PR: リンクは Amazon アソシエイトのアフィリエイトリンクです。「ELM327」「BLE(Bluetooth 4.0/LE)対応」の表記がある製品をお選びください。")
+                if showsAffiliateLink {
+                    // ステマ規制(景品表示法)対応として「PR」を明記する
+                    Text("PR: リンクは Amazon アソシエイトのアフィリエイトリンクです。")
+                } else {
+                    Text("アダプタが無くても、その他タブのデモモードで全機能を試せます。")
+                }
             }
         }
     }
