@@ -413,3 +413,12 @@
 **検証**: ビルド SUCCEEDED / `xcodebuild test` 30 件全パス。iPhone 17 Pro (iOS 26.0) で メーター・分析・その他・接続シートをスクショ確認。文字列カタログは 454→516 キー(全キー 5 言語そろい)。
 - **未検証**: ①タイルの「更新なし」表示(デモが即再開して古い状態を捕捉できず。ロジックは SensorsView と共通) ②CSV の単位追従(実書き出し未確認) ③Dynamic Type 最大・VoiceOver 一巡 ④独仏での SessionBar 折り返し。
 - **見送り(F-4)**: 無効化済み診断機能(ReadinessPanel / FreezeFramePanel / commandPanel)の削除。実車検証の可否がユーザー判断のため現状維持。カタログ未登録の日本語リテラル 14 件も再有効化時まで保留。
+
+## 2026/08/17 (Dynamic Type 実測で 3 件の破綻を発見・修正)
+- 最大文字サイズ(AccessibilityXXXL)× ドイツ語で実測したところ、Phase 3〜5 の変更が逆に画面を壊していた。`simctl launch ... -UIPreferredContentSizeCategoryName UICTContentSizeCategoryAccessibilityXXXL` で再現。
+  1. **SessionBar が画面の 4 割を占有**。全タブ常設にした副作用で、「記録を開始」のラベルが 3 行に折り返してボタンが丸く潰れた → 常設クロームなので `.dynamicTypeSize(...accessibility1)` で上限を設け、ボタンに `lineLimit(1)` + `buttonBorderShape(.capsule)`。
+  2. **速度の巨大表示があふれて字が欠けた**。`@ScaledMetric` 化(E-2)そのものが原因で、64pt が AX5 で 150pt 超になっていた → `min()` で 96/44/150 に頭打ち。
+  3. **ラベル "Geschwindigkeit (OBD)" が 1 文字ずつ縦に折り返して速度を画面外へ押し出した** → `lineLimit(1)` + `minimumScaleFactor`、メーターパネル全体も `.dynamicTypeSize(...accessibility1)`。HUD ピルの H/U/D 縦割れも `lineLimit(1)` + `fixedSize()`。
+- 教訓: **`@ScaledMetric` は上限とセットで使う**。巨大表示に素直に適用すると、拡大するほど読めなくなる。
+- 検証: AX5 × ドイツ語で メーター 86 km/h・3404 rpm がどちらも読める状態を確認。test 30 件全パス。
+- **E-2 の残り(未対応)**: `EngineSoundView` の固定サイズ 18 箇所、`TripPanel` / `DriveView` の 44pt、`HUDView` の 170pt。HUD は全画面 1 数値 + `minimumScaleFactor(0.4)` なので意図的に据え置き。サウンドタブは暗色の造形画面で、崩すリスクが高いため個別に見た目確認しながら別途。

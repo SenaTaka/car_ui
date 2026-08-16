@@ -200,8 +200,9 @@ struct ContentView: View {
         }
     }
 
-    /// App Store スクショ撮影用フック。起動引数が無ければ何もしない(本番挙動は不変)。
-    /// `-uiDemo 1` でデモモード表示、`-uiTab N`(0〜4)で初期表示タブを指定する。
+    /// App Store スクショ撮影・UI 検証用フック。起動引数が無ければ何もしない(本番挙動は不変)。
+    /// `-uiDemo 1` デモモード / `-uiTab N`(0〜4)初期タブ / `-uiIntroOffer 1` プラン提案シート /
+    /// `-uiConnect 1` 接続シート / `-uiOnboarding 1` オンボーディング(`-uiOnboardingStep N` で開始位置)。
     /// スクショ撮影フック起動時はオンボーディングを出さない(`-uiOnboarding 1` で強制表示)。
     private var isUITestRun: Bool {
         let args = ProcessInfo.processInfo.arguments

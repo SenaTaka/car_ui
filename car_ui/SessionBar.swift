@@ -26,6 +26,10 @@ struct SessionBar: View {
             twoRows
         }
         .font(.caption)
+        // 全タブに常設するクロームなので、拡大幅に上限を設ける。
+        // 上限なしだと最大文字サイズ(AX5)+ 独語で画面の 4 割を占め、
+        // ボタンのラベルが 3 行に折り返して丸く潰れた(2026-08-17 実測)。
+        .dynamicTypeSize(...DynamicTypeSize.accessibility1)
         .padding(.horizontal, DS.Space.screenH)
         .padding(.vertical, 8)
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -84,20 +88,24 @@ struct SessionBar: View {
             Button {
                 session.stop()
             } label: {
-                Text("停止").fontWeight(.semibold)
+                Text("停止").fontWeight(.semibold).lineLimit(1)
             }
             .buttonStyle(.bordered)
             .controlSize(.small)
+            .buttonBorderShape(.capsule)
             .tint(DS.Role.danger)
             .minTapTarget()
         } else {
             Button {
                 session.start(distanceKm: location.totalDistanceKm)
             } label: {
-                Text("記録を開始").fontWeight(.semibold)
+                // lineLimit を付けないと大きい文字サイズでラベルが折り返し、
+                // ボタンが丸く潰れて何のボタンか読めなくなる
+                Text("記録を開始").fontWeight(.semibold).lineLimit(1)
             }
             .buttonStyle(.borderedProminent)
             .controlSize(.small)
+            .buttonBorderShape(.capsule)
             .minTapTarget()
         }
     }

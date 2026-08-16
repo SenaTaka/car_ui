@@ -22,9 +22,17 @@ struct DashboardView: View {
 
     // 監査 E-2: 主要な数字が固定 pt で Dynamic Type に追従していなかった。
     // 巨大表示の意図は保ちつつ、文字サイズ設定に合わせて拡縮させる。
-    @ScaledMetric(relativeTo: .largeTitle) private var heroValueSize: CGFloat = 64
-    @ScaledMetric(relativeTo: .title) private var dialValueSize: CGFloat = 30
-    @ScaledMetric(relativeTo: .title) private var dialDiameter: CGFloat = 108
+    //
+    // ただし上限は必要。速度はもともとこの画面で最大の文字で、AX5 まで素直に
+    // 拡大するとパネルからあふれて字が欠ける(2026-08-17 実測)。これ以上大きく
+    // しても可読性は上がらないので頭打ちにする。
+    @ScaledMetric(relativeTo: .largeTitle) private var scaledHeroValueSize: CGFloat = 64
+    @ScaledMetric(relativeTo: .title) private var scaledDialValueSize: CGFloat = 30
+    @ScaledMetric(relativeTo: .title) private var scaledDialDiameter: CGFloat = 108
+
+    private var heroValueSize: CGFloat { min(scaledHeroValueSize, 96) }
+    private var dialValueSize: CGFloat { min(scaledDialValueSize, 44) }
+    private var dialDiameter: CGFloat { min(scaledDialDiameter, 150) }
 
     var body: some View {
         NavigationStack {
@@ -105,7 +113,8 @@ struct DashboardView: View {
         Text(statusDetail)
             .font(.caption)
             .foregroundStyle(.secondary)
-            .lineLimit(1)
+            // 大きい文字サイズでは 1 行に収まらず末尾が切れるので折り返しを許す
+            .lineLimit(2)
             .minimumScaleFactor(0.8)
             .frame(maxWidth: .infinity, alignment: .leading)
     }
@@ -135,12 +144,19 @@ struct DashboardView: View {
                         Text(LocalizedStringKey(speedSourceLabel))
                             .font(.caption.weight(.semibold))
                             .foregroundStyle(.secondary)
+                            // 独語の長い語(Geschwindigkeit)が 1 文字ずつ縦に折り返して
+                            // 速度の数字を画面外へ押し出していた(2026-08-17 実測)
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.7)
 
                         Button {
                             showsHUD = true
                         } label: {
                             Label("HUD", systemImage: "windshield.front.and.heat.waves")
                                 .font(.caption2.weight(.bold))
+                                // 付けないと大きい文字サイズで H/U/D が縦に割れる
+                                .lineLimit(1)
+                                .fixedSize()
                                 .padding(.horizontal, 8)
                                 .padding(.vertical, 4)
                                 .background(.green.opacity(0.12), in: Capsule())
@@ -177,6 +193,10 @@ struct DashboardView: View {
             }
         }
         .panelStyle()
+        // 監査 E-2: ここは計器(グラフィック)なので拡大幅に上限を設ける。
+        // 数値は既に大きく、AX5 まで素直に伸ばすとラベルが縦に折り返して
+        // 肝心の速度が画面外へ出てしまう。
+        .dynamicTypeSize(...DynamicTypeSize.accessibility1)
     }
 
     private var rpmDial: some View {
