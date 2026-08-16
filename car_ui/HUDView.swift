@@ -61,15 +61,25 @@ struct HUDView: View {
             ScreenWakeCoordinator.shared.hudIsPresented = true
             UIApplication.shared.isIdleTimerDisabled = true
             // フロントガラスへの反射で読むため、表示中だけ輝度を上げて離脱時に戻す
-            previousBrightness = UIScreen.main.brightness
-            UIScreen.main.brightness = 1.0
+            if let screen = activeScreen {
+                previousBrightness = screen.brightness
+                screen.brightness = 1.0
+            }
         }
         .onDisappear {
             ScreenWakeCoordinator.shared.hudIsPresented = false
-            if let previousBrightness {
-                UIScreen.main.brightness = previousBrightness
+            if let previousBrightness, let screen = activeScreen {
+                screen.brightness = previousBrightness
             }
         }
+    }
+
+    /// `UIScreen.main` は iOS 26 で非推奨。表示中のシーンから画面を取る。
+    private var activeScreen: UIScreen? {
+        UIApplication.shared.connectedScenes
+            .compactMap { $0 as? UIWindowScene }
+            .first { $0.activationState == .foregroundActive }?
+            .screen
     }
 
     private var hudContent: some View {

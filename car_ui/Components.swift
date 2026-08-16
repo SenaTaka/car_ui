@@ -124,7 +124,7 @@ struct MetricTile: View {
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(Text(LocalizedStringKey(title)))
         .accessibilityValue(isStale
-                            ? Text("\(value) \(unit)、") + Text("更新なし")
+                            ? Text("\(value) \(unit)、\(String(localized: "更新なし"))")
                             : Text("\(value) \(unit)"))
     }
 }
