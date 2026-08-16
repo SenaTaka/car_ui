@@ -433,3 +433,14 @@
 - push 前の Release ビルドで、今回の変更が持ち込んだ iOS 26 非推奨 API を 2 件検出して解消(`Text + Text` → 文字列補間 / `UIScreen.main` → foregroundActive な windowScene の screen)。**Debug ビルドでは出ない警告**なので、クラウドビルドを回す前に Release で見ておくと安い。
 - push(`c166bff..e9dd539`)→ Xcode Cloud で **build 40 VALID**。ASC の 1.0.2 に紐付け済み(`PATCH /v1/appStoreVersions/{id}/relationships/build`)。
 - 1.0.2 の状態: バージョン作成済み / メタデータ反映済み / build 40 紐付け済み。**残りは en-US スクショの撮り直しと審査提出のみ**。
+
+## 2026/08/17 (en-US スクショ全面撮り直し → ASC アップロード)
+- **見つけた重大な問題**: 従来の en-US スクショは**見出しだけ英語で中の画面が全部日本語 UI** だった(「ダッシュボード」「冷却水温」「サウンド開始」が写っていた)。km/h より深刻で、最大市場 US のストアで日本語アプリに見えていた。2026-07-16 監査 10.1 の指摘が、アプリ側の多言語化だけ済んでスクショに反映されていなかった。
+- 撮り直し 5 枚(iPhone 15 Pro Max / iOS 26.0 / 地域 en_US、Release ビルド): 英語 UI + `64 mph` / `152 °F` / `9.2 psi` / `34.5 mpg`、地図の凡例も `9〜62 mph`。見出しは既存から復元して踏襲(方針 A)。
+- 05 の見出しだけ `0-100 timing` → `acceleration timing` に変更。単位系対応で本体が「0-62 mph Timer」表示になり、旧見出しが事実と食い違うため(2.3.7 リジェクト前例のあるカテゴリ)。
+- lint: `store_lint.sh` で自分が入れた `obd` が name と重複と出たので削除、`油温` を追加(69/100 字)。`ocr-check.sh` 禁止語 0。ASC へメタデータ再反映 + en-US スクショ 5 枚アップロード完了。
+- 詰まった点(全部 `store/ASO_NOTES.md` の「撮影レシピ」と `_AI_AGENT_NOTES/simulator-device.md` に記録):
+  1. `simctl privacy grant location` はプロンプトを一度出した端末では効かず、ダイアログが消えない(タップ手段が無く 40 分溶かした)→ **撮影専用シミュレータを新規作成し、初回起動前に grant**。
+  2. `simctl location` を設定しないとアプリが Cupertino の点を軌跡に追記し、地図が太平洋まで引きになる。
+  3. `sips -c` は `--cropOffset 0 0` を付けても**中央基準**で切る(ステータスバーが落ち、狙った広告バナーが残る)→ 上端基準の Swift 製クロッパを使う。
+  4. `store_lint.sh` / `ocr-check.sh` は bash / zsh を取り違えると誤検知する(`for F in $FILES` の語分割、`setopt`)。
