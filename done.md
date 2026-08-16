@@ -359,3 +359,14 @@
 - AdMob コンソール上で car_ui のストア掲載にリンクされたエントリ(`~9182984317`)とコード側の実装(`~8945778220`)が別 ID だった「ねじれ」を解消。App ID・バナーユニット ID をコンソール側に合わせて置換(Info.plist の GADApplicationIdentifier、AdBannerView.swift の bannerUnitID)。リワードユニット ID はコード内に存在せず(Pro課金統合で未使用化済み)対応不要と判断。
 - 収益ゼロの根本原因だったバナー高さ0バグを修正: `AdBannerView` が広告未ロード時にコンテナ高さを 0 に畳んでいたため `banner.load()` 時点でビュー高さ0→SDK が「Invalid ad width or height」でクライアント側失敗していた。`AdLoadState`(pending/loaded/failed)を導入し、結果判明まで 50pt 確保・失敗確定時のみ 0 に畳む方式に変更。
 - 検証: xcodebuild SUCCEEDED。シミュレータ(iPhone 17 Pro, iOS 26.0)実機起動で googleads.g.doubleclick.net への正常なネットワーク要求(format=402x50_mb)+WebKit でのバナー描画完了(post-load memory/CPU 計測ログ)を確認。修正前に発生していた同期的な size エラーが解消されたことを裏付け。
+
+## 2026/08/17 (car_ui Pro 初課金 — 米国)
+- **初の IAP 売上を確認**: 2026-08-15、US、`Sena.car_ui.pro`(IA1)1 本。Customer Price $4.99 / Developer Proceeds $4.24(85% = Small Business Program 適用)。購入時のアプリバージョンは **1.0.1**(App Store 公開版。1.0.2 はまだ TestFlight 止まり)。
+- 直近 60 日の新規DL 内訳(OBD2 Scanner + Engine Sound、合計 36): US 13 / JP 5 / HU 2 / CA 2 / FR 2 / AU 2 / 他 1 ずつ(FI ES IT BE IE PL ZA LU DE UY)。**US が最大市場(36%)で、初課金も US**。転換率は全体 1/36 = 2.8%、US 単体 1/13 = 7.7%。
+- 確認コマンド: `~/ios/biz/.venv/bin/python ~/ios/biz/bin/asc_sales_report.py --days 21`
+- 注意(biz ツールの表示バグ): `asc_sales_report.py` の「売上」列の通貨ラベルは日次レポートで最初に見つかった行の `Currency of Proceeds` を全アプリに流用するため、実際は USD の売上が「売上(JPY)」と表示される。金額は各行の proceeds をそのまま合計しており通貨換算していない。
+
+## 2026/08/17 (ja ASO: 「OBD2 日本語」を取りに行く)
+- 初課金の決め手の推定: ペイウォールは広告除去 ¥300 / Pro ¥730 の 3 列比較で、Pro の上乗せは **CSV無制限・記録の保存の 2 つだけ**(`PaywallView.swift:27-33`)。安い広告除去が同じ表に見えている状態で Pro を選んでいるので「データ書き出しが決め手」説が最有力。無料版の CSV 上限は 500 行/ch(`TelemetryRecorder.swift:71`)= 1Hz なら約 8 分で頭打ちなので導線としても噛み合う。ただし Pro 列に「おすすめ」バッジ+主ボタンという交絡があり n=1 では確定不可。
+- ja メタデータ更新(`store/metadata/ja/`): subtitle に「日本語」を追加(26/30字)、keywords 49→70字。詳細と根拠は `store/ASO_NOTES.md` 2026-08-17 の節。
+- **未反映**: ASC への反映と 1.0.2 バージョン作成はまだ。name/subtitle/keywords は新バージョンを作らないと編集できないため、1.0.2 の提出とセットで行う(build 39 が VALID で待機、App Store 公開版は 1.0.1 のまま)。
