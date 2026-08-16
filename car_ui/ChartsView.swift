@@ -371,12 +371,20 @@ struct ChartsView: View {
                 points = (0..<maxPoints).map { points[Int((Double($0) * strideStep).rounded())] }
             }
 
+            // 監査 A-1: 軸・凡例・現在値をまとめて表示単位へ換算する
+            // (正規化表示のときは換算しても結果が変わらないので順序は問わない)
+            let kind = info.kind
+            let system = UnitSettings.shared.system
+            if system == .imperial {
+                points = points.map { TelemetrySample(time: $0.time, value: kind.convert($0.value, to: system)) }
+            }
+
             if normalized, let minValue = points.map(\.value).min(), let maxValue = points.map(\.value).max() {
                 let span = max(maxValue - minValue, 0.0001)
                 points = points.map { TelemetrySample(time: $0.time, value: ($0.value - minValue) / span) }
             }
 
-            let displayName = info.unit.isEmpty ? info.name : "\(info.name) [\(info.unit)]"
+            let displayName = info.displayUnit.isEmpty ? info.name : "\(info.name) [\(info.displayUnit)]"
             return ChartSeries(id: channelID, name: displayName, tint: info.tint, points: points, dashed: channelID.hasPrefix("gps."))
         }
     }

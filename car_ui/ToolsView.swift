@@ -114,7 +114,10 @@ struct ToolsView: View {
                 InfoItem(title: "Adapter", value: obd.adapterInfo, systemImage: "cpu")
                 InfoItem(title: "Protocol", value: obd.protocolDescription, systemImage: "point.3.connected.trianglepath.dotted")
                 InfoItem(title: "Mode 01", value: supportedPIDText, systemImage: "checklist")
-                InfoItem(title: "記録", value: "\(recorder.totalSampleCount) 点 / \(recorder.channelIDs.count) ch", systemImage: "internaldrive")
+                // 「点」を直書きすると英語 UI に日本語が残る(2026-08-17 US 実機確認で発覚)
+                InfoItem(title: "記録",
+                         value: String(localized: "\(recorder.totalSampleCount) 点 / \(recorder.channelIDs.count) ch"),
+                         systemImage: "internaldrive")
             }
         }
         .panelStyle()
@@ -254,6 +257,14 @@ struct ToolsView: View {
             Label("設定", systemImage: "gearshape")
                 .font(.headline)
 
+            unitsRow
+
+            Divider()
+
+            vehicleRows
+
+            Divider()
+
             Toggle("接続中は画面をスリープさせない", isOn: $keepAwakeWhileConnected)
                 .font(.subheadline)
 
@@ -335,6 +346,76 @@ struct ToolsView: View {
             .font(.subheadline)
         }
         .panelStyle()
+    }
+
+    /// 監査 A-1: 単位系(既定は端末の地域から自動判定)。
+    @ViewBuilder
+    private var unitsRow: some View {
+        @Bindable var units = UnitSettings.shared
+
+        HStack {
+            Label("単位系", systemImage: "ruler")
+                .font(.subheadline)
+            Spacer()
+            Picker("単位系", selection: $units.preference) {
+                ForEach(UnitSystemPreference.allCases) { option in
+                    Text(option.label).tag(option)
+                }
+            }
+            .labelsHidden()
+        }
+
+        Text("速度・温度・圧力・燃費の表示単位です。CSV 書き出しもこの単位に従います(単位は列見出しに入ります)。")
+            .font(.caption)
+            .foregroundStyle(.secondary)
+    }
+
+    /// 監査 A-3・B-5: 車両プロファイル(タコメーターの目盛りと燃費推定に使う)。
+    @ViewBuilder
+    private var vehicleRows: some View {
+        @Bindable var vehicle = VehicleProfile.shared
+
+        HStack {
+            Label("タコメーター上限", systemImage: "gauge.with.needle")
+                .font(.subheadline)
+            Spacer()
+            Picker("タコメーター上限", selection: $vehicle.maxRpm) {
+                ForEach(VehicleProfile.selectableMaxRpm, id: \.self) { rpm in
+                    Text(verbatim: "\(Int(rpm)) rpm").tag(rpm)
+                }
+            }
+            .labelsHidden()
+            .onChange(of: vehicle.maxRpm) { _, _ in vehicle.clampRedline() }
+        }
+
+        HStack {
+            Label("レッドライン", systemImage: "exclamationmark.triangle")
+                .font(.subheadline)
+            Spacer()
+            Text(verbatim: "\(Int(vehicle.redlineRpm)) rpm")
+                .font(.subheadline.monospacedDigit())
+                .foregroundStyle(.secondary)
+        }
+
+        Slider(value: $vehicle.redlineRpm, in: 2000...vehicle.maxRpm, step: 100)
+            .accessibilityLabel("レッドライン")
+            .accessibilityValue(Text(verbatim: "\(Int(vehicle.redlineRpm)) rpm"))
+
+        HStack {
+            Label("燃料", systemImage: "fuelpump")
+                .font(.subheadline)
+            Spacer()
+            Picker("燃料", selection: $vehicle.fuelType) {
+                ForEach(FuelType.allCases) { fuel in
+                    Text(fuel.label).tag(fuel)
+                }
+            }
+            .labelsHidden()
+        }
+
+        Text("メーターの目盛りと、燃料流量 (0x5E) 非対応車での燃費推定に使います。")
+            .font(.caption)
+            .foregroundStyle(.secondary)
     }
 
     /// AppleLanguages を上書きしてアプリ内言語を切り替える(反映は次回起動時)。

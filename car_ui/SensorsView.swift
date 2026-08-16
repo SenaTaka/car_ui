@@ -90,7 +90,9 @@ struct SensorsView: View {
                             Label("水平精度", systemImage: "scope")
                                 .font(.subheadline)
                             Spacer()
-                            Text(location.horizontalAccuracyM.map { "±\(metricText($0, digits: 0)) m" } ?? "--")
+                            Text(location.horizontalAccuracyM.map {
+                                "±\(unitText($0, kind: .length, digits: 0)) \(UnitKind.length.symbol(UnitSettings.shared.system))"
+                            } ?? "--")
                                 .font(.subheadline.monospacedDigit())
                                 .foregroundStyle(.secondary)
                         }
@@ -213,6 +215,13 @@ struct SensorsView: View {
         let isStale = hasValue && recorder.isStale(channelID)
         _ = recorder.revision  // 鮮度の再評価トリガ
 
+        // 監査 A-1: 呼び出し側は canonical(メートル法)の単位を渡し、換算はここで行う
+        let system = UnitSettings.shared.system
+        let kind = UnitKind(canonicalSymbol: unit)
+        let displayValue = value.map { kind.convert($0, to: system) }
+        let displayUnit = kind.symbol(system)
+        let displayDigits = kind.fractionDigits(base: digits, in: system)
+
         return HStack(spacing: 10) {
             Image(systemName: icon)
                 .foregroundStyle(isStale ? AnyShapeStyle(.secondary) : AnyShapeStyle(tint))
@@ -241,9 +250,9 @@ struct SensorsView: View {
             .frame(width: 64, height: 22)
 
             MetricValue(
-                value: value,
-                unit: unit,
-                digits: digits,
+                value: displayValue,
+                unit: displayUnit,
+                digits: displayDigits,
                 valueFont: .subheadline,
                 color: hasValue ? (isStale ? Color.secondary : Color.primary) : Color(.tertiaryLabel)
             )
@@ -279,8 +288,8 @@ private struct SensorHelpSheet: View {
                     VStack(alignment: .leading, spacing: 2) {
                         Text(LocalizedStringKey(info.name))
                             .font(.headline)
-                        if !info.unit.isEmpty {
-                            Text(String(localized: "単位: \(info.unit)"))
+                        if !info.displayUnit.isEmpty {
+                            Text(String(localized: "単位: \(info.displayUnit)"))
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
                         }
@@ -289,9 +298,9 @@ private struct SensorHelpSheet: View {
                     Spacer()
 
                     MetricValue(
-                        value: recorder.latest(info.id),
-                        unit: info.unit,
-                        digits: info.fractionDigits,
+                        value: info.displayValue(recorder.latest(info.id)),
+                        unit: info.displayUnit,
+                        digits: info.displayDigits,
                         valueFont: .title3
                     )
                 }

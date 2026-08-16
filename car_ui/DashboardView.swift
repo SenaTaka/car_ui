@@ -140,13 +140,13 @@ struct DashboardView: View {
                     }
 
                     HStack(alignment: .firstTextBaseline, spacing: 6) {
-                        Text(metricText(currentSpeed, digits: 0))
+                        Text(unitText(currentSpeed, kind: .speed, digits: 0))
                             .font(.system(size: 64, weight: .heavy, design: .rounded))
                             .monospacedDigit()
                             .lineLimit(1)
                             .minimumScaleFactor(0.5)
 
-                        Text("km/h")
+                        Text(UnitKind.speed.symbol(UnitSettings.shared.system))
                             .font(.headline)
                             .foregroundStyle(.secondary)
                     }
@@ -157,19 +157,25 @@ struct DashboardView: View {
             }
 
             if let rpm = obd.liveValues[0x0C] {
-                Gauge(value: min(max(rpm, 0), 8000), in: 0...8000) {
+                // 監査 B-5: 上限・レッドラインは車両プロファイル由来(旧: 8000/6000 固定)
+                let vehicle = VehicleProfile.shared
+                Gauge(value: min(max(rpm, 0), vehicle.maxRpm), in: 0...vehicle.maxRpm) {
                     EmptyView()
                 }
                 .gaugeStyle(.linearCapacity)
-                .tint(rpm > 6000 ? .red : .orange)
+                .tint(vehicle.isOverRedline(rpm) ? .red : .orange)
             }
         }
         .panelStyle()
     }
 
     private var rpmDial: some View {
-        VStack(spacing: 2) {
-            Text(metricText(obd.liveValues[0x0C], digits: 0))
+        // 監査 B-5: 上限・レッドラインは車両プロファイル由来(旧: 8000/6000 固定)
+        let vehicle = VehicleProfile.shared
+        let rpm = obd.liveValues[0x0C]
+
+        return VStack(spacing: 2) {
+            Text(metricText(rpm, digits: 0))
                 .font(.system(size: 30, weight: .bold, design: .rounded))
                 .monospacedDigit()
                 .lineLimit(1)
@@ -184,13 +190,17 @@ struct DashboardView: View {
             Circle()
                 .stroke(Color(.systemFill), lineWidth: 10)
             Circle()
-                .trim(from: 0, to: min(max((obd.liveValues[0x0C] ?? 0) / 8000, 0), 1))
+                .trim(from: 0, to: vehicle.progress(rpm ?? 0))
                 .stroke(
-                    (obd.liveValues[0x0C] ?? 0) > 6000 ? Color.red : Color.orange,
+                    vehicle.isOverRedline(rpm ?? 0) ? Color.red : Color.orange,
                     style: StrokeStyle(lineWidth: 10, lineCap: .round)
                 )
                 .rotationEffect(.degrees(-90))
         }
+        // 監査 E-1: 自作ダイヤルは Circle + Text の重ね合わせで読み上げられなかった
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("エンジン回転数")
+        .accessibilityValue(rpm == nil ? Text("未取得") : Text("\(metricText(rpm, digits: 0)) rpm"))
     }
 
     private var currentSpeed: Double? {
@@ -294,8 +304,8 @@ struct DashboardView: View {
                 let value = obd.liveValues[pid]
                 MetricTile(
                     title: definition.name,
-                    value: metricText(value, digits: definition.fractionDigits),
-                    unit: definition.unit,
+                    value: definition.displayText(value),
+                    unit: definition.displayUnit,
                     systemImage: definition.icon,
                     tint: definition.tint,
                     progress: value.map { progress($0, in: definition.gaugeRange) }

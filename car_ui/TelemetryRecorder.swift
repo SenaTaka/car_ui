@@ -216,18 +216,27 @@ final class TelemetryRecorder: ObservableObject {
     // MARK: - CSV エクスポート(long 形式: channel,name,unit,time,value)
 
     /// `rowLimit` が nil なら全量(Pro)、指定時はチャンネルごとに直近 N 件のみ(無料版)。
+    ///
+    /// 監査 A-1: 値は表示中の単位系へ換算して書き出す(US ユーザーが mph 表示のまま
+    /// 書き出したら CSV も mph であるべき)。単位は `unit` 列に必ず入るので、
+    /// どちらの単位系で出したかは受け取った側から判別できる。
+    /// 数値は locale 非依存のまま(小数点を "," にすると CSV の区切りと衝突する)。
     func csvData(for channelIDs: [String], rowLimit: Int? = nil) -> Data {
         var lines = ["channel,name,unit,time,value"]
         let formatter = ISO8601DateFormatter()
         formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        let system = UnitSettings.shared.system
 
         for channelID in channelIDs {
             let info = ChannelInfo.info(for: channelID)
+            let kind = info.kind
+            let digits = kind.fractionDigits(base: info.fractionDigits, in: system)
+            let unit = kind.symbol(system)
             let allSamples = storage[channelID] ?? []
             let samples = rowLimit.map { Array(allSamples.suffix($0)) } ?? allSamples
             for sample in samples {
-                let value = String(format: "%.\(info.fractionDigits)f", sample.value)
-                lines.append("\(channelID),\(info.name),\(info.unit),\(formatter.string(from: sample.time)),\(value)")
+                let value = String(format: "%.\(digits)f", kind.convert(sample.value, to: system))
+                lines.append("\(channelID),\(info.name),\(unit),\(formatter.string(from: sample.time)),\(value)")
             }
         }
 
@@ -248,9 +257,16 @@ final class TelemetryRecorder: ObservableObject {
         let formatter = ISO8601DateFormatter()
         formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
 
+        // 監査 A-1: 見出しの [単位] と値を表示中の単位系へ揃える
+        let system = UnitSettings.shared.system
         let infos = channelIDs.map { ChannelInfo.info(for: $0) }
-        let header = "time," + infos
-            .map { $0.unit.isEmpty ? $0.name : "\($0.name) [\($0.unit)]" }
+        let kinds = infos.map(\.kind)
+        let digits = zip(kinds, infos).map { $0.fractionDigits(base: $1.fractionDigits, in: system) }
+        let header = "time," + zip(infos, kinds)
+            .map { info, kind in
+                let unit = kind.symbol(system)
+                return unit.isEmpty ? info.name : "\(info.name) [\(unit)]"
+            }
             .joined(separator: ",")
 
         let series = channelIDs.map { storage[$0] ?? [] }
@@ -281,7 +297,8 @@ final class TelemetryRecorder: ObservableObject {
                 if let candidate,
                    candidate.time <= gridTime,
                    gridTime.timeIntervalSince(candidate.time) <= staleTolerance {
-                    cells.append(String(format: "%.\(infos[channelIndex].fractionDigits)f", candidate.value))
+                    let converted = kinds[channelIndex].convert(candidate.value, to: system)
+                    cells.append(String(format: "%.\(digits[channelIndex])f", converted))
                     hasValue = true
                 } else {
                     cells.append("")

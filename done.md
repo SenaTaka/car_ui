@@ -370,3 +370,16 @@
 - 初課金の決め手の推定: ペイウォールは広告除去 ¥300 / Pro ¥730 の 3 列比較で、Pro の上乗せは **CSV無制限・記録の保存の 2 つだけ**(`PaywallView.swift:27-33`)。安い広告除去が同じ表に見えている状態で Pro を選んでいるので「データ書き出しが決め手」説が最有力。無料版の CSV 上限は 500 行/ch(`TelemetryRecorder.swift:71`)= 1Hz なら約 8 分で頭打ちなので導線としても噛み合う。ただし Pro 列に「おすすめ」バッジ+主ボタンという交絡があり n=1 では確定不可。
 - ja メタデータ更新(`store/metadata/ja/`): subtitle に「日本語」を追加(26/30字)、keywords 49→70字。詳細と根拠は `store/ASO_NOTES.md` 2026-08-17 の節。
 - **未反映**: ASC への反映と 1.0.2 バージョン作成はまだ。name/subtitle/keywords は新バージョンを作らないと編集できないため、1.0.2 の提出とセットで行う(build 39 が VALID で待機、App Store 公開版は 1.0.1 のまま)。
+
+## 2026/08/17 (1.0.2 Phase 1: 単位系と車両プロファイル)
+- 計画: `~/.claude/plans/humble-questing-frost.md`(UI/UX 徹底監査。A〜F の 6 カテゴリ 27 件を 6 フェーズに整理)。方針は「US 最優先・全部積んで 1.0.2 一本で出す」。
+- **A-1 単位系**: `Units.swift` 新設。canonical は常にメートル法、表示直前だけ換算する設計。`UnitKind`(speed/temperature/pressure/distance/length/massFlow/volumeFlow/volume/fuelEconomy/torque/voltage/percent/angle/rpm/duration/gForce)+ `UnitSystemPreference`(自動/メートル法/ヤード・ポンド法、自動は `Locale.current.measurementSystem`)。`UnitConvertible` プロトコルで `PIDDefinition`(53 行を書き換えず canonical 単位文字列から種別を導出)と `ChannelInfo` の双方に橋渡し。
+- **A-2 ロケール**: `metricText` の `String(format:)`(POSIX 固定)を `.formatted(.number...)` に置換 → 独仏西で小数点が `,` になる。CSV だけは区切り衝突を避けるため POSIX のまま。
+- **A-3 燃費**: `FuelType`(ガソリン/ディーゼル)で AFR・燃料密度を切り替え(旧: 全車 14.7/740 固定)。
+- **A-5**: `℃`(U+2103 合字)→ `°C`。
+- **B-5 レッドライン**: `VehicleProfile.swift` 新設(maxRpm/redlineRpm/fuelType)。ダッシュボードと HUD の 8000/6000 ハードコードを置換。
+- 反映先: DashboardView / HUDView / SensorsView / ChartsView / TripPanel / SpeedometerView(+EngineSoundView) / TrackMapPanel(凡例・手動レンジは双方向変換) / TrackReplayView / SessionBar / DashboardWidgetViews / TelemetryRecorder(CSV は値も見出しも表示単位に追従)。設定に「単位系」「タコメーター上限」「レッドライン」「燃料」を追加。
+- ついでに直した US 向け不具合: ツールタブの「380 点 / 19 ch」が英語 UI でも日本語のままだった(`String(localized:)` 化)。
+- 文字列カタログに 13 キーを 5 言語ぶん手で追加(CLI ビルドでは `.xcstrings` は更新されない。Xcode IDE でしか自動反映されない)。
+- **検証**: iPhone 17 Pro / iOS 26.0 実機起動。地域 US → `60 mph` / `150 °F` / `10.7 psi`(kPa→psi は小数 1 桁に補正)。地域 Germany → `56,8 %` の小数点カンマを確認。ビルド SUCCEEDED。CSV の単位追従はコンパイル確認のみで、書き出しの実測は Phase 3 の記録フロー検証と合わせて行う(未検証)。
+- 罠: `simctl launch` の `-AppleLocale en_US` は**言語しか変わらず** `Locale.current.measurementSystem` に効かない(→ `_AI_AGENT_NOTES/simulator-device.md` に追記)。

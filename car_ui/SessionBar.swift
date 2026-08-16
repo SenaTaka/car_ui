@@ -44,7 +44,7 @@ struct SessionBar: View {
 
             Text(session.elapsedText(now: now))
                 .monospacedDigit()
-            Text("\(metricText(session.sessionDistanceKm, digits: 1)) km")
+            Text("\(unitText(session.sessionDistanceKm, kind: .distance, digits: 1)) \(UnitKind.distance.symbol(UnitSettings.shared.system))")
                 .monospacedDigit()
                 .foregroundStyle(.secondary)
 

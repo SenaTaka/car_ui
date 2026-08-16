@@ -33,7 +33,7 @@ struct TripPanel: View {
             LazyVGrid(columns: [GridItem(.adaptive(minimum: 130), spacing: 12)], spacing: 12) {
                 InfoItem(
                     title: "走行距離",
-                    value: "\(metricText(trip.distanceKM, digits: 2)) km",
+                    value: valueText(trip.distanceKM, kind: .distance, digits: 2),
                     systemImage: "road.lanes"
                 )
                 InfoItem(
@@ -43,17 +43,17 @@ struct TripPanel: View {
                 )
                 InfoItem(
                     title: "平均速度",
-                    value: trip.averageSpeedKPH.map { "\(metricText($0, digits: 1)) km/h" } ?? "--",
+                    value: valueText(trip.averageSpeedKPH, kind: .speed, digits: 1),
                     systemImage: "gauge.with.needle"
                 )
                 InfoItem(
                     title: "平均燃費",
-                    value: trip.averageKPL.map { "\(metricText($0, digits: 1)) km/L" } ?? "--",
+                    value: valueText(trip.averageKPL, kind: .fuelEconomy, digits: 1),
                     systemImage: "leaf"
                 )
                 InfoItem(
                     title: "消費燃料",
-                    value: "\(metricText(trip.fuelUsedLiters, digits: 2)) L",
+                    value: valueText(trip.fuelUsedLiters, kind: .volume, digits: 2),
                     systemImage: "fuelpump"
                 )
             }
@@ -76,25 +76,27 @@ struct TripPanel: View {
     }
 
     private var instantFuelRow: some View {
-        HStack(alignment: .firstTextBaseline, spacing: 6) {
+        let system = UnitSettings.shared.system
+
+        return HStack(alignment: .firstTextBaseline, spacing: 6) {
             if let kpl = trip.instantKPL {
-                Text(metricText(kpl, digits: 1))
+                Text(unitText(kpl, kind: .fuelEconomy, digits: 1))
                     .font(.system(size: 44, weight: .heavy, design: .rounded))
                     .monospacedDigit()
-                Text("km/L")
+                Text(UnitKind.fuelEconomy.symbol(system))
                     .font(.headline)
                     .foregroundStyle(.secondary)
             } else if let lph = trip.instantLPH {
-                Text(metricText(lph, digits: 1))
+                Text(unitText(lph, kind: .volumeFlow, digits: 1))
                     .font(.system(size: 44, weight: .heavy, design: .rounded))
                     .monospacedDigit()
-                Text("L/h(停車中)")
+                Text("\(UnitKind.volumeFlow.symbol(system))(\(String(localized: "停車中")))")
                     .font(.headline)
                     .foregroundStyle(.secondary)
             } else {
                 Text("--")
                     .font(.system(size: 44, weight: .heavy, design: .rounded))
-                Text("km/L")
+                Text(UnitKind.fuelEconomy.symbol(system))
                     .font(.headline)
                     .foregroundStyle(.secondary)
             }
@@ -105,6 +107,13 @@ struct TripPanel: View {
                 .font(.caption)
                 .foregroundStyle(.secondary)
         }
+    }
+
+    /// 「換算した数値 + 表示単位」。欠損は "--"(単位も出さない)。
+    private func valueText(_ value: Double?, kind: UnitKind, digits: Int) -> String {
+        guard let value else { return "--" }
+        let system = UnitSettings.shared.system
+        return "\(unitText(value, kind: kind, digits: digits)) \(kind.symbol(system))"
     }
 
     private var elapsedText: String {

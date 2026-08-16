@@ -18,12 +18,23 @@ enum TrackColorSource: String, CaseIterable, Identifiable {
 
     var id: String { rawValue }
 
+    /// canonical(メートル法)の単位。保存値・軌跡データはこの単位で持つ。
     var unit: String {
         switch self {
         case .speed: return "km/h"
         case .rpm: return "rpm"
         }
     }
+
+    var kind: UnitKind {
+        switch self {
+        case .speed: return .speed
+        case .rpm: return .rpm
+        }
+    }
+
+    /// 現在の単位系での表示単位(監査 A-1)
+    var displayUnit: String { kind.symbol(UnitSettings.shared.system) }
 
     func value(of point: TrackPoint) -> Double? {
         switch self {
@@ -40,10 +51,10 @@ enum TrackColorSource: String, CaseIterable, Identifiable {
         }
     }
 
-    /// 手動レンジ調整のステップ幅
-    var manualStep: Double {
+    /// 手動レンジ調整のステップ幅(ユーザーが操作する表示単位でのきりのいい刻み)
+    func manualStep(in system: ResolvedUnitSystem) -> Double {
         switch self {
-        case .speed: return 10
+        case .speed: return system == .metric ? 10 : 5
         case .rpm: return 500
         }
     }
@@ -274,12 +285,17 @@ struct TrackMapContent: MapContent {
 }
 
 private struct TrackLegend: View {
+    /// canonical(メートル法)のレンジ。表示直前にここで換算する(監査 A-1)。
     let range: ClosedRange<Double>?
-    let unit: String
+    let kind: UnitKind
+
+    private var unit: String { kind.symbol(UnitSettings.shared.system) }
+    private var lowerText: String { unitText(range?.lowerBound, kind: kind, digits: 0) }
+    private var upperText: String { unitText(range?.upperBound, kind: kind, digits: 0) }
 
     var body: some View {
         HStack(spacing: 8) {
-            Text(metricText(range?.lowerBound, digits: 0))
+            Text(lowerText)
                 .font(.caption.monospacedDigit().weight(.semibold))
                 .foregroundStyle(.primary)
 
@@ -293,7 +309,7 @@ private struct TrackLegend: View {
             .frame(height: 12)
             .clipShape(Capsule())
 
-            Text(metricText(range?.upperBound, digits: 0))
+            Text(upperText)
                 .font(.caption.monospacedDigit().weight(.semibold))
                 .foregroundStyle(.primary)
 
@@ -304,7 +320,7 @@ private struct TrackLegend: View {
         // レビュー 14章: 色だけに依存しないよう、凡例の意味を明示
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("コンター凡例")
-        .accessibilityValue("低い \(metricText(range?.lowerBound, digits: 0)) から 高い \(metricText(range?.upperBound, digits: 0)) \(unit)")
+        .accessibilityValue("低い \(lowerText) から 高い \(upperText) \(unit)")
     }
 }
 
@@ -355,8 +371,8 @@ struct TrackMapSettingsView: View {
                     Toggle("自動(実測の最小〜最大)", isOn: $rangeAuto)
 
                     if !rangeAuto {
-                        rangeStepper(title: String(localized: "最小 (\(source.unit))"), value: minBinding)
-                        rangeStepper(title: String(localized: "最大 (\(source.unit))"), value: maxBinding)
+                        rangeStepper(title: String(localized: "最小 (\(source.displayUnit))"), value: minBinding)
+                        rangeStepper(title: String(localized: "最大 (\(source.displayUnit))"), value: maxBinding)
                     }
                 }
 
@@ -391,16 +407,29 @@ struct TrackMapSettingsView: View {
         }
     }
 
+    /// ステッパーは表示単位で操作する。保存値は canonical のままに保つ(監査 A-1)。
     private func rangeStepper(title: String, value: Binding<Double>) -> some View {
-        Stepper(value: value, in: 0...100_000, step: source.manualStep) {
+        let system = UnitSettings.shared.system
+        return Stepper(value: displayBinding(value), in: 0...100_000,
+                       step: source.manualStep(in: system)) {
             HStack {
                 Text(verbatim: title)
                 Spacer()
-                Text(metricText(value.wrappedValue, digits: 0))
+                Text(unitText(value.wrappedValue, kind: source.kind, digits: 0))
                     .foregroundStyle(.secondary)
                     .monospacedDigit()
             }
         }
+    }
+
+    /// canonical 保存値 ⇄ 表示単位 の双方向変換
+    private func displayBinding(_ canonical: Binding<Double>) -> Binding<Double> {
+        let system = UnitSettings.shared.system
+        let kind = source.kind
+        return Binding(
+            get: { kind.convert(canonical.wrappedValue, to: system) },
+            set: { canonical.wrappedValue = kind.convertBack($0, from: system) }
+        )
     }
 
     private var minBinding: Binding<Double> {
@@ -537,7 +566,7 @@ struct TrackMapPanel: View {
                         .onTapGesture { showingExpanded = true }
                 }
 
-                TrackLegend(range: effectiveRange, unit: colorSource.unit)
+                TrackLegend(range: effectiveRange, kind: colorSource.kind)
             }
         }
         .panelStyle()
@@ -676,7 +705,7 @@ struct TrackMapExpandedView: View {
 
             Spacer()
 
-            TrackLegend(range: effectiveRange, unit: colorSource.unit)
+            TrackLegend(range: effectiveRange, kind: colorSource.kind)
                 .padding(.horizontal, 16)
                 .padding(.vertical, 12)
                 .frame(maxWidth: .infinity)

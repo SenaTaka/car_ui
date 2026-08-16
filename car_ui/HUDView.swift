@@ -46,25 +46,27 @@ struct HUDView: View {
             Spacer()
 
             VStack(spacing: 4) {
-                Text(metricText(currentSpeed, digits: 0))
+                Text(unitText(currentSpeed, kind: .speed, digits: 0))
                     .font(.system(size: 170, weight: .heavy, design: .rounded))
                     .monospacedDigit()
                     .lineLimit(1)
                     .minimumScaleFactor(0.4)
                     .foregroundStyle(hudColor)
 
-                Text("km/h")
+                Text(UnitKind.speed.symbol(UnitSettings.shared.system))
                     .font(.title2.weight(.semibold))
                     .foregroundStyle(hudColor.opacity(0.7))
             }
 
             if let rpm = obd.liveValues[0x0C] {
+                // 監査 B-5: 上限・レッドラインは車両プロファイル由来(旧: 8000/6000 固定)
+                let vehicle = VehicleProfile.shared
                 VStack(spacing: 6) {
-                    Gauge(value: min(max(rpm, 0), 8000), in: 0...8000) {
+                    Gauge(value: min(max(rpm, 0), vehicle.maxRpm), in: 0...vehicle.maxRpm) {
                         EmptyView()
                     }
                     .gaugeStyle(.linearCapacity)
-                    .tint(rpm > 6000 ? .red : hudColor)
+                    .tint(vehicle.isOverRedline(rpm) ? .red : hudColor)
 
                     Text("\(metricText(rpm, digits: 0)) rpm")
                         .font(.headline.monospacedDigit())

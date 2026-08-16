@@ -715,6 +715,40 @@
         }
       }
     },
+    "%lld 点 / %lld ch": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld Werte / %2$lld Kan."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld pts / %2$lld ch"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld ptos / %2$lld can."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld pts / %2$lld can."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld 点 / %2$lld 通道"
+          }
+        }
+      }
+    },
     "%lld分": {
       "localizations": {
         "de": {
@@ -5203,6 +5237,40 @@
         }
       }
     },
+    "ガソリン": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Benzin"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gasoline"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gasolina"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Essence"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "汽油"
+          }
+        }
+      }
+    },
     "キャンセル": {
       "localizations": {
         "de": {
@@ -5849,6 +5917,40 @@
         }
       }
     },
+    "タコメーター上限": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Drehzahlmesser-Maximum"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tachometer max"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Máximo del tacómetro"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Maximum du compte-tours"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "转速表上限"
+          }
+        }
+      }
+    },
     "タップすると説明を表示します": {
       "localizations": {
         "de": {
@@ -6219,6 +6321,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "遥测 CSV"
+          }
+        }
+      }
+    },
+    "ディーゼル": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diesel"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diesel"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diésel"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diesel"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "柴油"
           }
         }
       }
@@ -7243,6 +7379,40 @@
         }
       }
     },
+    "メーターの目盛りと、燃料流量 (0x5E) 非対応車での燃費推定に使います。": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wird für die Skala der Anzeige und für die Verbrauchsschätzung bei Fahrzeugen ohne Kraftstoffdurchfluss (0x5E) verwendet."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Used for the gauge scale, and for estimating fuel economy on vehicles that do not support fuel rate (0x5E)."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Se usa para la escala del medidor y para estimar el consumo en vehículos que no admiten caudal de combustible (0x5E)."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Utilisé pour l’échelle du cadran et pour estimer la consommation sur les véhicules qui ne prennent pas en charge le débit de carburant (0x5E)."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "用于仪表刻度，以及在不支持燃油流量 (0x5E) 的车辆上估算油耗。"
+          }
+        }
+      }
+    },
     "メーター画面右上の接続ボタンから、本物のアダプタへいつでも移れます。": {
       "localizations": {
         "de": {
@@ -7277,6 +7447,40 @@
         }
       }
     },
+    "メートル法 (km/h・°C)": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Metrisch (km/h, °C)"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Metric (km/h, °C)"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Métrico (km/h, °C)"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Métrique (km/h, °C)"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "公制（km/h、°C）"
+          }
+        }
+      }
+    },
     "モーション": {
       "localizations": {
         "de": {
@@ -7307,6 +7511,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "运动传感"
+          }
+        }
+      }
+    },
+    "ヤード・ポンド法 (mph・°F)": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Angloamerikanisch (mph, °F)"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Imperial (mph, °F)"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Imperial (mph, °F)"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Impérial (mph, °F)"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "英制（mph、°F）"
           }
         }
       }
@@ -7409,6 +7647,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "重置"
+          }
+        }
+      }
+    },
+    "レッドライン": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Roter Bereich"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Redline"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Línea roja"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zone rouge"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "红线转速"
           }
         }
       }
@@ -8025,6 +8297,40 @@
         }
       }
     },
+    "停車中": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "im Stand"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "stopped"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "detenido"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "à l’arrêt"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "停车中"
+          }
+        }
+      }
+    },
     "全体": {
       "localizations": {
         "de": {
@@ -8633,6 +8939,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "单位: %@"
+          }
+        }
+      }
+    },
+    "単位系": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einheiten"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Units"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unidades"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unités"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "单位"
           }
         }
       }
@@ -11595,6 +11935,40 @@
         }
       }
     },
+    "燃料": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kraftstoff"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fuel"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Combustible"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Carburant"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "燃料"
+          }
+        }
+      }
+    },
     "燃料に含まれるエタノールの混合率です(フレックス燃料車向け)。": {
       "localizations": {
         "de": {
@@ -12679,6 +13053,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "自动"
+          }
+        }
+      }
+    },
+    "自動(地域に合わせる)": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Automatisch (nach Region)"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Automatic (match region)"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Automático (según la región)"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Automatique (selon la région)"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "自动（跟随地区）"
           }
         }
       }
@@ -15025,6 +15433,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "自动检测并显示车辆发出的支持数据,如速度、转速、水温等。"
+          }
+        }
+      }
+    },
+    "速度・温度・圧力・燃費の表示単位です。CSV 書き出しもこの単位に従います(単位は列見出しに入ります)。": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anzeigeeinheiten für Geschwindigkeit, Temperatur, Druck und Verbrauch. CSV-Exporte folgen dieser Einstellung; die Einheit steht in der Spaltenüberschrift."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Display units for speed, temperature, pressure and fuel economy. CSV exports follow this setting too, and the unit is written into the column header."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unidades de visualización para velocidad, temperatura, presión y consumo. Las exportaciones CSV también siguen este ajuste y la unidad se escribe en el encabezado de columna."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unités d’affichage pour la vitesse, la température, la pression et la consommation. Les exports CSV suivent aussi ce réglage et l’unité figure dans l’en-tête de colonne."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "速度、温度、压力和油耗的显示单位。CSV 导出同样遵循此设置，单位会写入列标题。"
           }
         }
       }

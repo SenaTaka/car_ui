@@ -33,7 +33,7 @@ struct ChartWidgetView: View {
                 Spacer()
 
                 if let definition, let value = obd.liveValues[pid] {
-                    Text("\(metricText(value, digits: definition.fractionDigits)) \(definition.unit)")
+                    Text("\(definition.displayText(value)) \(definition.displayUnit)")
                         .font(.caption.monospacedDigit().weight(.semibold))
                         .foregroundStyle(definition.tint)
                 }
@@ -152,13 +152,14 @@ struct GaugeWidgetView: View {
     var body: some View {
         Group {
             if let definition = PIDCatalog.byPID[pid] {
+                // 監査 A-1: 針・目盛り・値をまとめて表示単位へ換算する
                 AnalogGaugeView(
                     title: definition.name,
-                    value: obd.liveValues[pid],
-                    range: definition.gaugeRange,
-                    unit: definition.unit,
+                    value: definition.displayValue(obd.liveValues[pid]),
+                    range: definition.displayRange,
+                    unit: definition.displayUnit,
                     tint: definition.tint,
-                    fractionDigits: definition.fractionDigits
+                    fractionDigits: definition.displayDigits
                 )
                 .padding(8)
             }

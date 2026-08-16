@@ -3,7 +3,9 @@
 //  car_ui
 //
 //  トリップコンピュータ: OBD ライブ値から走行距離・平均速度・燃費を積算する。
-//  燃料流量は 0x5E(直接)が無ければ MAF 0x10 から推定(ガソリン AFR 14.7 前提)。
+//  燃料流量は 0x5E(直接)が無ければ MAF 0x10 から推定する。推定に使う空燃比と
+//  燃料密度は車両プロファイルの燃料種別に従う(監査 A-3。以前はディーゼル車でも
+//  ガソリン固定値を使っていた)。
 //
 
 import Combine
@@ -26,10 +28,6 @@ final class TripComputerModel: ObservableObject {
 
     /// これ以上サンプル間隔が空いたら積算しない(BG 復帰・切断のギャップ対策)
     private static let maxGapSeconds: TimeInterval = 2
-    /// 理論空燃比(ガソリン)
-    private static let stoichiometricAFR = 14.7
-    /// ガソリン密度 g/L
-    private static let fuelDensityGPerL = 740.0
     /// 瞬間値の平滑化係数(指数移動平均)
     private static let smoothingFactor = 0.15
     /// この車速未満は「停車」扱いで km/L を出さない(発散回避)
@@ -100,7 +98,9 @@ final class TripComputerModel: ObservableObject {
         }
         if let maf = values[0x10] {
             isFuelEstimated = true
-            return maf * 3600 / (Self.stoichiometricAFR * Self.fuelDensityGPerL)
+            // 監査 A-3: 空燃比・密度は燃料種別に従う(ディーゼルでガソリン値を使わない)
+            let fuel = VehicleProfile.shared.fuelType
+            return maf * 3600 / (fuel.stoichiometricAFR * fuel.densityGPerL)
         }
         return nil
     }

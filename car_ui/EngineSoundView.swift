@@ -10,6 +10,8 @@ struct EngineSoundView: View {
 
     @State private var showingPresets = false
 
+    private var unitSystem: ResolvedUnitSystem { UnitSettings.shared.system }
+
     @AppStorage("engineSoundPresetName") private var savedPresetName = ""
     @AppStorage("engineSoundPopsEnabled") private var popsEnabled = true
 
@@ -37,10 +39,12 @@ struct EngineSoundView: View {
                                 size: gaugeSize
                             )
 
+                            // 監査 A-1: ダイヤルの数字ごと表示単位へ換算する
                             SpeedometerView(
-                                currentSpeed: sound.displaySpeed,
-                                topSpeed: 260,
-                                size: gaugeSize
+                                currentSpeed: UnitKind.speed.convert(sound.displaySpeed, to: unitSystem),
+                                topSpeed: UnitKind.speed.convert(260, to: unitSystem),
+                                size: gaugeSize,
+                                unitLabel: UnitKind.speed.symbol(unitSystem)
                             )
                         }
 
@@ -111,7 +115,8 @@ struct EngineSoundView: View {
 
     private var infoDisplay: some View {
         HStack(spacing: 0) {
-            infoStat(value: "\(Int(obd.liveValues[0x0D] ?? 0))", unit: "km/h", color: .white)
+            infoStat(value: unitText(obd.liveValues[0x0D] ?? 0, kind: .speed, digits: 0),
+                     unit: UnitKind.speed.symbol(unitSystem), color: .white)
             divider
             infoStat(value: "\(Int(obd.liveValues[0x04] ?? 0))%", unit: "LOAD", color: .orange)
             divider

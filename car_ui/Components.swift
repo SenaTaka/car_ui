@@ -252,13 +252,6 @@ extension View {
     }
 }
 
-// MARK: - 数値フォーマット
-
-func metricText(_ value: Double?, digits: Int) -> String {
-    guard let value else { return "--" }
-    return String(format: "%.\(digits)f", value)
-}
-
 // MARK: - 接続シート(スキャン・接続・デモモード)
 
 struct ConnectionSheet: View {

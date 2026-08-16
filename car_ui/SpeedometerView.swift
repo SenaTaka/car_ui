@@ -5,9 +5,13 @@ import SwiftUI
 /// 7-o'clock → 5-o'clock sweep). The dial range adapts to the preset's
 /// mechanical top speed so every engine "fills" its own dial.
 struct SpeedometerView: View {
-    let currentSpeed: Double  // km/h
-    let topSpeed: Double      // km/h at maxRpm in top gear
+    /// Already converted to `unitLabel`'s unit by the caller (see 監査 A-1).
+    let currentSpeed: Double
+    /// Top speed at maxRpm in top gear, in the same unit as `currentSpeed`.
+    let topSpeed: Double
     var size: CGFloat = 200
+    /// Displayed unit symbol. The dial's numbers are drawn in this unit.
+    var unitLabel: String = "km/h"
 
     private let startAngle = 120.0
     private let endAngle = 420.0
@@ -24,7 +28,7 @@ struct SpeedometerView: View {
         .frame(width: size, height: size)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("車速")
-        .accessibilityValue("\(Int(currentSpeed)) km/h")
+        .accessibilityValue("\(Int(currentSpeed)) \(unitLabel)")
     }
 
     private var dialFace: some View {
@@ -120,7 +124,7 @@ struct SpeedometerView: View {
             Text("SPEED")
                 .font(.system(size: size * 0.055, weight: .bold))
                 .tracking(1.1)
-            Text("km/h")
+            Text(unitLabel)
                 .font(.system(size: size * 0.045, weight: .medium))
         }
         .foregroundColor(.white.opacity(0.62))

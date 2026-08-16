@@ -127,7 +127,10 @@ struct TrackReplayView: View {
                 .foregroundStyle(.secondary)
 
             if let speed = current.speedKPH {
-                MetricValue(value: speed, unit: "km/h", digits: 0, valueFont: .subheadline, color: .blue)
+                let system = UnitSettings.shared.system
+                MetricValue(value: UnitKind.speed.convert(speed, to: system),
+                            unit: UnitKind.speed.symbol(system),
+                            digits: 0, valueFont: .subheadline, color: .blue)
             }
             if let rpm = current.rpm {
                 MetricValue(value: rpm, unit: "rpm", digits: 0, valueFont: .subheadline, color: .orange)
