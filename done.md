@@ -428,3 +428,8 @@
 - リリースノートが ja/en-US とも「初回リリース」のままだったので 1.0.2 の内容に書き換え(単位系・車両プロファイル・接続の案内・記録の常設・設定整理・小数点・大文字サイズ)。`lint_terms.py` ERROR 0 / WARN 0。
 - `asc_update_metadata.py` で反映し、API で読み戻して確認: ja keywords = 新 70 字、ja subtitle =「日本語のELM327メーター・買い切り・サブスクなし」、whatsNew ja/en-US とも更新済み。
 - **残り**: ①ビルド(push → Xcode Cloud。build 39 は今回の変更を含まないので破棄) ②en-US スクショの撮り直し(現行 5 枚は全部 km/h 表示) ③審査提出。
+
+## 2026/08/17 (1.0.2 build 40 作成・紐付け)
+- push 前の Release ビルドで、今回の変更が持ち込んだ iOS 26 非推奨 API を 2 件検出して解消(`Text + Text` → 文字列補間 / `UIScreen.main` → foregroundActive な windowScene の screen)。**Debug ビルドでは出ない警告**なので、クラウドビルドを回す前に Release で見ておくと安い。
+- push(`c166bff..e9dd539`)→ Xcode Cloud で **build 40 VALID**。ASC の 1.0.2 に紐付け済み(`PATCH /v1/appStoreVersions/{id}/relationships/build`)。
+- 1.0.2 の状態: バージョン作成済み / メタデータ反映済み / build 40 紐付け済み。**残りは en-US スクショの撮り直しと審査提出のみ**。
