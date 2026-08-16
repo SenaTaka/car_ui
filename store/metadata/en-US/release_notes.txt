@@ -1,1 +1,10 @@
-First release. See your car live over an ELM327 BLE adapter — build your own dashboard with analog gauges, charts and maps, see speed and RPM drawn on the map, project a HUD onto your windshield, track fuel economy, and hear a real-RPM engine sound.
+Unit support: gauges now read in mph, °F, psi and mpg based on your region (you can also switch manually in Settings). CSV exports follow the same units, with the unit written into the column header.
+
+• Vehicle profile: set your tachometer range, redline and fuel type (gasoline/diesel). Fuel economy is now estimated correctly for diesels.
+• When an adapter will not connect, the connection screen now explains why and what to try, plus guidance on choosing an adapter.
+• Start and stop recording, and see recording status, from any tab.
+• Gauges that have stopped updating are now clearly marked.
+• The screen stays awake while the HUD is showing, and brightness is raised automatically.
+• Settings have been reorganised into standard sections, with technical details and the communication log moved one level down.
+• Fixed decimal separators for German, French and Spanish.
+• Fixed layout problems at large text sizes.

@@ -422,3 +422,9 @@
 - 教訓: **`@ScaledMetric` は上限とセットで使う**。巨大表示に素直に適用すると、拡大するほど読めなくなる。
 - 検証: AX5 × ドイツ語で メーター 86 km/h・3404 rpm がどちらも読める状態を確認。test 30 件全パス。
 - **E-2 の残り(未対応)**: `EngineSoundView` の固定サイズ 18 箇所、`TripPanel` / `DriveView` の 44pt、`HUDView` の 170pt。HUD は全画面 1 数値 + `minimumScaleFactor(0.4)` なので意図的に据え置き。サウンドタブは暗色の造形画面で、崩すリスクが高いため個別に見た目確認しながら別途。
+
+## 2026/08/17 (1.0.2 の ASC 準備)
+- ASC に **1.0.2 のバージョンレコードを作成**(PREPARE_FOR_SUBMISSION, id 52957c20)。編集可能なバージョンが 1 つも無いと `asc_update_metadata.py` がバージョン localizations をスキップするため、先に作る必要があった(`biz/bin` に版作成スクリプトが無かったので scratchpad で POST /v1/appStoreVersions)。
+- リリースノートが ja/en-US とも「初回リリース」のままだったので 1.0.2 の内容に書き換え(単位系・車両プロファイル・接続の案内・記録の常設・設定整理・小数点・大文字サイズ)。`lint_terms.py` ERROR 0 / WARN 0。
+- `asc_update_metadata.py` で反映し、API で読み戻して確認: ja keywords = 新 70 字、ja subtitle =「日本語のELM327メーター・買い切り・サブスクなし」、whatsNew ja/en-US とも更新済み。
+- **残り**: ①ビルド(push → Xcode Cloud。build 39 は今回の変更を含まないので破棄) ②en-US スクショの撮り直し(現行 5 枚は全部 km/h 表示) ③審査提出。
