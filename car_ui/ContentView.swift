@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import StoreKit
 import UIKit
 
 struct ContentView: View {
@@ -27,6 +28,13 @@ struct ContentView: View {
     // 初回起動オンボーディング(完了フラグは永続化、その他タブから再表示可)
     @AppStorage("onboarding.completed") private var onboardingCompleted = false
     @State private var showingOnboarding = false
+    // レビュー依頼(ReviewPromptPolicy 参照)。運転中に出さないため接続終了後のみ判定する。
+    @Environment(\.requestReview) private var requestReview
+    @AppStorage("review.qualifyingSessionCount") private var reviewQualifyingSessionCount = 0
+    @AppStorage("review.lastRequestedVersion") private var reviewLastRequestedVersion = ""
+    @AppStorage("review.pendingCheck") private var reviewPendingCheck = false
+    @State private var liveSessionStartedAt: Date?
+    @State private var liveSessionWasDemo = false
 
     var body: some View {
         VStack(spacing: 0) {
@@ -79,6 +87,7 @@ struct ContentView: View {
         }
         .onChange(of: obd.phase.isConnected) { _, isConnected in
             updateScreenWake()
+            handleReviewPromptSessionChange(isConnected: isConnected, isDemo: obd.isDemo)
             guard isConnected, !introOffered, !suppressIntroOffer,
                   !proStore.isPro, !proStore.isAdFree else { return }
             introOffered = true
@@ -100,12 +109,16 @@ struct ContentView: View {
                 TrackStore.shared.persistToDisk()
             case .active:
                 engineSound.sceneDidBecomeActive()
+                attemptReviewPromptIfPossible()
             default:
                 break
             }
         }
         .onChange(of: keepAwakeWhileConnected) { _, _ in
             updateScreenWake()
+        }
+        .onChange(of: selectedTab) { _, _ in
+            attemptReviewPromptIfPossible()
         }
         .onAppear {
             // モーション権限は実際に使う画面(走行タブ等)の onAppear で要求する
@@ -175,6 +188,61 @@ struct ContentView: View {
         }
         UIApplication.shared.isIdleTimerDisabled =
             keepAwakeWhileConnected && obd.phase.isConnected
+    }
+
+    // MARK: - レビュー依頼(ReviewPromptPolicy)
+
+    /// 接続の開始・終了を検知し、実接続(デモ除く)で3分以上ライブデータを受信した
+    /// セッションだけを ReviewPromptPolicy に計上する。判定ロジック自体は Policy 側の純粋関数。
+    private func handleReviewPromptSessionChange(isConnected: Bool, isDemo: Bool) {
+        if isConnected {
+            liveSessionStartedAt = Date()
+            liveSessionWasDemo = isDemo
+            return
+        }
+        guard let startedAt = liveSessionStartedAt else { return }
+        liveSessionStartedAt = nil
+        let duration = Date().timeIntervalSince(startedAt)
+        let nextState = ReviewPromptPolicy.sessionEnded(
+            isDemo: liveSessionWasDemo,
+            liveDuration: duration,
+            state: currentReviewState())
+        persistReviewState(nextState)
+        // 接続が切れた直後に前面かつ安全な画面ならその場で、そうでなければ
+        // pendingCheck が立ったままになり、次のフォアグラウンド復帰・タブ切替時に再判定する。
+        attemptReviewPromptIfPossible()
+    }
+
+    /// pendingCheck が立っていて、かつ運転中でない安全な文脈のときだけ requestReview を呼ぶ。
+    /// 接続中・HUD 表示中・走行タブでは呼ばない(ReviewPromptPolicy.isSafeContext で保証)。
+    private func attemptReviewPromptIfPossible() {
+        let isSafe = ReviewPromptPolicy.isSafeContext(
+            isConnected: obd.phase.isConnected,
+            isHUDPresented: ScreenWakeCoordinator.shared.hudIsPresented,
+            isOnDriveTab: selectedTab == 1,
+            isForeground: scenePhase == .active)
+        let currentVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
+        let result = ReviewPromptPolicy.shouldRequestReview(
+            state: currentReviewState(),
+            currentVersion: currentVersion,
+            isSafeContext: isSafe)
+        persistReviewState(result.nextState)
+        if result.shouldRequest {
+            requestReview()
+        }
+    }
+
+    private func currentReviewState() -> ReviewPromptPolicy.State {
+        ReviewPromptPolicy.State(
+            qualifyingSessionCount: reviewQualifyingSessionCount,
+            lastRequestedVersion: reviewLastRequestedVersion.isEmpty ? nil : reviewLastRequestedVersion,
+            pendingCheck: reviewPendingCheck)
+    }
+
+    private func persistReviewState(_ state: ReviewPromptPolicy.State) {
+        reviewQualifyingSessionCount = state.qualifyingSessionCount
+        reviewLastRequestedVersion = state.lastRequestedVersion ?? ""
+        reviewPendingCheck = state.pendingCheck
     }
 
     /// オンボーディング終了。選んだ入口に応じてデモ開始/接続シートへ誘導する。

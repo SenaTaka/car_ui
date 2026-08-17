@@ -3,7 +3,25 @@
   "strings": {
     "CFBundleDisplayName": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OBD2 Scanner"
+          }
+        },
         "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OBD2 Scanner"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OBD2 Scanner"
+          }
+        },
+        "fr": {
           "stringUnit": {
             "state": "translated",
             "value": "OBD2 Scanner"
@@ -14,15 +32,39 @@
             "state": "translated",
             "value": "OBD2スキャナー"
           }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OBD2 扫描仪"
+          }
         }
       }
     },
     "NSBluetoothAlwaysUsageDescription": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bluetooth wird verwendet, um eine Verbindung zu Ihrem ELM327-OBD2-Adapter herzustellen und Fahrzeugdaten zu lesen."
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Bluetooth is used to connect to your ELM327 OBD2 adapter and read vehicle data."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bluetooth se utiliza para conectarse a su adaptador OBD2 ELM327 y leer los datos del vehículo."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le Bluetooth est utilisé pour se connecter à votre adaptateur OBD2 ELM327 et lire les données du véhicule."
           }
         },
         "ja": {
@@ -30,15 +72,39 @@
             "state": "translated",
             "value": "ELM327 OBD2 アダプタに接続して車両情報を読み取るために Bluetooth を使用します。"
           }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "使用蓝牙连接您的 ELM327 OBD2 适配器并读取车辆数据。"
+          }
         }
       }
     },
     "NSLocationWhenInUseUsageDescription": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ihr Standort wird verwendet, um GPS-Geschwindigkeit, Höhe und zurückgelegte Strecke aufzuzeichnen."
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Your location is used to record GPS speed, altitude, and distance traveled."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Su ubicación se utiliza para registrar la velocidad GPS, la altitud y la distancia recorrida."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Votre position est utilisée pour enregistrer la vitesse GPS, l'altitude et la distance parcourue."
           }
         },
         "ja": {
@@ -46,21 +112,51 @@
             "state": "translated",
             "value": "GPS の速度・高度・走行距離を記録するために位置情報を使用します。"
           }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "使用位置信息记录 GPS 速度、海拔和行驶距离。"
+          }
         }
       }
     },
     "NSMotionUsageDescription": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Bewegungssensor wird verwendet, um die G-Kraft anzuzeigen und aufzuzeichnen."
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "The motion sensor is used to display and record G-force."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El sensor de movimiento se utiliza para mostrar y registrar la fuerza G."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le capteur de mouvement est utilisé pour afficher et enregistrer la force G."
+          }
+        },
         "ja": {
           "stringUnit": {
             "state": "translated",
             "value": "G フォースの表示・記録のためにモーションセンサーを使用します。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "使用运动传感器显示和记录 G 力。"
           }
         }
       }
