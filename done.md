@@ -444,3 +444,21 @@
   2. `simctl location` を設定しないとアプリが Cupertino の点を軌跡に追記し、地図が太平洋まで引きになる。
   3. `sips -c` は `--cropOffset 0 0` を付けても**中央基準**で切る(ステータスバーが落ち、狙った広告バナーが残る)→ 上端基準の Swift 製クロッパを使う。
   4. `store_lint.sh` / `ocr-check.sh` は bash / zsh を取り違えると誤検知する(`for F in $FILES` の語分割、`setopt`)。
+
+## 2026/08/17 (1.0.2 コード側: requestReview / InfoPlist 多言語 / iOS target)
+- 委任: builder(レーン claude/car-ui-102-code)。commit 2cd8496。
+- ReviewPromptPolicy.swift(純粋関数)+ ContentView 配線で requestReview を追加。実接続(デモ除く)で 3 分以上のセッションを 2 回経験し、接続中・HUD 表示中・走行タブでない安全な文脈になった時点で 1 回だけ発火。同一バージョンでは 1 回まで(`review.lastRequestedVersion`)。
+- car_uiTests/ReviewPromptPolicyTests.swift 7 件追加(計 37 件パス、iOS 17.5 / 26.0 とも)。
+- InfoPlist.xcstrings に zh-Hans/es/de/fr を CFBundleDisplayName + 3 つの UsageDescription 全キーに追加(developmentRegion=ja のため非 ja/en 端末でホーム画面名が日本語化していた不具合を修正。Release 成果物の de.lproj/InfoPlist.strings で確認)。
+- IPHONEOS_DEPLOYMENT_TARGET 26.0→17.0(4 箇所)。iOS 18/26 専用 API は実コード上使っておらず #available 不要。GoogleMobileAds SPM(12.x)は iOS 15+ で問題なし。iOS 17.5(非フローティングタブバー)/ 26.0 双方でメーター/サウンド/その他をデモモードでスクショ確認、崩れなし。
+- 未検証: requestReview の実発火(simctl にタップ機能なし・ロジックはテストで担保)/ 実バナー表示状態でのタブバー被り(シミュレータがオフラインで広告非表示)。
+
+## 2026/08/17 (1.0.2 ストア側: ロケール追加 / ja スクショ撮り直し・並べ替え / en keywords)
+- 委任: mkt-aso(レーン claude/car-ui-102-store)。commit d12d4d6 / 50e5a68 / 34e7761 / a09ae1c。
+- description(ja/en-US)の開発コード名 "car_ui" を除去。
+- en-US subtitle は据え置き(案の "engine sound" が name と重複し ASO_PLAYBOOK の重複禁止に抵触)。keywords 83→96B(obdii, torque 追加、iTunes サジェスト API で実需要確認。instrument/cluster/dash/car は死に枠として却下)。
+- 新規ロケール 5 件(de-DE/fr-FR/es-MX/es-ES/zh-Hans)を store/metadata に作成し ASC 1.0.2 へ反映。name は英語 "OBD2 Scanner + Engine Sound" を全ロケール共通(DE/FR/ES でも英語の "OBD2 scanner" にサジェスト需要あり)、zh-Hans のみ現地化(「仪表盘」)。supportUrl/marketingUrl は新ロケールに継承されないため PATCH。
+- ja スクショ 5 枚を 1.0.2 Release(iOS 26.0, ja_JP, 大阪・難波の実在ルート)で撮り直し、「デモモード に接続済み」の写り込みを解消。ja/en-US とも 01 メーター→02 サウンド→03 マップ→04 ライブ→05 走行に並べ替え(差別化=エンジン音を検索結果カルーセルの 2 枚目へ)。新ロケールは en-US へ symlink で流用。
+- 検証: store_lint.sh 全ロケール OK、ocr-check.sh 禁止語 0。指揮官が API 読み戻し: 1.0.2(52957c20)に 7 ロケール × 5 枚 COMPLETE、supportUrl/whatsNew 全て有り。公開中 1.0.1 は未変更。
+- 新トラップ: iOS 26 フローティングタブバーが広告バナー行と重なり従来の 2450px クロップでは広告文言が漏れる → `-uiFakeBanner` + 2510px クロップ(ASO_NOTES に追記)。
+- 未実施: 審査提出・PPO。es-ES は es-MX のコピー。
