@@ -462,3 +462,4 @@
 - 検証: store_lint.sh 全ロケール OK、ocr-check.sh 禁止語 0。指揮官が API 読み戻し: 1.0.2(52957c20)に 7 ロケール × 5 枚 COMPLETE、supportUrl/whatsNew 全て有り。公開中 1.0.1 は未変更。
 - 新トラップ: iOS 26 フローティングタブバーが広告バナー行と重なり従来の 2450px クロップでは広告文言が漏れる → `-uiFakeBanner` + 2510px クロップ(ASO_NOTES に追記)。
 - 未実施: 審査提出・PPO。es-ES は es-MX のコピー。
+- 追記: push(e9dd539..f9e377c)→ Xcode Cloud build 41 VALID → ASC 1.0.2 に紐付け(build 40 から差し替え)。1.0.2 = 7 ロケール・スクショ完備・build 41 で**提出可能状態**。提出ボタンは人間。
