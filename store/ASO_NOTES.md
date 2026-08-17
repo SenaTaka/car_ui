@@ -42,6 +42,11 @@
 - keywords: lint 指摘により `obd` を削除(name の `OBD2` と重複=枠の無駄)。代わりに `油温` を追加(`水温` はあったが油温は未カバー)。69/100 字。
 - 残る lint NG 2 件(`description` の「無料」「free」)は 1.0.1 から存在し、root CLAUDE.md の「価格は description のみ可」に沿った意図的なもの。lint 側が過剰。
 
+## 2026-08-17 description の car_ui 除去 / en-US keywords 再配分 / ロケール追加(zh-Hans・de-DE・fr-FR・es-MX・es-ES)
+- description(ja/en-US)の開発コード名 "car_ui" を「このアプリ/the app」に置換(各1箇所)。訴求内容は不変。
+- en-US **subtitle は変更を見送り**(意図的な決定・確度【実践知】): obd2_analysis の案「Live gauges + engine sound, no sub」は name.txt が既に "Engine Sound" を含み、ASO_PLAYBOOK 2章の「subtitle は name と単語重複禁止」に反する(過去に "obd" 重複で lint NG になった前例と同種)。ELM327/gauges/no sub は現行のまま維持し、代わりに **keywords 側で再配分**(83→96字、`obdii`,`torque` を追加)。iTunes サジェスト API(US)で両語とも実需要を確認済み(`instrument`/`cluster`/`dash`/`car` は無関係ジャンルが大半を占め死に枠と判定し不採用)。
+- 新規ロケール 5 件(name/subtitle/keywords は iTunes サジェスト API の実サジェストで検証。DE/FR/ES/CN でも英語 "OBD2 Scanner" 自体が現地サジェストに出た=name は全ロケール共通のまま維持)。zh-Hans のみ現地化名(`OBD2扫描仪 · 引擎声音`、`仪表盘` の強い実需要を subtitle に反映)。ASC へ反映済み(appStoreVersionLocalization 作成+appInfoLocalization 更新+supportUrl/marketingUrl を ja/en-US から PATCH で補完 — 新ロケールは継承されない既知の罠)。
+
 ### 撮影レシピ(次回そのまま使える)
 - 撮影専用シミュレータを新規 create し、**アプリを一度も起動しないうちに** `simctl privacy grant location` する(起動後だと iOS 26 ではダイアログが消えずタップできない → `_AI_AGENT_NOTES/simulator-device.md`)。
 - 地図は `simctl location set 34.6700,135.5014`(御堂筋)+ `track.json` をコンテナへ seed。位置を設定せずに起動するとアプリが Cupertino の点を軌跡に追記し、地図が太平洋まで引きになる。
