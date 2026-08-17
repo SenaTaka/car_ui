@@ -1,0 +1,10 @@
+Einheiten-Unterstützung: Anzeigen zeigen jetzt mph, °F, psi und mpg passend zur Region (in den Einstellungen auch manuell umstellbar). CSV-Exporte folgen denselben Einheiten, mit der Einheit in der Spaltenüberschrift.
+
+• Fahrzeugprofil: Drehzahlbereich, Drehzahlbegrenzer und Kraftstoffart (Benzin/Diesel) einstellbar. Der Verbrauch wird für Diesel jetzt korrekt geschätzt.
+• Verbindet sich ein Adapter nicht, erklärt der Verbindungsbildschirm jetzt warum und was zu tun ist, inklusive Hilfe bei der Adapterwahl.
+• Aufnahme in jedem Tab starten, stoppen und den Status sehen.
+• Anzeigen, die nicht mehr aktualisiert werden, sind jetzt klar markiert.
+• Der Bildschirm bleibt an, solange der HUD angezeigt wird, die Helligkeit wird automatisch erhöht.
+• Einstellungen neu in Standardbereiche gegliedert, technische Details und Kommunikationsprotokoll eine Ebene tiefer.
+• Dezimaltrennzeichen für Deutsch, Französisch und Spanisch korrigiert.
+• Layout-Probleme bei großen Textgrößen behoben.

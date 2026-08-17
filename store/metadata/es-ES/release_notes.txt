@@ -1,0 +1,10 @@
+Soporte de unidades: los medidores ahora muestran mph, °F, psi y mpg según tu región (también puedes cambiarlo manualmente en Ajustes). Las exportaciones CSV siguen las mismas unidades, con la unidad indicada en el encabezado de columna.
+
+• Perfil del vehículo: ajusta el rango del tacómetro, la zona roja y el tipo de combustible (gasolina/diésel). El rendimiento ahora se calcula correctamente para diésel.
+• Cuando un adaptador no conecta, la pantalla de conexión ahora explica por qué y qué intentar, más una guía para elegir adaptador.
+• Inicia y detén la grabación, y ve su estado, desde cualquier pestaña.
+• Los medidores que dejaron de actualizarse ahora se marcan claramente.
+• La pantalla permanece encendida mientras se muestra el HUD, y el brillo sube automáticamente.
+• Ajustes reorganizados en secciones estándar, con detalles técnicos y el registro de comunicación un nivel más abajo.
+• Separadores decimales corregidos para alemán, francés y español.
+• Problemas de diseño corregidos en tamaños de texto grandes.

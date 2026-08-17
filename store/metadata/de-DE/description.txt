@@ -1,0 +1,36 @@
+Das Auto in Echtzeit sehen – und hören.
+
+ELM327 Bluetooth (BLE) verbinden, und die App macht aus den Live-OBD2-Daten ein schnelles, modernes Dashboard: Drehzahl, Geschwindigkeit, Kühlmitteltemperatur, Drosselklappe, Kraftstoff und jeder Sensor, den das Fahrzeug unterstützt – automatisch erkannt. Kein Abo. Nie.
+
+WAS ANDERS IST
+• Ein wirklich modernes Interface – nicht der angestaubte Look vieler OBD-Apps
+• Eine einzigartige Motorsound-Simulation, gesteuert von der echten Drehzahl
+• Geschwindigkeit und Drehzahl farbcodiert auf der Karte (auch als Satellitenbild)
+• Pro einmalig kaufen – keine monatlichen Gebühren, anders als bei vielen Scannern
+
+EIGENES DASHBOARD ZUSAMMENSTELLEN
+Vier Widget-Typen kombinieren – digitale Kacheln, analoge Zeiger-Anzeigen, Live-Diagramme und die Streckenkarte – und in beliebiger Reihenfolge anordnen. Ein gespiegelter HUD-Modus projiziert die Geschwindigkeit nachts auf die Windschutzscheibe.
+
+FÜNF BEREICHE
+• Dashboard – eigenes Widget-Layout plus HUD-Modus
+• Daten – jeder Live-Sensor, überlagerte oder einzelne Diagramme, CSV-Export (lang oder tabellenfreundlich im Querformat)
+• Fahrt – Bordcomputer mit Verbrauch, farbcodierter Streckenkarte, G-Kraft-Kugel und 0–100-Zeitmessung
+• Motorsound – prozeduraler Sound, der der echten Drehzahl folgt (alle Presets kostenlos)
+• Werkzeuge – Adapter-Informationen und Kommunikationsprotokoll
+
+KOSTENLOS ENTHALTEN
+Live-Daten, das Dashboard, die Streckenkarte, der Bordcomputer, HUD und Motorsound – kostenlos, mit kleinem Banner-Werbebanner.
+
+PRO (EINMALKAUF, OPTIONAL)
+• Unbegrenzter CSV-Export
+• 0–100- und G-Kraft-Fahrten speichern
+• Werbung entfernen
+Nur Werbung stört? Ein günstigerer Kauf nur zum Entfernen der Werbung ist ebenfalls verfügbar.
+
+KEIN ACCOUNT NÖTIG
+Die Fahrzeugdaten kommen direkt vom ELM327-Adapter per Bluetooth und werden auf dem Gerät verarbeitet – es gibt keinen Server des Entwicklers, der sie sammelt. Die kostenlose Version zeigt Werbung von Googles Werbe-SDK (mit Werbefrei oder Pro entfällt die Werbung). Ausprobieren geht auch ohne Hardware über den eingebauten Demo-Modus.
+
+ERFORDERLICH: ein ELM327-kompatibler Bluetooth-LE-(BLE)-OBD2-Adapter und ein Fahrzeug mit OBD2-Anschluss (die meisten seit 2008 verkauften Autos).
+
+SUPPORT
+Fragen oder Ideen? support@takasawadynamics.com

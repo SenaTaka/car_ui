@@ -1,0 +1,36 @@
+Ve — y escucha — tu auto en tiempo real.
+
+Conecta un adaptador ELM327 Bluetooth (BLE) y la app convierte los datos OBD2 en vivo en un tablero rápido y moderno: RPM, velocidad, refrigerante, acelerador, combustible y todos los sensores que soporte tu vehículo, detectados automáticamente. Sin suscripción. Nunca.
+
+QUÉ LO HACE DIFERENTE
+• Una interfaz realmente moderna, no el aspecto anticuado de la mayoría de apps OBD
+• Una simulación de sonido de motor única, controlada por tus RPM reales
+• Velocidad y RPM dibujadas en el mapa, con colores (incluye vista satelital)
+• Pro es compra única — sin cuotas mensuales, a diferencia de muchos escáneres
+
+ARMA TU PROPIO TABLERO
+Combina cuatro tipos de widgets — indicadores digitales, medidores analógicos de aguja, gráficas en vivo y el mapa de recorrido — y ordénalos a tu gusto. Un modo HUD reflejado proyecta tu velocidad en el parabrisas de noche.
+
+CINCO PESTAÑAS
+• Tablero — tu propio diseño de widgets, más el modo HUD
+• Datos — cada sensor en vivo, gráficas superpuestas o separadas, exportación CSV (formato largo o ancho para hojas de cálculo)
+• Manejo — computadora de viaje con rendimiento de combustible, mapa de recorrido a color, esfera de fuerza G y cronómetro 0–100
+• Sonido de motor — sonido procedural que sigue tus RPM reales (todos los presets gratis)
+• Herramientas — información del adaptador y registro de comunicación
+
+INCLUIDO GRATIS
+Datos en vivo, el tablero, mapa de recorrido, computadora de viaje, HUD y sonido de motor — gratis, con un pequeño anuncio en banner.
+
+PRO (COMPRA ÚNICA, OPCIONAL)
+• Exportación CSV ilimitada
+• Guarda tus corridas de 0–100 y fuerza G
+• Elimina los anuncios
+¿Solo quieres quitar los anuncios? También hay una compra más barata solo para eso.
+
+NO NECESITAS CUENTA
+Los datos del vehículo llegan directo del adaptador ELM327 por Bluetooth y se procesan en tu dispositivo — no hay un servidor del desarrollador que los recolecte. La versión gratis muestra anuncios servidos por el SDK de anuncios de Google (con Quitar anuncios o Pro no se muestran anuncios). Puedes probarla sin hardware con el modo demo incluido.
+
+REQUIERE un adaptador OBD2 Bluetooth LE (BLE) compatible con ELM327 y un vehículo con puerto OBD2 (la mayoría de los autos vendidos desde 2008).
+
+SOPORTE
+¿Dudas o ideas? support@takasawadynamics.com

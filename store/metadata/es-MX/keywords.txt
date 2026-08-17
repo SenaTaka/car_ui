@@ -1,0 +1,1 @@
+hud,obdii,torque,rpm,velocimetro,velocidad,refrigerante,combustible,bluetooth,vehiculo,sensor,mapa

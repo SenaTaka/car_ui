@@ -1,0 +1,10 @@
+Prise en charge des unités : les jauges affichent désormais mph, °F, psi et mpg selon votre région (modifiable manuellement dans Réglages). Les exports CSV suivent les mêmes unités, avec l'unité indiquée dans l'en-tête de colonne.
+
+• Profil du véhicule : plage de régime, zone rouge et type de carburant (essence/diesel) réglables. La consommation est désormais correctement estimée pour les diesels.
+• Quand un adaptateur ne se connecte pas, l'écran de connexion explique maintenant pourquoi et quoi essayer, avec un guide pour choisir un adaptateur.
+• Démarrer, arrêter l'enregistrement et voir son état depuis n'importe quel onglet.
+• Les jauges qui ne se mettent plus à jour sont désormais clairement signalées.
+• L'écran reste allumé tant que le HUD est affiché, la luminosité est augmentée automatiquement.
+• Réglages réorganisés en sections standard, détails techniques et journal de communication déplacés un niveau plus bas.
+• Correction des séparateurs décimaux pour l'allemand, le français et l'espagnol.
+• Correction de problèmes de mise en page avec les grandes tailles de texte.

@@ -1,0 +1,1 @@
+Live-OBD2-Daten, eigenes Dashboard, Karten-Tracking und Motorsound nach echter Drehzahl. Pro entfernt Werbung und erlaubt unbegrenzten CSV-Export.
