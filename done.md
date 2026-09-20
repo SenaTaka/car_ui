@@ -463,3 +463,14 @@
 - 新トラップ: iOS 26 フローティングタブバーが広告バナー行と重なり従来の 2450px クロップでは広告文言が漏れる → `-uiFakeBanner` + 2510px クロップ(ASO_NOTES に追記)。
 - 未実施: 審査提出・PPO。es-ES は es-MX のコピー。
 - 追記: push(e9dd539..f9e377c)→ Xcode Cloud build 41 VALID → ASC 1.0.2 に紐付け(build 40 から差し替え)。1.0.2 = 7 ロケール・スクショ完備・build 41 で**提出可能状態**。提出ボタンは人間。
+
+## 2026/09/20 20:40 (Pro サブスク化 Phase 1 + ダッシュボード 5a、未コミット)
+- ユーザー決定「サブスク化を行う」→ 設計を `README.md`(§0〜§9 サブスク、§10〜§14 自由に作れるダッシュボード)に書き、決定 D-2026-0920-02(accepted, continue、2026-07-13 の「サブスク不採用」を上書き)と実験 E-2026-0920-04(8 週判定)を作成。
+- builder(レーン claude/car_ui-subscription): ProStore を 4 商品(yearly/monthly/lifetime=既存 pro/adfree)に拡張、判定は純粋関数 `ProEntitlement.resolve` / `LegacyPolicy.decide`(更新前ユーザーは音のロック免除、キー `pro.legacyDecided`/`pro.legacyFreeSound`、onboarding キーは `onboarding.completed`)。PaywallView 全面書き換え(3.1.2 準拠、プライバシー URL は ASC 登録値 `/apps/obd2-scanner/privacy`)。EnginePreset に `isFree`(Inline 4 の 2 種のみ)、ロック中は 20 秒試聴→ペイウォール。intro paywall は「実接続で RPM≥1000 かつ(60 秒経過 or 音再生中)」に置換。Products.storekit にサブスクグループ追加。xcstrings 516→545 キー。テスト 46 件。
+- 5a: 無料ウィジェット上限 6、プリセット適用の確認アラート、アナログメーターに isStale、水温/油温の状態色(`PIDDefinition.dashboardTint(for:)`、警告 105/120℃・危険 115/130℃)+他 PID は中立アクセント、初回実接続時の編集ヒント popover(`dashboard.editHintShown`)。スクショ用起動引数 `-uiIntroOffer 1` / `-uiEngineSoundPresets 1` / `-uiDashboardEdit 1` を追加。
+- mkt-aso: store/metadata 7 ロケールから「サブスクなし/買い切り」訴求を撤去、Pro 段落を差し替え、release_notes(1.1.0)作成。指揮官が「レイアウト無制限」→「ウィジェット無制限」に修正(複数ページは未実装のため)。lint NG は既知 2 件のみ。
+- ASC: サブスクグループ「car_ui Pro」(22399078)と yearly `Sena.car_ui.pro.yearly`(6814122228、7 ロケール localization 済み)を作成。**monthly・価格・7 日無料・配信国は分類器で止まった** → `company-os/bin/asc_create_subscription_car_ui.py`(冪等)を人間が実行。既存 pro の ¥4,800 化と adfree の販売停止は公開当日に人間が ASC で。
+- 調査: `doc/dashboard_ui_research.md`(strategist、出典 34)。designer 監査の指摘 3 件(複数レイアウト未実装の誇大訴求 / プリセット無確認 / 色が状態でない)は 5a と文言修正で解消。
+- 検証: builder 報告 `xcb xcodebuild build → exit 0 BUILD SUCCEEDED` / `xcb xcodebuild test (iPhone 17 Pro) → exit 0, Executed 46 tests, 0 failures`。指揮官は `git diff --stat`(12 ファイル)で裏取り。
+- 未検証: シミュレータ実画面(ペイウォール・音ロック・ダッシュボード)— Mac が load average 500〜1000 の高負荷でスクショ不可。Xcode での購入フロー目視(トライアルバッジ・復元)。
+- 次: 5b(1.2.0: サイズ/スタイル/複数ページ/長押し並べ替え)・5c(テーマ・しきい値編集・横向き)は README §14。

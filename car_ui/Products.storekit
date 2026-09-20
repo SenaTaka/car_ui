@@ -18,18 +18,18 @@
       "type" : "NonConsumable"
     },
     {
-      "displayPrice" : "730",
+      "displayPrice" : "4800",
       "familyShareable" : false,
       "internalID" : "410827E9-D6F2-4C1F-938D-C15AD900F0DB",
       "localizations" : [
         {
-          "description" : "広告除去・CSV ログ無制限・記録の保存",
-          "displayName" : "car_ui Pro",
+          "description" : "全エンジン音・ドライブ履歴・広告除去・CSV 無制限を一度の支払いでずっと",
+          "displayName" : "car_ui Pro(買い切り)",
           "locale" : "ja_JP"
         }
       ],
       "productID" : "Sena.car_ui.pro",
-      "referenceName" : "car_ui Pro",
+      "referenceName" : "car_ui Pro(買い切り)",
       "type" : "NonConsumable"
     }
   ],
@@ -44,7 +44,65 @@
 
     ]
   },
-  "subscriptionGroups" : [],
+  "subscriptionGroups" : [
+    {
+      "id" : "338B5D74-9DD1-4DFC-86CC-8A28FEFC7717",
+      "localizations" : [],
+      "name" : "car_ui Pro",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [],
+          "codeOffers" : [],
+          "displayPrice" : "2400",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "6BD45FD7-AB7E-4F99-BEAD-601995B1C8E5",
+          "introductoryOffer" : {
+            "displayPrice" : "0",
+            "internalID" : "F1415C18-1622-41B4-80BF-DD08EBF99A50",
+            "numberOfPeriods" : 1,
+            "paymentMode" : "free",
+            "subscriptionPeriod" : "P1W"
+          },
+          "localizations" : [
+            {
+              "description" : "全エンジン音・追加音・ドライブ履歴・広告除去・CSV 無制限(年額・7日間無料トライアル)",
+              "displayName" : "car_ui Pro(年額)",
+              "locale" : "ja_JP"
+            }
+          ],
+          "productID" : "Sena.car_ui.pro.yearly",
+          "recurringSubscriptionPeriod" : "P1Y",
+          "referenceName" : "car_ui Pro 年額",
+          "subscriptionGroupID" : "338B5D74-9DD1-4DFC-86CC-8A28FEFC7717",
+          "type" : "RecurringSubscription",
+          "winBackOffers" : []
+        },
+        {
+          "adHocOffers" : [],
+          "codeOffers" : [],
+          "displayPrice" : "480",
+          "familyShareable" : false,
+          "groupNumber" : 2,
+          "internalID" : "A37BDD34-A4AC-4AE7-B7E6-104586FD3EA5",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "全エンジン音・追加音・ドライブ履歴・広告除去・CSV 無制限(月額)",
+              "displayName" : "car_ui Pro(月額)",
+              "locale" : "ja_JP"
+            }
+          ],
+          "productID" : "Sena.car_ui.pro.monthly",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "car_ui Pro 月額",
+          "subscriptionGroupID" : "338B5D74-9DD1-4DFC-86CC-8A28FEFC7717",
+          "type" : "RecurringSubscription",
+          "winBackOffers" : []
+        }
+      ]
+    }
+  ],
   "version" : {
     "major" : 3,
     "minor" : 0

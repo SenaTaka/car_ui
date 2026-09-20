@@ -17,6 +17,9 @@ struct DashboardView: View {
     @State private var showsHUD = false
     // 自分用ダッシュボードのウィジェット構成(種類+PID、永続化)
     @State private var layout = DashboardLayoutStore()
+    // 5a §12-4: 編集入口の発見性。初回の実接続成功時に 1 回だけ吹き出しを出す。
+    @AppStorage("dashboard.editHintShown") private var editHintShown = false
+    @State private var showingEditHint = false
 
     private let tileColumns = [GridItem(.adaptive(minimum: 150), spacing: 12)]
 
@@ -65,6 +68,17 @@ struct DashboardView: View {
                         // 監査 C-5: シート側のタイトルと語を揃える(旧: ボタン「タイルを編集」→シート「ダッシュボード編集」)
                         Label("表示項目を編集", systemImage: "slider.horizontal.3")
                     }
+                    // 5a §12-4: 編集入口の発見性(1 回だけ)
+                    .popover(isPresented: $showingEditHint, arrowEdge: .top) {
+                        Text("メーターを並べ替えられます")
+                            .font(.subheadline)
+                            .padding()
+                            .presentationCompactAdaptation(.popover)
+                            .task {
+                                try? await Task.sleep(nanoseconds: 4_000_000_000)
+                                showingEditHint = false
+                            }
+                    }
                 }
 
                 ToolbarItem(placement: .topBarTrailing) {
@@ -87,12 +101,30 @@ struct DashboardView: View {
             .onReceive(NotificationCenter.default.publisher(for: .carUIOpenConnectionSheet)) { _ in
                 openConnection()
             }
+            // 5a §12-4: 初回の実接続成功(デモ除く)時だけ編集入口の吹き出しを 1 回出す
+            .onChange(of: obd.phase.isConnected) { _, isConnected in
+                guard isConnected, !obd.isDemo, !editHintShown else { return }
+                editHintShown = true
+                showingEditHint = true
+            }
             .fullScreenCover(isPresented: $showsHUD) {
                 HUDView()
             }
             .sheet(isPresented: $showsCustomizeSheet) {
                 DashboardBuilderView(store: layout)
             }
+            .onAppear {
+                applyUITestLaunchArgumentsIfPresent()
+            }
+        }
+    }
+
+    /// App Store スクショ撮影用フック(ContentView と同じ流儀)。`-uiDashboardEdit 1` で
+    /// ダッシュボード編集シートを強制表示する。本番挙動は不変。
+    private func applyUITestLaunchArgumentsIfPresent() {
+        let args = ProcessInfo.processInfo.arguments
+        if args.contains("-uiDashboardEdit") {
+            showsCustomizeSheet = true
         }
     }
 
@@ -340,7 +372,8 @@ struct DashboardView: View {
                     value: definition.displayText(value),
                     unit: definition.displayUnit,
                     systemImage: definition.icon,
-                    tint: definition.tint,
+                    // 5a: 色は水温・油温のしきい値だけに意味を持たせる(それ以外は中立アクセント)
+                    tint: definition.dashboardTint(for: value),
                     progress: value.map { progress($0, in: definition.gaugeRange) },
                     isStale: isStale
                 )

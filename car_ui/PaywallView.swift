@@ -2,8 +2,8 @@
 //  PaywallView.swift
 //  car_ui
 //
-//  プラン提案ペイウォール。無料 / 広告除去(¥300)/ Pro(¥730)の3列比較で
-//  価値を提示し、購入 / 復元を行う。買い切り・サブスクなしを全面に。
+//  Pro プラン提案(年額サブスク既定・7日間無料トライアル/月額/買い切り Lifetime)。
+//  Guideline 3.1.2 準拠: 価格・期間・自動更新の明記、EULA・プライバシーポリシー・復元を必ず出す。
 //
 
 import StoreKit
@@ -12,32 +12,37 @@ import SwiftUI
 struct PaywallView: View {
     @Environment(ProStore.self) private var proStore
     @Environment(\.dismiss) private var dismiss
+    @State private var selectedPlan: ProPlan = .yearly
     // 復元中/成功/対象なしを一定時間視認できるようにするための一時状態
     @State private var isRestoring = false
     @State private var restoreMessage: String?
 
-    private struct BenefitRow: Identifiable {
-        let name: String
-        let detail: String
-        let inAdFree: Bool
+    /// プライバシーポリシーの正本 URL。CLAUDE.md/store 配下にアプリ内既存の記載が見つからなかったため
+    /// 会社サイトの想定パスを暫定使用(指揮官側で正しい URL に要確認)。
+    private static let privacyPolicyURL = URL(string: "https://takasawadynamics.com/apps/obd2-scanner/privacy")!
+    private static let eulaURL = URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/")!
 
-        var id: String { name }
+    private struct ValueProp: Identifiable {
+        let icon: String
+        let text: Text
+        var id: String { icon }
     }
 
-    private let benefits: [BenefitRow] = [
-        BenefitRow(name: "広告なし", detail: "全タブのバナー広告を非表示", inAdFree: true),
-        // 2026-07-16 リリース品質監査(REL-001〜004)により診断系を無効化したため特典から除外
-        // BenefitRow(name: "DTC 消去", detail: "故障コードをワンタップで消去", inAdFree: false),
-        BenefitRow(name: "CSV 無制限", detail: "横持ち/縦持ちエクスポートを制限なく", inAdFree: false),
-        BenefitRow(name: "記録の保存", detail: "0-100 加速・G フォースの記録を保存", inAdFree: false)
-    ]
+    private var valueProps: [ValueProp] {
+        [
+            ValueProp(icon: "engine.combustion.fill", text: Text("全エンジン音 + 追加音")),
+            ValueProp(icon: "clock.arrow.circlepath", text: Text("ドライブ履歴と記録")),
+            ValueProp(icon: "checkmark.seal.fill", text: Text("広告なし・CSV 無制限"))
+        ]
+    }
 
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 22) {
                     header
-                    comparisonTable
+                    valuePropList
+                    planCards
                     purchaseSection
                 }
                 .padding()
@@ -53,16 +58,19 @@ struct PaywallView: View {
             }
             .task {
                 await proStore.loadProducts()
+                await proStore.refreshTrialEligibility()
+                if proStore.yearlyProduct == nil, proStore.lifetimeProduct != nil {
+                    selectedPlan = .lifetime
+                }
             }
             .onChange(of: proStore.isPro) { _, isPro in
                 // 復元中は performRestore() 側で確認表示後にまとめて dismiss する
                 if isPro && !isRestoring { dismiss() }
             }
-            .onChange(of: proStore.isAdFree) { _, isAdFree in
-                if isAdFree && !isRestoring { dismiss() }
-            }
         }
     }
+
+    // MARK: - 見出し・価値訴求
 
     private var header: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -70,93 +78,109 @@ struct PaywallView: View {
                 .font(.system(size: 44))
                 .foregroundStyle(.orange)
 
-            Text("買い切り、一回だけ。")
+            Text("Pro で、全部のエンジンを自分の車で")
                 .font(.title2.weight(.bold))
-
-            Text("サブスクはありません。一度買えばずっと使えます。")
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }
 
-    // MARK: - 無料 / 広告除去 / Pro の比較表
-
-    private var comparisonTable: some View {
-        VStack(spacing: 0) {
-            // ヘッダ行
-            HStack(spacing: 0) {
-                Text("機能")
-                    .font(.caption.weight(.semibold))
-                    .foregroundStyle(.secondary)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-
-                planHeader("無料", price: nil, highlighted: false)
-                planHeader("広告除去", price: proStore.adFreeProduct?.displayPrice, highlighted: false)
-                planHeader("Pro", price: proStore.proProduct?.displayPrice, highlighted: true)
+    private var valuePropList: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            ForEach(valueProps) { prop in
+                HStack(spacing: 10) {
+                    Image(systemName: prop.icon)
+                        .font(.subheadline)
+                        .foregroundStyle(.indigo)
+                        .frame(width: 22)
+                    prop.text
+                        .font(.subheadline.weight(.semibold))
+                }
             }
-            .padding(.vertical, 10)
+        }
+        .padding(14)
+        .background(Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 14))
+    }
 
-            Divider()
+    // MARK: - プラン 3 択
 
-            ForEach(benefits) { benefit in
-                HStack(spacing: 0) {
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text(benefit.name)
-                            .font(.subheadline.weight(.semibold))
-                        Text(benefit.detail)
-                            .font(.caption2)
+    private var planCards: some View {
+        VStack(spacing: 10) {
+            planCard(
+                plan: .yearly,
+                title: Text("年額"),
+                price: proStore.yearlyProduct?.displayPrice,
+                subtitle: perMonthSubtitle,
+                badgeText: proStore.isTrialEligible ? Text("7 日間無料") : nil
+            )
+            planCard(
+                plan: .monthly,
+                title: Text("月額"),
+                price: proStore.monthlyProduct?.displayPrice,
+                subtitle: nil,
+                badgeText: nil
+            )
+            planCard(
+                plan: .lifetime,
+                title: Text("買い切り"),
+                price: proStore.lifetimeProduct?.displayPrice,
+                subtitle: Text("一度だけ支払い、ずっと使える"),
+                badgeText: nil
+            )
+        }
+    }
+
+    private var perMonthSubtitle: Text? {
+        guard let perMonthText = proStore.yearlyPricePerMonthText else { return nil }
+        return Text("月あたり ") + Text(perMonthText)
+    }
+
+    private func planCard(plan: ProPlan, title: Text, price: String?, subtitle: Text?, badgeText: Text?) -> some View {
+        let isSelected = selectedPlan == plan
+        return Button {
+            selectedPlan = plan
+        } label: {
+            HStack(alignment: .top, spacing: 12) {
+                Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
+                    .font(.title3)
+                    .foregroundStyle(isSelected ? .indigo : Color(.systemFill))
+
+                VStack(alignment: .leading, spacing: 3) {
+                    HStack(spacing: 6) {
+                        title
+                            .font(.headline)
+                        if let badgeText {
+                            badgeText
+                                .font(.caption2.weight(.bold))
+                                .padding(.horizontal, 8)
+                                .padding(.vertical, 3)
+                                .background(.orange, in: Capsule())
+                                .foregroundStyle(.white)
+                        }
+                    }
+                    if let subtitle {
+                        subtitle
+                            .font(.caption)
                             .foregroundStyle(.secondary)
                     }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-
-                    checkCell(false, highlighted: false)
-                    checkCell(benefit.inAdFree, highlighted: false)
-                    checkCell(true, highlighted: true)
                 }
-                .padding(.vertical, 10)
 
-                if benefit.id != benefits.last?.id {
-                    Divider()
-                }
+                Spacer()
+
+                Text(price ?? "—")
+                    .font(.subheadline.weight(.semibold))
+                    .foregroundStyle(isSelected ? .indigo : .primary)
             }
+            .padding(14)
+            .background(Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 14))
+            .overlay(
+                RoundedRectangle(cornerRadius: 14)
+                    .stroke(isSelected ? Color.indigo : .clear, lineWidth: 2)
+            )
         }
-        .padding(.horizontal, 14)
-        .background(Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 12))
-        .overlay(alignment: .topTrailing) {
-            Text("おすすめ")
-                .font(.caption2.weight(.bold))
-                .padding(.horizontal, 8)
-                .padding(.vertical, 3)
-                .background(.indigo, in: Capsule())
-                .foregroundStyle(.white)
-                .offset(x: -8, y: -10)
-        }
+        .buttonStyle(.plain)
     }
 
-    private func planHeader(_ name: String, price: String?, highlighted: Bool) -> some View {
-        VStack(spacing: 2) {
-            Text(name)
-                .font(.caption.weight(highlighted ? .bold : .semibold))
-                .foregroundStyle(highlighted ? .indigo : .secondary)
-                .lineLimit(1)
-                .minimumScaleFactor(0.7)
-
-            Text(price ?? (name == "無料" ? "¥0" : "—"))
-                .font(.caption2.monospacedDigit())
-                .foregroundStyle(highlighted ? .indigo : .secondary)
-        }
-        .frame(width: 64)
-    }
-
-    private func checkCell(_ included: Bool, highlighted: Bool) -> some View {
-        Image(systemName: included ? "checkmark.circle.fill" : "minus")
-            .font(.subheadline)
-            .foregroundStyle(included ? (highlighted ? .indigo : .green) : Color(.systemFill))
-            .frame(width: 64)
-    }
-
-    // MARK: - 購入
+    // MARK: - 購入・脚注
 
     private var purchaseSection: some View {
         VStack(spacing: 12) {
@@ -168,20 +192,15 @@ struct PaywallView: View {
             }
 
             Button {
-                Task { await proStore.purchase() }
+                Task { await proStore.purchase(plan: selectedPlan) }
             } label: {
                 HStack(spacing: 8) {
                     if proStore.isPurchasing {
                         ProgressView()
                             .tint(.white)
                     }
-                    VStack(spacing: 1) {
-                        Text(purchaseButtonTitle)
-                            .font(.headline)
-                        Text("全機能・買い切り")
-                            .font(.caption2)
-                            .opacity(0.85)
-                    }
+                    ctaLabel
+                        .font(.headline)
                 }
                 .frame(maxWidth: .infinity)
                 .frame(height: 56)
@@ -189,26 +208,7 @@ struct PaywallView: View {
             .buttonStyle(.borderedProminent)
             .tint(.indigo)
             .foregroundStyle(.white)
-            .disabled(proStore.isPurchasing || proStore.proProduct == nil)
-
-            // 広告だけ消したい人向けの単品(Pro は広告除去を含む上位互換)
-            if !proStore.isAdFree {
-                Button {
-                    Task { await proStore.purchaseAdFree() }
-                } label: {
-                    Text(adFreeButtonTitle)
-                        .font(.subheadline.weight(.semibold))
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 44)
-                }
-                .buttonStyle(.bordered)
-                .disabled(proStore.isPurchasing || proStore.adFreeProduct == nil)
-            } else {
-                Text("広告除去は購入済みです。Pro にすると残りの機能も使えます。")
-                    .font(.caption)
-                    .foregroundStyle(.green)
-                    .frame(maxWidth: .infinity, alignment: .center)
-            }
+            .disabled(proStore.isPurchasing || selectedProduct == nil)
 
             VStack(spacing: 4) {
                 Button("購入を復元") {
@@ -224,26 +224,58 @@ struct PaywallView: View {
                 }
             }
 
-            Text("お支払いは一度だけ。自動更新や定期課金は一切ありません。")
-                .font(.caption2)
-                .foregroundStyle(.secondary)
-                .frame(maxWidth: .infinity, alignment: .center)
+            legalFooter
         }
         .frame(maxWidth: .infinity)
     }
 
-    private var purchaseButtonTitle: String {
-        if let product = proStore.proProduct {
-            return "\(product.displayPrice) で Pro を購入"
+    private var legalFooter: some View {
+        VStack(spacing: 6) {
+            Text("価格・期間は選択したプランにより異なります。サブスクリプションは期間終了の 24 時間前までに解約しない限り自動更新されます。設定 > Apple ID > サブスクリプションから管理・解約できます。")
+                .font(.caption2)
+                .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
+
+            HStack(spacing: 14) {
+                Link("利用規約", destination: Self.eulaURL)
+                Link("プライバシーポリシー", destination: Self.privacyPolicyURL)
+            }
+            .font(.caption2.weight(.semibold))
         }
-        return proStore.isLoadingProducts ? "読み込み中…" : "Pro を購入"
+        .frame(maxWidth: .infinity, alignment: .center)
     }
 
-    private var adFreeButtonTitle: String {
-        if let product = proStore.adFreeProduct {
-            return "広告除去のみ \(product.displayPrice)"
+    private var selectedProduct: Product? {
+        switch selectedPlan {
+        case .yearly: return proStore.yearlyProduct
+        case .monthly: return proStore.monthlyProduct
+        case .lifetime: return proStore.lifetimeProduct
+        case .none: return nil
         }
-        return proStore.isLoadingProducts ? "読み込み中…" : "広告除去のみ"
+    }
+
+    private var ctaLabel: Text {
+        switch selectedPlan {
+        case .yearly:
+            if proStore.isTrialEligible {
+                return Text("無料で 7 日間試す")
+            } else if let product = proStore.yearlyProduct {
+                return Text(product.displayPrice) + Text("/年で始める")
+            }
+            return Text("年額プランで始める")
+        case .monthly:
+            if let product = proStore.monthlyProduct {
+                return Text(product.displayPrice) + Text("/月で始める")
+            }
+            return Text("月額プランで始める")
+        case .lifetime:
+            if let product = proStore.lifetimeProduct {
+                return Text(product.displayPrice) + Text(" で買い切る")
+            }
+            return Text("買い切りで購入")
+        case .none:
+            return Text("購入する")
+        }
     }
 
     /// 復元中/成功/対象なしの3状態を最低 0.8 秒視認できる形で表示してから dismiss する。
@@ -256,7 +288,7 @@ struct PaywallView: View {
         try? await Task.sleep(nanoseconds: 800_000_000)
         isRestoring = false
         restoreMessage = nil
-        if succeeded {
+        if proStore.isPro {
             dismiss()
         }
     }

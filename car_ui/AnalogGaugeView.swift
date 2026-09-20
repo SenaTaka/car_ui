@@ -15,11 +15,16 @@ struct AnalogGaugeView: View {
     let unit: String
     let tint: Color
     let fractionDigits: Int
+    /// 監査 B-3 と同じ鮮度表現。デジタルタイルと揃えて針・数字を薄くする(5a)。
+    var isStale: Bool = false
 
     // 7時位置(135°)から5時位置(405°)まで 270° スイープ(y-down 座標)
     private let startAngle = 135.0
     private let sweep = 270.0
     private let majorTickCount = 8
+
+    /// stale のときは危険域の色(赤等)より鮮度が優先(古いデータで誤警戒させない)
+    private var effectiveTint: Color { isStale ? Color.secondary : tint }
 
     var body: some View {
         GeometryReader { geometry in
@@ -39,7 +44,7 @@ struct AnalogGaugeView: View {
         // レビュー 10-3・14章: カスタム描画は意味を自動で伝えないため明示する
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(Text(LocalizedStringKey(title)))
-        .accessibilityValue(Text(value == nil ? "未取得" : "\(metricText(value, digits: fractionDigits)) \(unit)"))
+        .accessibilityValue(accessibilityValueText)
     }
 
     private func track(size: CGFloat) -> some View {
@@ -50,7 +55,7 @@ struct AnalogGaugeView: View {
 
     private func progressArc(size: CGFloat) -> some View {
         AnalogGaugeArc(startAngle: startAngle, endAngle: needleAngle)
-            .stroke(tint.opacity(0.85), style: StrokeStyle(lineWidth: size * 0.06, lineCap: .round))
+            .stroke(effectiveTint.opacity(0.85), style: StrokeStyle(lineWidth: size * 0.06, lineCap: .round))
             .padding(size * 0.07)
             .animation(.linear(duration: 0.15), value: value)
     }
@@ -67,7 +72,7 @@ struct AnalogGaugeView: View {
 
     private func needle(size: CGFloat) -> some View {
         Rectangle()
-            .fill(tint)
+            .fill(effectiveTint)
             .frame(width: size * 0.02, height: size * 0.30)
             .offset(y: -(size * 0.15))
             .rotationEffect(.degrees(needleAngle + 90))
@@ -76,7 +81,7 @@ struct AnalogGaugeView: View {
 
     private func hub(size: CGFloat) -> some View {
         Circle()
-            .fill(tint.opacity(0.9))
+            .fill(effectiveTint.opacity(0.9))
             .frame(width: size * 0.07, height: size * 0.07)
     }
 
@@ -89,6 +94,7 @@ struct AnalogGaugeView: View {
                 .monospacedDigit()
                 .lineLimit(1)
                 .minimumScaleFactor(0.6)
+                .foregroundStyle(isStale ? Color.secondary : Color.primary)
 
             Text(unit)
                 .font(.system(size: size * 0.07, weight: .semibold))
@@ -103,6 +109,12 @@ struct AnalogGaugeView: View {
                 .padding(.bottom, size * 0.04)
         }
         .frame(width: size * 0.8)
+    }
+
+    private var accessibilityValueText: Text {
+        guard value != nil else { return Text("未取得") }
+        let base = "\(metricText(value, digits: fractionDigits)) \(unit)"
+        return isStale ? Text("\(base)、\(String(localized: "更新なし"))") : Text(base)
     }
 
     private var needleAngle: Double {

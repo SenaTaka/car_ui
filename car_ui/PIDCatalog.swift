@@ -83,9 +83,46 @@ struct PIDDefinition: Identifiable {
     }
 }
 
+extension PIDDefinition {
+    /// 5a: ダッシュボード(タイル・アナログメーター)の色は「赤=危険」だけに意味を持たせる。
+    /// 水温・油温は既定しきい値で 中立アクセント(標準)→黄(警告)→赤(危険) に切り替わる。
+    /// それ以外の PID は常に中立アクセント(RPM の `VehicleProfile.isOverRedline` と同じ、
+    /// 値を見て bool を返すだけの最小パターン)。分類ごとの固定色(`tint`)はチャート・
+    /// センサー一覧など他画面の判別用に残し、ここでは上書きしない。
+    func dashboardTint(for value: Double?) -> Color {
+        guard let value else { return DS.Role.accent }
+        switch pid {
+        case 0x05:
+            if value >= PIDCatalog.Threshold.coolantDangerC { return DS.Role.danger }
+            if value >= PIDCatalog.Threshold.coolantWarnC { return DS.Role.warn }
+            return DS.Role.accent
+        case 0x5C:
+            if value >= PIDCatalog.Threshold.oilDangerC { return DS.Role.danger }
+            if value >= PIDCatalog.Threshold.oilWarnC { return DS.Role.warn }
+            return DS.Role.accent
+        default:
+            return DS.Role.accent
+        }
+    }
+}
+
 enum PIDCatalog {
     // 毎サイクル取得する高速系(応答性重視)
     static let fastPIDs: [UInt8] = [0x0C, 0x0D, 0x11, 0x04]
+
+    /// ダッシュボードの色分けに使う既定しきい値(℃)。VehicleProfile のような車両固有設定は
+    /// まだ無いので、一般的な水冷ガソリンエンジンの目安値を使う(根拠は各定数のコメント)。
+    enum Threshold {
+        /// 水温: サーモスタット制御域はおよそ 90〜105℃。105℃超はファン全開でも上がり続ける
+        /// 個体が多く、オーバーヒート予兆として一般的に警告域とされる値。
+        static let coolantWarnC = 105.0
+        /// 115℃超は多くの市販車で沸騰・ヘッドガスケット損傷リスクが語られる危険域。
+        static let coolantDangerC = 115.0
+        /// 油温: 通常走行では80〜110℃程度、120℃超はロングドレイン油脂の劣化が進みやすい警告域。
+        static let oilWarnC = 120.0
+        /// 130℃超は油膜切れ・焼き付きリスクが語られる危険域。
+        static let oilDangerC = 130.0
+    }
 
     static func definition(for pid: UInt8) -> PIDDefinition? {
         byPID[pid]

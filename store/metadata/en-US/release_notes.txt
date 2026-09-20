@@ -1,10 +1,5 @@
-Unit support: gauges now read in mph, °F, psi and mpg based on your region (you can also switch manually in Settings). CSV exports follow the same units, with the unit written into the column header.
+Pro is now available as a yearly or monthly subscription, or a one-time purchase. The yearly plan starts with a 7-day trial.
 
-• Vehicle profile: set your tachometer range, redline and fuel type (gasoline/diesel). Fuel economy is now estimated correctly for diesels.
-• When an adapter will not connect, the connection screen now explains why and what to try, plus guidance on choosing an adapter.
-• Start and stop recording, and see recording status, from any tab.
-• Gauges that have stopped updating are now clearly marked.
-• The screen stays awake while the HUD is showing, and brightness is raised automatically.
-• Settings have been reorganised into standard sections, with technical details and the communication log moved one level down.
-• Fixed decimal separators for German, French and Spanish.
-• Fixed layout problems at large text sizes.
+Pro includes all 10 engine sounds plus new sounds as they're added, saved 0–100 and G-force runs, unlimited dashboard widgets, unlimited CSV export, and ad removal.
+
+If you already own Pro (one-time purchase), nothing changes — you keep full access.

@@ -7,8 +7,13 @@ import UIKit
 struct EngineSoundView: View {
     @EnvironmentObject private var obd: ELM327BluetoothModel
     @EnvironmentObject private var sound: EngineSoundController
+    @Environment(ProStore.self) private var proStore
 
     @State private var showingPresets = false
+    @State private var showingPaywall = false
+    // ロック中プリセットの 20 秒試聴(T2)。期限が来たら直前の無料プリセットへ戻して Paywall を出す。
+    @State private var previewTask: Task<Void, Never>?
+    @State private var previewRemainingSeconds: Int?
 
     private var unitSystem: ResolvedUnitSystem { UnitSettings.shared.system }
 
@@ -62,12 +67,16 @@ struct EngineSoundView: View {
         }
         .onAppear {
             restorePresetAndSync()
+            applyUITestLaunchArgumentsIfPresent()
         }
         .onChange(of: popsEnabled) { _, newValue in
             sound.popsEnabled = newValue
         }
         .sheet(isPresented: $showingPresets) {
             presetSelectionView
+        }
+        .sheet(isPresented: $showingPaywall) {
+            PaywallView()
         }
     }
 
@@ -86,6 +95,12 @@ struct EngineSoundView: View {
                 .font(.system(size: 18, weight: .bold))
                 .tracking(1.2)
                 .foregroundColor(.white)
+
+            if let remaining = previewRemainingSeconds {
+                Text("試聴中… あと \(remaining) 秒")
+                    .font(.system(size: 11, weight: .medium))
+                    .foregroundColor(.orange)
+            }
 
             // エンジン名がプリセットピッカーを兼ねる(enjine-sim と同じ導線)
             Button {
@@ -261,13 +276,24 @@ struct EngineSoundView: View {
         NavigationView {
             List(EnginePreset.presets) { preset in
                 Button {
-                    loadPreset(preset)
+                    selectPreset(preset)
                 } label: {
                     HStack(spacing: 12) {
                         VStack(alignment: .leading, spacing: 8) {
-                            Text(preset.name)
-                                .font(.system(size: 18, weight: .semibold))
-                                .foregroundColor(.primary)
+                            HStack(spacing: 6) {
+                                Text(preset.name)
+                                    .font(.system(size: 18, weight: .semibold))
+                                    .foregroundColor(.primary)
+
+                                if !isUnlocked(preset) {
+                                    Image(systemName: "lock.fill")
+                                        .font(.system(size: 11, weight: .bold))
+                                        .foregroundColor(.orange)
+                                    Text("Pro")
+                                        .font(.system(size: 11, weight: .bold))
+                                        .foregroundColor(.orange)
+                                }
+                            }
 
                             Text(preset.description)
                                 .font(.system(size: 14))
@@ -318,24 +344,81 @@ struct EngineSoundView: View {
         }
     }
 
-    /// 起動時: 保存済みプリセットを復元
+    /// 起動時: 保存済みプリセットを復元。ロック対象になっていたら先頭の無料プリセットへフォールバック。
     private func restorePresetAndSync() {
         sound.popsEnabled = popsEnabled
 
-        let preset = EnginePreset.presets.first { $0.name == savedPresetName }
+        var preset = EnginePreset.presets.first { $0.name == savedPresetName }
             ?? EnginePreset.presets[0]
+        if !isUnlocked(preset) {
+            preset = EnginePreset.presets.first { $0.isFree } ?? EnginePreset.presets[0]
+            savedPresetName = preset.name
+        }
         if sound.preset.name != preset.name {
             sound.setPreset(preset)
         }
     }
 
+    /// Pro / 広告除去以前からの無料利用者(grandfather)/ 無料プリセットのいずれかで解放されているか。
+    private func isUnlocked(_ preset: EnginePreset) -> Bool {
+        preset.isFree || proStore.isPro || proStore.legacyFreeSound
+    }
+
+    private func selectPreset(_ preset: EnginePreset) {
+        if isUnlocked(preset) {
+            loadPreset(preset)
+        } else {
+            previewLockedPreset(preset)
+        }
+    }
+
     private func loadPreset(_ preset: EnginePreset) {
+        previewTask?.cancel()
+        previewTask = nil
+        previewRemainingSeconds = nil
+
         sound.setPreset(preset)
         savedPresetName = preset.name
         showingPresets = false
 
         let notification = UINotificationFeedbackGenerator()
         notification.notificationOccurred(.success)
+    }
+
+    /// App Store スクショ撮影用フック(ContentView と同じ流儀)。`-uiEngineSoundPresets 1` で
+    /// プリセット一覧シートを強制表示する(ロック表示のスクショに使う。本番挙動は不変)。
+    private func applyUITestLaunchArgumentsIfPresent() {
+        let args = ProcessInfo.processInfo.arguments
+        if args.contains("-uiEngineSoundPresets") {
+            showingPresets = true
+        }
+    }
+
+    /// T2: ロック中プリセットを 20 秒だけ試聴させ、期限が来たら直前の無料プリセットへ戻して Paywall を出す。
+    private func previewLockedPreset(_ preset: EnginePreset) {
+        previewTask?.cancel()
+
+        let currentPreset = sound.preset
+        let fallbackPreset = isUnlocked(currentPreset)
+            ? currentPreset
+            : (EnginePreset.presets.first { $0.isFree } ?? EnginePreset.presets[0])
+
+        sound.setPreset(preset)
+        showingPresets = false
+        previewRemainingSeconds = 20
+
+        previewTask = Task {
+            for remaining in stride(from: 19, through: 0, by: -1) {
+                try? await Task.sleep(nanoseconds: 1_000_000_000)
+                if Task.isCancelled { return }
+                previewRemainingSeconds = remaining
+            }
+            guard !Task.isCancelled else { return }
+            sound.setPreset(fallbackPreset)
+            savedPresetName = fallbackPreset.name
+            previewRemainingSeconds = nil
+            showingPaywall = true
+        }
     }
 }
 

@@ -148,18 +148,25 @@ struct MapWidgetView: View {
 struct GaugeWidgetView: View {
     let pid: UInt8
     @EnvironmentObject private var obd: ELM327BluetoothModel
+    /// 監査 B-3 と同じ鮮度判定をアナログメーターにも適用する(5a)。
+    @EnvironmentObject private var recorder: TelemetryRecorder
 
     var body: some View {
         Group {
             if let definition = PIDCatalog.byPID[pid] {
+                let value = obd.liveValues[pid]
+                let _ = recorder.revision  // 鮮度の再評価トリガ
+                let isStale = value != nil && recorder.isStale(definition.channelID)
                 // 監査 A-1: 針・目盛り・値をまとめて表示単位へ換算する
                 AnalogGaugeView(
                     title: definition.name,
-                    value: definition.displayValue(obd.liveValues[pid]),
+                    value: definition.displayValue(value),
                     range: definition.displayRange,
                     unit: definition.displayUnit,
-                    tint: definition.tint,
-                    fractionDigits: definition.displayDigits
+                    // 5a: 色は水温・油温のしきい値だけに意味を持たせる(それ以外は中立アクセント)
+                    tint: definition.dashboardTint(for: value),
+                    fractionDigits: definition.displayDigits,
+                    isStale: isStale
                 )
                 .padding(8)
             }

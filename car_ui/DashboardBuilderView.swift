@@ -10,8 +10,29 @@ import SwiftUI
 
 struct DashboardBuilderView: View {
     @Bindable var store: DashboardLayoutStore
+    @Environment(ProStore.self) private var proStore
     @Environment(\.dismiss) private var dismiss
     @State private var pendingKind: DashboardWidget.Kind?
+    @State private var showingPaywall = false
+    /// プリセット適用で手組みの構成を上書きする前の確認(5a §12-1)。nil でなければ確認アラートを出す。
+    @State private var pendingPreset: DashboardPreset?
+
+    /// 無料プランのウィジェット上限(レイアウトは元々 1 つしか無いので、上限はウィジェット枚数だけで足りる)。
+    /// README §11(5a): 自由配置を課金の壁にしない方針で 4→6 に緩和。
+    private static let freeWidgetLimit = 6
+
+    private var canAddMoreWidgets: Bool {
+        proStore.isPro || store.widgets.count < Self.freeWidgetLimit
+    }
+
+    /// 上限に達していたら追加せず Paywall を出す。追加可なら渡された処理を実行する。
+    private func addWidgetIfAllowed(_ perform: () -> Void) {
+        guard canAddMoreWidgets else {
+            showingPaywall = true
+            return
+        }
+        perform()
+    }
 
     var body: some View {
         NavigationStack {
@@ -20,7 +41,7 @@ struct DashboardBuilderView: View {
                 Section {
                     ForEach(DashboardPreset.allCases) { preset in
                         Button {
-                            store.apply(preset: preset)
+                            applyPresetWithConfirmationIfNeeded(preset)
                         } label: {
                             HStack {
                                 Label(preset.label, systemImage: preset.icon)
@@ -60,10 +81,12 @@ struct DashboardBuilderView: View {
                 Section("追加") {
                     ForEach(DashboardWidget.Kind.allCases, id: \.self) { kind in
                         Button {
-                            if kind.needsPID {
-                                pendingKind = kind
-                            } else {
-                                store.append(DashboardWidget(kind: .map, pid: nil))
+                            addWidgetIfAllowed {
+                                if kind.needsPID {
+                                    pendingKind = kind
+                                } else {
+                                    store.append(DashboardWidget(kind: .map, pid: nil))
+                                }
                             }
                         } label: {
                             HStack {
@@ -95,10 +118,54 @@ struct DashboardBuilderView: View {
             }
             .sheet(item: $pendingKind) { kind in
                 PIDPickerView(title: String(localized: "\(kind.displayName)を追加")) { pid in
-                    store.append(DashboardWidget(kind: kind, pid: pid))
+                    addWidgetIfAllowed {
+                        store.append(DashboardWidget(kind: kind, pid: pid))
+                    }
+                }
+            }
+            .sheet(isPresented: $showingPaywall) {
+                PaywallView()
+            }
+            .alert(
+                pendingPresetAlertTitle,
+                isPresented: Binding(
+                    get: { pendingPreset != nil },
+                    set: { if !$0 { pendingPreset = nil } }
+                )
+            ) {
+                Button("OK") {
+                    if let preset = pendingPreset {
+                        store.apply(preset: preset)
+                    }
+                    pendingPreset = nil
+                }
+                Button("キャンセル", role: .cancel) {
+                    pendingPreset = nil
                 }
             }
         }
+    }
+
+    /// 5a §12-1: 手組みの構成(空でない・選んだプリセットと内容が違う)を上書きする前に確認する。
+    /// 空、またはプリセットと同一内容なら従来どおり即適用。
+    private func applyPresetWithConfirmationIfNeeded(_ preset: DashboardPreset) {
+        if store.widgets.isEmpty || Self.widgetContents(store.widgets, match: preset.widgets) {
+            store.apply(preset: preset)
+        } else {
+            pendingPreset = preset
+        }
+    }
+
+    /// DashboardWidget.id は毎回新規発行される(Equatable の既定比較には使えない)ため、
+    /// 種類+対象 PID の並びだけで内容を比較する。
+    private static func widgetContents(_ a: [DashboardWidget], match b: [DashboardWidget]) -> Bool {
+        guard a.count == b.count else { return false }
+        return zip(a, b).allSatisfy { $0.kind == $1.kind && $0.pid == $1.pid }
+    }
+
+    private var pendingPresetAlertTitle: Text {
+        guard let pendingPreset else { return Text("") }
+        return Text("現在の構成を「") + Text(pendingPreset.label) + Text("」に置き換えます")
     }
 
     private func widgetRow(_ widget: DashboardWidget) -> some View {

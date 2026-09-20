@@ -25,6 +25,9 @@ struct ContentView: View {
     @AppStorage("display.keepAwakeWhileConnected") private var keepAwakeWhileConnected = true
     @State private var showingIntroPaywall = false
     @State private var suppressIntroOffer = false
+    // T1(README §4): 実接続で RPM≥1000 を観測し、かつ「接続から60秒経過」または「エンジン音再生中」
+    @State private var introConnectionStartedAt: Date?
+    @State private var introHighRpmObserved = false
     // 初回起動オンボーディング(完了フラグは永続化、その他タブから再表示可)
     @AppStorage("onboarding.completed") private var onboardingCompleted = false
     @State private var showingOnboarding = false
@@ -63,6 +66,7 @@ struct ContentView: View {
         .onReceive(obd.$liveValues) { values in
             engineSound.ingest(values)
             tripComputer.ingest(values)
+            evaluateIntroPaywallTrigger(values: values)
         }
         // セッションの走行距離を LocationModel の積算距離から更新
         .onReceive(location.$totalDistanceKm) { km in
@@ -88,13 +92,15 @@ struct ContentView: View {
         .onChange(of: obd.phase.isConnected) { _, isConnected in
             updateScreenWake()
             handleReviewPromptSessionChange(isConnected: isConnected, isDemo: obd.isDemo)
-            guard isConnected, !introOffered, !suppressIntroOffer,
-                  !proStore.isPro, !proStore.isAdFree else { return }
-            introOffered = true
-            Task {
-                try? await Task.sleep(nanoseconds: 3_000_000_000)
-                showingIntroPaywall = true
+            // T1: 実接続(デモ除く)のたびに観測をリセットして計り直す
+            if isConnected, !obd.isDemo {
+                introConnectionStartedAt = Date()
+                introHighRpmObserved = false
             }
+        }
+        // エンジン音の再生開始も T1 の条件の一つ(RPM 観測後に鳴らした瞬間)
+        .onChange(of: engineSound.isPlaying) { _, _ in
+            attemptShowIntroPaywallIfEligible()
         }
         .onChange(of: scenePhase) { _, newPhase in
             // 監査 REL-012: スリープ防止は「前面 + OBD 接続中 + 設定オン」のときだけ
@@ -188,6 +194,27 @@ struct ContentView: View {
         }
         UIApplication.shared.isIdleTimerDisabled =
             keepAwakeWhileConnected && obd.phase.isConnected
+    }
+
+    // MARK: - 初回プラン提案(T1)
+
+    /// README §4 T1: デモ以外の実接続で RPM≥1000 を 1 度でも観測したら記録し、条件が揃っていれば提案する。
+    private func evaluateIntroPaywallTrigger(values: [UInt8: Double]) {
+        guard obd.phase.isConnected, !obd.isDemo else { return }
+        if let rpm = values[0x0C], rpm >= 1000 {
+            introHighRpmObserved = true
+        }
+        attemptShowIntroPaywallIfEligible()
+    }
+
+    /// RPM 観測済み + (接続から60秒経過 or サウンド再生中)が揃った瞬間に 1 回だけ提案する。
+    private func attemptShowIntroPaywallIfEligible() {
+        guard !introOffered, !suppressIntroOffer, !proStore.isPro, !proStore.isAdFree else { return }
+        guard introHighRpmObserved, let startedAt = introConnectionStartedAt else { return }
+        let elapsed = Date().timeIntervalSince(startedAt)
+        guard elapsed >= 60 || engineSound.isPlaying else { return }
+        introOffered = true
+        showingIntroPaywall = true
     }
 
     // MARK: - レビュー依頼(ReviewPromptPolicy)

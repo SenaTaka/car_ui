@@ -6,6 +6,9 @@ struct EnginePreset: Identifiable {
     let name: String
     let description: String
     let parameters: EngineParameters
+    /// 無料で使えるプリセット(Inline 4 Economy / Inline 4 Sport のみ)。それ以外は Pro または
+    /// grandfather(`ProStore.legacyFreeSound`)対象。
+    var isFree: Bool = false
 
     static let presets: [EnginePreset] = [
         EnginePreset(
@@ -21,7 +24,8 @@ struct EnginePreset: Identifiable {
                 idleRpm: 750,
                 redlineRpm: 6000,
                 maxRpm: 6500
-            )
+            ),
+            isFree: true
         ),
 
         EnginePreset(
@@ -38,7 +42,8 @@ struct EnginePreset: Identifiable {
                 redlineRpm: 7000,
                 maxRpm: 7500,
                 turboMode: true
-            )
+            ),
+            isFree: true
         ),
 
         EnginePreset(

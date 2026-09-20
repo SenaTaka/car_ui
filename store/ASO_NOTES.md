@@ -53,3 +53,11 @@
 - 起動引数: `-uiDemo 1 -uiDemoName "ELM327 v2.3" -uiTab N`。分析タブのセグメントは `-analysisSection N`(@AppStorage を NSArgumentDomain で上書き)。
 - 広告バナーは生スクショの下端に写るので、合成前に**上端基準で** 2450px に切る。`sips -c` は `--cropOffset 0 0` を付けても中央基準で切ってしまい、ステータスバーが落ちてバナーが残る。
 - 2026-08-17: 1.0.2 の iOS 26 フローティングタブバーは半透明で、下の広告バナー(実広告だと「無料」等の文字を含みうる)と重なる行がある→ 2450px 目安クロップだけでは広告の文字が漏れる。`-uiFakeBanner` 起動引数(既存フック)でオレンジ無地バナーに固定してから 2510px で上端クロップするとタブバーの文字を保ったままバナーを落とせる(ja 5枚のスクショ撮り直しで確認)。
+
+## 2026-09-20: サブスク転換(D-2026-0920-02)に伴う全ロケール改訂
+- 7 ロケールの subtitle/keywords/description から「サブスクなし」「買い切り」「月額課金なし」「広告除去のみの安価な買い切り」を全撤去(虚偽表示回避)。Pro 段落を README §3(全エンジン音+今後追加/0-100・Gフォースの記録保存/ダッシュボード無制限/CSV無制限/広告なし)に書き換え、年額・月額・買い切り+7日間無料トライアルの1文を追加。価格の数字は書いていない。
+- 訂正(同日): description/release_notesの「ドライブ履歴を保存」は1.1.0の実装範囲(ドライブ履歴の自動保存はREADME §7 Phase 4=次リリース)を超えていたため、7ロケールとも「0-100・Gフォースの記録を保存」のみに修正(「ドライブ履歴」「drive history」「Fahrten」「trajets」「registros de conducción」「行驶记录」系の語は不使用)。
+- 「エンジン音:全プリセット無料」→「2種類を無料、全10種はPro」に統一(7ロケール)。
+- keywords は元々 subscription 系語を含んでおらず撤去対象なし。ja に「デジタルメーター」(iTunes suggest API・JP storefront で実需要確認、速度計アプリ genre)、zh-Hans に「车载仪表」(CN storefront で実需要確認、Navigation genre の車状態アプリがヒット)を追加。en-US の instrument cluster/digital gauge は 2026-08-17 に死に枠と実測済みのため見送り(README の仮説Bはこの実測を未反映の古い提案)。de/fr/es は keywords が96〜98/100字で空きがなく、計器系語の検証未実施のため keywords は無変更。
+- ja/en-US の release_notes.txt(whatsNew)を 1.1.0 想定でサブスク化告知に全面差し替え(既存 Pro 所有者は変更なしと明記)。de/fr/es/zh の release_notes.txt は今回未変更(指示対象外)。
+- lint: `company-os/bin/store_lint.sh car_ui` は ja/en-US description.txt の「無料」「free」で NG(2026-08-17記録済みの既知の過剰検知、「無料でできること」等の未変更段落由来。今回の変更前後で NG 件数・内容は同一 = 新規劣化なし)。

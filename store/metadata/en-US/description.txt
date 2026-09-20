@@ -1,12 +1,11 @@
 See — and hear — your car in real time.
 
-Connect an ELM327 Bluetooth (BLE) adapter and the app turns live OBD2 data into a fast, modern dashboard: RPM, speed, coolant, throttle, fuel, and every sensor your vehicle supports, auto-detected. No subscription. Ever.
+Connect an ELM327 Bluetooth (BLE) adapter and the app turns live OBD2 data into a fast, modern dashboard: RPM, speed, coolant, throttle, fuel, and every sensor your vehicle supports, auto-detected.
 
 WHAT MAKES IT DIFFERENT
 • A genuinely modern interface — not the dated look of most OBD apps
 • A one-of-a-kind engine-sound simulation driven by your real RPM
 • Speed and RPM drawn on the map, color-coded (satellite view included)
-• Buy once for Pro — no monthly fees, unlike many scanners
 
 BUILD YOUR OWN DASHBOARD
 Mix and match four widget types — digital tiles, analog needle gauges, live charts, and the trip map — then reorder them into your own instrument screen. A mirrored HUD mode projects your speed onto the windshield at night.
@@ -15,17 +14,19 @@ FIVE FOCUSED TABS
 • Dashboard — your own widget layout, plus HUD mode
 • Data — every live sensor, overlaid or separate charts, CSV export (long or spreadsheet-friendly wide format)
 • Drive — trip computer with fuel economy, the color-coded track map, a G-force ball, and 0–100 timing
-• Engine Sound — procedural sound that follows your real RPM (all presets free)
+• Engine Sound — procedural sound that follows your real RPM (2 presets included, all 10 with Pro)
 • Tools — adapter info and communication log
 
 FREE INCLUDES
 Live data, the dashboard, track map, trip computer, HUD, and engine sound — free, with a small banner ad.
 
-PRO (ONE-TIME PURCHASE, OPTIONAL)
-• Unlimited CSV logging
+PRO
+• All 10 engine sounds, plus new sounds as they're added
 • Save your 0–100 and G-force runs
+• Unlimited dashboard widgets
+• Unlimited CSV logging
 • Remove ads
-Prefer just no ads? A cheaper ad-removal-only purchase is also available.
+Pro is available as a yearly or monthly subscription, or a one-time purchase. The yearly plan starts with a 7-day trial.
 
 NO ACCOUNT NEEDED
 Your vehicle data comes straight from the ELM327 adapter over Bluetooth and is processed on your device — there is no developer server collecting it. The free version shows ads served by Google's ad SDK (buy Ad Removal or Pro and no ads are shown). Try it with no hardware using the built-in demo mode.
