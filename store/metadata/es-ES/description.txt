@@ -17,8 +17,8 @@ CINCO PESTAÑAS
 • Sonido de motor — sonido procedural que sigue tus RPM reales (2 presets incluidos, los 10 con Pro)
 • Herramientas — información del adaptador y registro de comunicación
 
-INCLUIDO GRATIS
-Datos en vivo, el tablero, mapa de recorrido, computadora de viaje, HUD y sonido de motor — gratis, con un pequeño anuncio en banner.
+INCLUIDO
+Datos en vivo, el tablero, mapa de recorrido, computadora de viaje, HUD y sonido de motor (2 presets) — todo incluido, con un pequeño anuncio en banner.
 
 PRO
 • Los 10 sonidos de motor, más los nuevos que se agreguen
@@ -29,7 +29,7 @@ PRO
 Pro está disponible como plan anual, mensual o compra única. El plan anual comienza con una prueba de 7 días.
 
 NO NECESITAS CUENTA
-Los datos del vehículo llegan directo del adaptador ELM327 por Bluetooth y se procesan en tu dispositivo — no hay un servidor del desarrollador que los recolecte. La versión gratis muestra anuncios servidos por el SDK de anuncios de Google (con Quitar anuncios o Pro no se muestran anuncios). Puedes probarla sin hardware con el modo demo incluido.
+Los datos del vehículo llegan directo del adaptador ELM327 por Bluetooth y se procesan en tu dispositivo — no hay un servidor del desarrollador que los recolecte. Sin Pro, la app muestra anuncios servidos por el SDK de anuncios de Google (Pro elimina los anuncios). ¿Sin hardware? Prueba el modo demo integrado.
 
 REQUIERE un adaptador OBD2 Bluetooth LE (BLE) compatible con ELM327 y un vehículo con puerto OBD2 (la mayoría de los autos vendidos desde 2008).
 

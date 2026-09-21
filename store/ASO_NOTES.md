@@ -61,3 +61,4 @@
 - keywords は元々 subscription 系語を含んでおらず撤去対象なし。ja に「デジタルメーター」(iTunes suggest API・JP storefront で実需要確認、速度計アプリ genre)、zh-Hans に「车载仪表」(CN storefront で実需要確認、Navigation genre の車状態アプリがヒット)を追加。en-US の instrument cluster/digital gauge は 2026-08-17 に死に枠と実測済みのため見送り(README の仮説Bはこの実測を未反映の古い提案)。de/fr/es は keywords が96〜98/100字で空きがなく、計器系語の検証未実施のため keywords は無変更。
 - ja/en-US の release_notes.txt(whatsNew)を 1.1.0 想定でサブスク化告知に全面差し替え(既存 Pro 所有者は変更なしと明記)。de/fr/es/zh の release_notes.txt は今回未変更(指示対象外)。
 - lint: `company-os/bin/store_lint.sh car_ui` は ja/en-US description.txt の「無料」「free」で NG(2026-08-17記録済みの既知の過剰検知、「無料でできること」等の未変更段落由来。今回の変更前後で NG 件数・内容は同一 = 新規劣化なし)。
+- 2026-09-21: ship-gate NO-GO 対応: description 7 ロケールの「無料でできること/FREE INCLUDES」「ほぼ全機能を無料」「無料版では」を「基本機能/INCLUDED」「標準搭載」「Pro 未購入の間は」に言い換え(2.3.7 の無料訴求を回避、lint PASS)。「広告除去・Pro の購入で」→「Pro で」(adfree は公開当日に販売停止のため)。ASC 1.1.0 へ再反映済み。

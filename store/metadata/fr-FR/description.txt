@@ -17,8 +17,8 @@ CINQ ONGLETS
 • Son moteur — son procédural qui suit le régime réel (2 préréglages inclus, les 10 avec Pro)
 • Outils — informations sur l'adaptateur et journal de communication
 
-INCLUS GRATUITEMENT
-Données en direct, tableau de bord, carte du trajet, ordinateur de bord, HUD et son moteur — gratuit, avec une petite bannière publicitaire.
+INCLUS
+Données en direct, tableau de bord, carte du trajet, ordinateur de bord, HUD et son moteur (2 préréglages) — tout est inclus, avec une petite bannière publicitaire.
 
 PRO
 • Les 10 sons moteur, plus les nouveaux sons ajoutés au fil du temps
@@ -29,7 +29,7 @@ PRO
 Pro est disponible en abonnement annuel, mensuel, ou en achat unique. L'abonnement annuel démarre par une période d'essai de 7 jours.
 
 AUCUN COMPTE REQUIS
-Les données du véhicule proviennent directement de l'adaptateur ELM327 via Bluetooth et sont traitées sur l'appareil — il n'y a aucun serveur de l'éditeur qui les collecte. La version gratuite affiche des publicités servies par le SDK publicitaire de Google (avec Sans pub ou Pro, plus aucune publicité). Testable sans matériel grâce au mode démo intégré.
+Les données du véhicule proviennent directement de l'adaptateur ELM327 via Bluetooth et sont traitées sur l'appareil — il n'y a aucun serveur de l'éditeur qui les collecte. Sans Pro, l'app affiche des publicités servies par le SDK publicitaire de Google (Pro supprime les publicités). Sans matériel, essayez le mode démo intégré.
 
 REQUIERT un adaptateur OBD2 Bluetooth LE (BLE) compatible ELM327 et un véhicule doté d'une prise OBD2 (la plupart des voitures vendues depuis 2008).
 

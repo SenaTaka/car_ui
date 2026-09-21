@@ -17,8 +17,8 @@ FÜNF BEREICHE
 • Motorsound – prozeduraler Sound, der der echten Drehzahl folgt (2 Presets enthalten, alle 10 mit Pro)
 • Werkzeuge – Adapter-Informationen und Kommunikationsprotokoll
 
-KOSTENLOS ENTHALTEN
-Live-Daten, das Dashboard, die Streckenkarte, der Bordcomputer, HUD und Motorsound – kostenlos, mit kleinem Banner-Werbebanner.
+ENTHALTEN
+Live-Daten, das Dashboard, die Streckenkarte, der Bordcomputer, HUD und Motorsound (2 Presets) – alles enthalten, mit kleinem Werbebanner.
 
 PRO
 • Alle 10 Motorsounds, plus neue Sounds, sobald sie erscheinen
@@ -29,7 +29,7 @@ PRO
 Pro gibt es im Jahres- oder Monatsabo oder als Einmalkauf. Das Jahresabo startet mit einer 7-tägigen Testphase.
 
 KEIN ACCOUNT NÖTIG
-Die Fahrzeugdaten kommen direkt vom ELM327-Adapter per Bluetooth und werden auf dem Gerät verarbeitet – es gibt keinen Server des Entwicklers, der sie sammelt. Die kostenlose Version zeigt Werbung von Googles Werbe-SDK (mit Werbefrei oder Pro entfällt die Werbung). Ausprobieren geht auch ohne Hardware über den eingebauten Demo-Modus.
+Die Fahrzeugdaten kommen direkt vom ELM327-Adapter per Bluetooth und werden auf dem Gerät verarbeitet – es gibt keinen Server des Entwicklers, der sie sammelt. Ohne Pro zeigt die App Werbung von Googles Werbe-SDK (mit Pro entfällt die Werbung). Ausprobieren geht auch ohne Hardware über den eingebauten Demo-Modus.
 
 ERFORDERLICH: ein ELM327-kompatibler Bluetooth-LE-(BLE)-OBD2-Adapter und ein Fahrzeug mit OBD2-Anschluss (die meisten seit 2008 verkauften Autos).
 

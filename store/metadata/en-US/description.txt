@@ -17,8 +17,8 @@ FIVE FOCUSED TABS
 • Engine Sound — procedural sound that follows your real RPM (2 presets included, all 10 with Pro)
 • Tools — adapter info and communication log
 
-FREE INCLUDES
-Live data, the dashboard, track map, trip computer, HUD, and engine sound — free, with a small banner ad.
+INCLUDED
+Live data, the dashboard, track map, trip computer, HUD, and engine sound (2 presets) — all included, with a small banner ad.
 
 PRO
 • All 10 engine sounds, plus new sounds as they're added
@@ -29,7 +29,7 @@ PRO
 Pro is available as a yearly or monthly subscription, or a one-time purchase. The yearly plan starts with a 7-day trial.
 
 NO ACCOUNT NEEDED
-Your vehicle data comes straight from the ELM327 adapter over Bluetooth and is processed on your device — there is no developer server collecting it. The free version shows ads served by Google's ad SDK (buy Ad Removal or Pro and no ads are shown). Try it with no hardware using the built-in demo mode.
+Vehicle data comes straight from your ELM327 adapter over Bluetooth and is processed on your device — there is no developer server collecting it. Without Pro, Google's ads SDK connects to serve ads (Pro removes ads). No hardware? Try the built-in demo mode.
 
 REQUIRES an ELM327-compatible Bluetooth LE (BLE) OBD2 adapter and a vehicle with an OBD2 port (most cars sold since 2008).
 

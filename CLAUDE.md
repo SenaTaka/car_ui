@@ -6,7 +6,7 @@ ELM327(BLE)で車両の対応 PID を自動検出して表示・記録するテ�
 - scheme / target: `car_ui`(単一)
 - iOS 26.0+ / bundle id `Sena.car-ui`
 - ソース: `car_ui/` 直下(フォルダ同期 — .swift は置くだけでビルド対象)
-- SPM: GoogleMobileAds(全タブ共通バナーのみ)。エンジン音の全プリセット(F1 V10 含む)は無料・ロックなし(2026-07-13〜)
+- SPM: GoogleMobileAds(全タブ共通バナーのみ)。エンジン音は Inline 4 の 2 種が無料、残り 8 種は Pro(2026-09-20 サブスク化 D-2026-0920-02〜。更新前からの利用者は `pro.legacyFreeSound` で全種免除)
 - Info.plist はリポジトリ直下(同期フォルダ内に置くとビルド衝突するため)+ GENERATE_INFOPLIST_FILE 併用
 
 ## ビルド
