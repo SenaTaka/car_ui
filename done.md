@@ -478,3 +478,4 @@
 - 2026-09-20 20:55: push 後 Xcode Cloud が ITMS-90186/90062(1.0.2 は公開済み)で拒否 → MARKETING_VERSION を 1.1.0 に(4 箇所)。次回から公開済みバージョンのまま push しない。
 
 - 2026-09-21: ship-gate NO-GO(5 件)対応: 02_sound 見出し再合成(日英、store_frame)・description 無料訴求の言い換え(lint PASS)・「広告除去・Pro」→「Pro」・iap_spec 台帳追記・PaywallView の未取得プランカード非表示(builder、テスト 46 件)。ASC 1.1.0(7eab22e5)作成・メタデータ 7 ロケール・スクショ再入稿済み。残り: サブスク商品の価格/月額(人間の ! 実行)、最新ビルド紐付け、TestFlight での購入フロー確認。
+- 2026-09-21 22:50: ASC サブスク完成: 人間の ! 実行で monthly 6814504680 作成・価格 175 か国×2・年額 7 日無料 175 か国・配信国。審査用スクショ(doc/shots/paywall_ja.png、-uiDemo 1 -uiIntroOffer 1 で撮影)を Chrome で年額・月額に添付 → 両方 READY_TO_SUBMIT。ペイウォール価値行「ドライブ履歴」→「0-100・G の記録保存・ダッシュボード無制限」(0390a15)。ビルド 47 を待って 1.1.0 に紐付け。
