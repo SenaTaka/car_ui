@@ -474,3 +474,5 @@
 - 検証: builder 報告 `xcb xcodebuild build → exit 0 BUILD SUCCEEDED` / `xcb xcodebuild test (iPhone 17 Pro) → exit 0, Executed 46 tests, 0 failures`。指揮官は `git diff --stat`(12 ファイル)で裏取り。
 - 未検証: シミュレータ実画面(ペイウォール・音ロック・ダッシュボード)— Mac が load average 500〜1000 の高負荷でスクショ不可。Xcode での購入フロー目視(トライアルバッジ・復元)。
 - 次: 5b(1.2.0: サイズ/スタイル/複数ページ/長押し並べ替え)・5c(テーマ・しきい値編集・横向き)は README §14。
+
+- 2026-09-20 20:55: push 後 Xcode Cloud が ITMS-90186/90062(1.0.2 は公開済み)で拒否 → MARKETING_VERSION を 1.1.0 に(4 箇所)。次回から公開済みバージョンのまま push しない。
