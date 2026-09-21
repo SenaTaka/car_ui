@@ -1259,6 +1259,40 @@
         }
       }
     },
+    "0-100・G の記録保存・ダッシュボード無制限": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "0-100 & G-Kraft speichern, unbegrenztes Dashboard"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Save 0-60 & G-force runs, unlimited dashboard"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Guarda 0-100 y fuerza G, panel ilimitado"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enregistre 0-100 et force G, tableau de bord illimité"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "保存 0-100 与 G 值成绩,仪表盘无限制"
+          }
+        }
+      }
+    },
     "2 系統目のスロットルセンサーの開度です(冗長系)。": {
       "localizations": {
         "de": {
@@ -7953,40 +7987,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "驾驶"
-          }
-        }
-      }
-    },
-    "ドライブ履歴と記録": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fahrverlauf & Aufzeichnungen"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Drive history & records"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Historial de conducción y registros"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Historique de conduite et enregistrements"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "驾驶历史与记录"
           }
         }
       }

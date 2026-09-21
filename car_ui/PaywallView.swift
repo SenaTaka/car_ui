@@ -32,7 +32,7 @@ struct PaywallView: View {
     private var valueProps: [ValueProp] {
         [
             ValueProp(icon: "engine.combustion.fill", text: Text("全エンジン音 + 追加音")),
-            ValueProp(icon: "clock.arrow.circlepath", text: Text("ドライブ履歴と記録")),
+            ValueProp(icon: "gauge.with.dots.needle.67percent", text: Text("0-100・G の記録保存・ダッシュボード無制限")),
             ValueProp(icon: "checkmark.seal.fill", text: Text("広告なし・CSV 無制限"))
         ]
     }
