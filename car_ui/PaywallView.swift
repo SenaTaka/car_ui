@@ -16,9 +16,10 @@ struct PaywallView: View {
     // 復元中/成功/対象なしを一定時間視認できるようにするための一時状態
     @State private var isRestoring = false
     @State private var restoreMessage: String?
+    /// ship-gate 指摘: 初回ロード完了まで「読み込めませんでした」を誤表示しないためのフラグ。
+    @State private var hasLoadedOnce = false
 
-    /// プライバシーポリシーの正本 URL。CLAUDE.md/store 配下にアプリ内既存の記載が見つからなかったため
-    /// 会社サイトの想定パスを暫定使用(指揮官側で正しい URL に要確認)。
+    /// プライバシーポリシーの正本 URL。ASC 登録値と一致(2026-09-20 確認)。
     private static let privacyPolicyURL = URL(string: "https://takasawadynamics.com/apps/obd2-scanner/privacy")!
     private static let eulaURL = URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/")!
 
@@ -59,9 +60,8 @@ struct PaywallView: View {
             .task {
                 await proStore.loadProducts()
                 await proStore.refreshTrialEligibility()
-                if proStore.yearlyProduct == nil, proStore.lifetimeProduct != nil {
-                    selectedPlan = .lifetime
-                }
+                hasLoadedOnce = true
+                syncSelectedPlanToAvailable()
             }
             .onChange(of: proStore.isPro) { _, isPro in
                 // 復元中は performRestore() 側で確認表示後にまとめて dismiss する
@@ -103,8 +103,67 @@ struct PaywallView: View {
 
     // MARK: - プラン 3 択
 
+    /// ship-gate 指摘: 商品ロード失敗(nil)のプランはカードごと出さない(壊れた「—」表示を防ぐ)。
+    private var availablePlans: [ProPlan] {
+        [ProPlan.yearly, .monthly, .lifetime].filter { product(for: $0) != nil }
+    }
+
+    private func product(for plan: ProPlan) -> Product? {
+        switch plan {
+        case .yearly: return proStore.yearlyProduct
+        case .monthly: return proStore.monthlyProduct
+        case .lifetime: return proStore.lifetimeProduct
+        case .none: return nil
+        }
+    }
+
+    /// 既定選択(年額)が読み込めていなければ、存在するプランの先頭を既定にする。
+    private func syncSelectedPlanToAvailable() {
+        guard product(for: selectedPlan) == nil, let first = availablePlans.first else { return }
+        selectedPlan = first
+    }
+
+    @ViewBuilder
     private var planCards: some View {
-        VStack(spacing: 10) {
+        if !hasLoadedOnce {
+            ProgressView()
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 24)
+        } else if availablePlans.isEmpty {
+            productsUnavailableView
+        } else {
+            VStack(spacing: 10) {
+                ForEach(availablePlans, id: \.self) { plan in
+                    planCard(for: plan)
+                }
+            }
+        }
+    }
+
+    private var productsUnavailableView: some View {
+        VStack(spacing: 12) {
+            Text("プランを読み込めませんでした")
+                .font(.subheadline.weight(.semibold))
+                .foregroundStyle(.secondary)
+            Button("再試行") {
+                hasLoadedOnce = false
+                Task {
+                    await proStore.loadProducts()
+                    await proStore.refreshTrialEligibility()
+                    hasLoadedOnce = true
+                    syncSelectedPlanToAvailable()
+                }
+            }
+            .buttonStyle(.bordered)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 24)
+    }
+
+    @ViewBuilder
+    private func planCard(for plan: ProPlan) -> some View {
+        switch plan {
+        case .yearly:
             planCard(
                 plan: .yearly,
                 title: Text("年額"),
@@ -112,6 +171,7 @@ struct PaywallView: View {
                 subtitle: perMonthSubtitle,
                 badgeText: proStore.isTrialEligible ? Text("7 日間無料") : nil
             )
+        case .monthly:
             planCard(
                 plan: .monthly,
                 title: Text("月額"),
@@ -119,6 +179,7 @@ struct PaywallView: View {
                 subtitle: nil,
                 badgeText: nil
             )
+        case .lifetime:
             planCard(
                 plan: .lifetime,
                 title: Text("買い切り"),
@@ -126,6 +187,8 @@ struct PaywallView: View {
                 subtitle: Text("一度だけ支払い、ずっと使える"),
                 badgeText: nil
             )
+        case .none:
+            EmptyView()
         }
     }
 
@@ -246,12 +309,7 @@ struct PaywallView: View {
     }
 
     private var selectedProduct: Product? {
-        switch selectedPlan {
-        case .yearly: return proStore.yearlyProduct
-        case .monthly: return proStore.monthlyProduct
-        case .lifetime: return proStore.lifetimeProduct
-        case .none: return nil
-        }
+        product(for: selectedPlan)
     }
 
     private var ctaLabel: Text {
